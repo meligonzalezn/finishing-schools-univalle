@@ -4,6 +4,8 @@ class IsCreationOrIsAuthenticated(permissions.BasePermission):
         if not request.user.is_authenticated:
             if view.action == 'create':
                 return True
+            if view.action == 'decode_jwt':
+                return True
             else:
                 return False
         else:

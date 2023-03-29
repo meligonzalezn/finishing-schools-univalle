@@ -14,6 +14,9 @@ from .serializers import GoogleSocialAuthSerializer
 from rest_framework_simplejwt.views import TokenRefreshView
 from Crypto.PublicKey import RSA
 from .scraping import get_github_information, get_gitlab_information
+import jwt
+import os
+
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsCreationOrIsAuthenticated]
@@ -22,6 +25,16 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
     http_method_names = ['get', 'post', 'put']
+
+    @action(detail=False, methods=['POST'])
+    def decode_jwt(this, request: Request) -> Response:
+        data = request.data
+        try: 
+            decoded = jwt.decode(data['auth-token'], os.getenv('PUBLIC_KEY'), algorithms=["RS256"])
+            return Response(decoded, status=status.HTTP_200_OK)
+        except:
+            return Response("Signature verification failed", status=status.HTTP_200_OK)
+
 
     @action(detail=False, methods=['POST'])
     def github_information(this, request: Request) -> Response:
