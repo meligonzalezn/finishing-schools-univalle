@@ -1,0 +1,95 @@
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets
+from .serializers import UserSerializer
+from .permissions import IsCreationOrIsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from urllib.request import Request
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+import json
+import jwt
+import os
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsCreationOrIsAuthenticated]
+    User = get_user_model()
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    http_method_names = ['get', 'post', 'put']
+
+    @action(detail=False, methods=['POST'])
+    def check_email(this, request: Request) -> Response:
+        """
+        Check if the email given in request.body has been registered.
+        """
+        try:
+            data = json.loads(request.body)
+            Email = str(data["email"])
+            User = get_user_model()
+            query = User.objects.get(email=Email)
+            return Response("Email already registered", status=status.HTTP_200_OK)
+        except:
+            return Response("Email not registered", status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['POST'])
+    def login(this, request: Request) -> Response:
+        """
+        Check given credentials to login the user and returns acess and refresh token
+        """
+        data = request.data
+        print(data)
+        registered_user = authenticate(username=data['email'], password=data['password'])
+        if registered_user is not None:
+           auth_token = {
+                    'email': registered_user.email,
+                    'tokens': registered_user.tokens()}
+           return Response(auth_token, status=status.HTTP_200_OK)
+        else:
+            raise AuthenticationFailed(
+                    detail='Authentication with given credentials failed') 
+    
+    @action(detail=False, methods=['POST'])
+    def decode_jwt(this, request: Request) -> Response:
+        data = request.data
+        try: 
+            decoded = jwt.decode(data['auth-token'], os.getenv('PUBLIC_KEY'), algorithms=["RS256"])
+            return Response(decoded, status=status.HTTP_200_OK)
+        except:
+            return Response("Signature verification failed", status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
+    def get_user_basic_info(this, request: Request) -> Response:
+        User = get_user_model()
+        authToken = request.headers.get('Authorization')
+        authToken = authToken[7:]
+        try: 
+            decodedToken = jwt.decode(authToken, os.getenv('PUBLIC_KEY'), algorithms=["RS256"])
+            user = User.objects.get(pk=decodedToken['user_id'])
+            return Response({"company_name": user.company_name}, status=status.HTTP_200_OK)
+        except:
+            return Response("Signature verification failed", status=status.HTTP_200_OK)
+        
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
+        
+
+
+
+
+ 

@@ -1,0 +1,71 @@
+version: '3.9'
+services:
+  backend_student:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db_student
+    env_file:
+      - .env
+  backend_company:
+    build:
+      context: .
+      dockerfile: backend_company/Dockerfile
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    ports:
+      - 8001:8000
+    volumes:
+      - ./backend_company:/app
+    depends_on:
+      - db_company
+    env_file:
+      - .env
+  web:
+    build: frontend/admin/template/template_react
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/admin/template/template_react:/frontend
+    depends_on:
+      - backend_student
+      - backend_company
+    env_file:
+      - .env
+  db_student: 
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER_STUDENT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_STUDENT}
+      - POSTGRES_DB=${POSTGRES_NAME_STUDENT}
+    volumes: 
+      - './data/db:/var/lib/potgresql/data'
+    container_name: postgres_db_student
+    env_file:
+      - .env
+  db_company: 
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER_COMPANY}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_COMPANY}
+      - POSTGRES_DB=${POSTGRES_NAME_COMPANY}
+    volumes: 
+      - './data/db:/var/lib/potgresql/data'
+    container_name: postgres_db_company
+    env_file:
+      - .env
+  selenium:
+    image: selenium/standalone-chrome
+    ports:
+      - 4444:4444
