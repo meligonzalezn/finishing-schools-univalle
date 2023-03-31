@@ -1,5 +1,16 @@
 version: '3.9'
 services:
+  web_scraping:
+    build:
+      context: .
+      dockerfile: scraping-service/Dockerfile
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    ports:
+      - 8002:8000
+    volumes:
+      - ./scraping-service:/app
+    env_file:
+      - .env
   backend_student:
     build:
       context: .
