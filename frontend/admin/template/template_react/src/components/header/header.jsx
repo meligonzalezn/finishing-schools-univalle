@@ -28,7 +28,7 @@ const Header = () => {
 		let accessToken = sessionStorage.getItem("access_token");
 		if (accessToken) {
 			const response = await get_user_basic_info(sessionStorage.getItem("access_token"), sessionStorage.getItem("type"))
-			setUserName(response.user_name)
+			setUserName(response["user_name"])
 		}
 	}
 	

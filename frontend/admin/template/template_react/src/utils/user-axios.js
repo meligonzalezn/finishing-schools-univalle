@@ -8,10 +8,15 @@ import axios from "axios";
  */
 
 async function get_user_basic_info(auth_token, user_type){
+
+        let backend_url= process.env.REACT_APP_STUDENT_BACKEND_URL 
+        if(user_type==="company"){
+          backend_url= process.env.REACT_APP_COMPANY_BACKEND_URL
+        }
         const response  = await axios({
   
             // Endpoint to send files
-            url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/"+user_type+"/user/get_user_basic_info/",
+            url: backend_url+"/"+user_type+"/user/get_user_basic_info/",
             method: "GET",
             headers: {
         

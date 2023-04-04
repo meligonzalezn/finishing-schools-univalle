@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { logoutCompany } from '../../../utils/logout-axios';
+import {logout } from '../../../utils/logout-axios';
 
 
 const DropdownProfile = (props) => {
@@ -17,7 +17,7 @@ const DropdownProfile = (props) => {
         <a href="#/" className="dropdown-item">Edit Profile</a>
         <a href="#/" className="dropdown-item">Settings</a>
         <div className="dropdown-divider"></div>
-        <Link to="/" onClick={logoutCompany} className="dropdown-item">Log Out</Link>
+        <Link to="/" onClick={logout} className="dropdown-item">Log Out</Link>
       </div>
     </div>
   );

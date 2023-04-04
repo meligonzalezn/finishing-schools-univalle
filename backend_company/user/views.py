@@ -44,7 +44,6 @@ class UserViewSet(viewsets.ModelViewSet):
         Check given credentials to login the user and returns acess and refresh token
         """
         data = request.data
-        print(data)
         registered_user = authenticate(username=data['email'], password=data['password'])
         if registered_user is not None:
            auth_token = {

@@ -45,14 +45,15 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         #to login if the user is already registered
         user_id = user_data['sub']
         email = user_data['email']
-        name = user_data['name']
+        name = user_data['given_name']
+        last_name =  user_data['family_name']
         provider = 'google'
         
         #Verifies domain of email. It has to be correounivalle.edu.co
         domain = email.split('@')[1]
         domain_list = ["correounivalle.edu.co"]
         if domain not in domain_list:
-            raise serializers.ValidationError("The domain has to be correounivalle.edu.co")
+            raise serializers.ValidationError("Domain has to be correounivalle.edu.co")
         
         return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name)
+            provider=provider, user_id=user_id, email=email, name=name, last_name=last_name)

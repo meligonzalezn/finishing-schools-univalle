@@ -5,14 +5,19 @@ import axios from "axios";
  * @returns 
  */
 
-async function logoutCompany(){
+async function logout(){
+    const user_type = sessionStorage.getItem("type")
+    let backend_url= process.env.REACT_APP_STUDENT_BACKEND_URL 
+    if(user_type==="company"){
+          backend_url= process.env.REACT_APP_COMPANY_BACKEND_URL
+        }
     const response  = await axios({
-        url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/api/logout/",
+        url: backend_url+"/" + user_type+"/api/logout/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),
         },
-        data: { 'refresh_token': sessionStorage.getItem("refresh_token")},
+        data: { "refresh_token": sessionStorage.getItem("refresh_token")},
         })
     .catch((err) => { 
         return err.response
@@ -35,8 +40,13 @@ async function logoutCompany(){
  */
 
 async function refreshToken(user_type){
+
+    let backend_url= process.env.REACT_APP_STUDENT_BACKEND_URL 
+    if(user_type==="company"){
+          backend_url= process.env.REACT_APP_COMPANY_BACKEND_URL
+        }
     const response  = await axios({
-        url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/"+user_type+"/api/refresh/",
+        url: backend_url+"/"+user_type+"/api/refresh/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),
@@ -55,4 +65,4 @@ async function refreshToken(user_type){
       
 }
 
-export {logoutCompany, refreshToken}
+export {logout, refreshToken}
