@@ -12,7 +12,7 @@ import axios from "axios";
 async function loginStudent(credential){
   const response  = await axios({
     //  Sends credential to be verified in backend
-      url: "http://localhost:8000/student/api/login/",
+      url: process.env.REACT_APP_STUDENT_BACKEND_URL+"/student/api/login/",
       method: "POST",
       data: { 'auth_token': credential},
     })
@@ -40,7 +40,7 @@ async function loginStudent(credential){
 
 async function loginCompany(email, password){
   const response  = await axios({
-    url: "http://localhost:8001/company/user/login/",
+    url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/user/login/",
     method: "POST",
     data: { 'email': email, 'password': password},
   })
@@ -64,7 +64,7 @@ async function loginCompany(email, password){
 async function request_password_recovery(email){
  
   const response  = await axios({
-      url: "http://localhost:8001/company/password_reset/",
+      url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/password_reset/",
       method: "POST",
       data: { 'email': email},
     })
@@ -91,7 +91,7 @@ async function request_password_recovery(email){
 async function password_recovery(token, password){
  
   const response  = await axios({
-      url: "http://localhost:8001/company/password_reset/confirm/",
+      url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/password_reset/confirm/",
       method: "POST",
       data: { 'token': token, 'password': password},
     })

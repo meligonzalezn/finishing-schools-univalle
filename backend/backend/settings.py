@@ -59,10 +59,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_rest_passwordreset',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    get_env("FRONTEND_URL")
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
+    get_env("FRONTEND_URL")
 ]
 
 
@@ -184,15 +185,17 @@ REST_FRAMEWORK = {
     ]
 }
 
+#JWT configuration
 SIMPLE_JWT = {
-   'SIGNING_KEY': os.getenv('SECRET_KEY_STUDENT'),
+   "ALGORITHM": 'RS256',
+   "SIGNING_KEY": os.getenv('STUDENT_PRIVATE_KEY'),
+   "VERIFYING_KEY": os.getenv('STUDENT_PUBLIC_KEY'),
    "AUTH_HEADER_TYPES": ("Bearer",),
-   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=90),
-   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+   'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
    'AUTH_TOKEN_CLASSES': (
        'rest_framework_simplejwt.tokens.AccessToken',
    )
-   
 }
 #Configuration for sending emails
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

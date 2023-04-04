@@ -23,7 +23,10 @@ function LoginStudent() {
 	  const res = await loginStudent(response.credential);
   
 	  if (res !== undefined) {
-		sessionStorage.setItem('user', res.email);
+		sessionStorage.setItem("access_token", res.tokens.access)
+		sessionStorage.setItem("refresh_token", res.tokens.refresh)
+		sessionStorage.setItem("user",  res.email)
+		sessionStorage.setItem("type", "student")
 		setRedirect(true);
 	  } else {
 		setLoader(false);

@@ -9,7 +9,7 @@ const DropdownProfile = (props) => {
       <a href="#/" className="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="/assets/img/user/user-13.jpg" alt="" />
         <span>
-          <span className="d-none d-md-inline">{props.companyNameProp}</span>
+          <span className="d-none d-md-inline">{props.userNameProp}</span>
           <b className="caret"></b>
         </span>
       </a>

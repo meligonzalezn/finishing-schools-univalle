@@ -1,13 +1,13 @@
 import axios from "axios";
 
 /**
- * Retrieves company basic info: Company name.
+ * Log out the user
  * @returns 
  */
 
 async function logoutCompany(){
     const response  = await axios({
-        url: "http://localhost:8001/company/api/logout/",
+        url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/api/logout/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),
@@ -27,9 +27,16 @@ async function logoutCompany(){
     }
 }
 
-async function refreshToken(){
+
+/**
+ * Refresh access token
+ * @param {str} user_type Type of user (student/company)
+ * @returns 
+ */
+
+async function refreshToken(user_type){
     const response  = await axios({
-        url: "http://localhost:8001/company/api/refresh/",
+        url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/"+user_type+"/api/refresh/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),

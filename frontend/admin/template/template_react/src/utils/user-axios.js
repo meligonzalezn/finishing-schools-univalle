@@ -1,15 +1,17 @@
 import axios from "axios";
 
 /**
- * Retrieves company basic info: Company name.
+ * Gets username
+ * @param {str} auth_token access token 
+ * @param {str} user_type Type of user (student/company)
  * @returns 
  */
 
-async function get_user_basic_info(auth_token){
+async function get_user_basic_info(auth_token, user_type){
         const response  = await axios({
   
             // Endpoint to send files
-            url: "http://localhost:8001/company/user/get_user_basic_info/",
+            url: process.env.REACT_APP_COMPANY_BACKEND_URL+"/"+user_type+"/user/get_user_basic_info/",
             method: "GET",
             headers: {
         

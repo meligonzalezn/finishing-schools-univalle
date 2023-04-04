@@ -46,6 +46,7 @@ function LoginCompany(){
 			sessionStorage.setItem("access_token", res.tokens.access)
 			sessionStorage.setItem("refresh_token", res.tokens.refresh)
 			sessionStorage.setItem("user",  res.email)
+			sessionStorage.setItem("type", "company")
 			setRedirect(true)
 			setLoader(false)
 		}

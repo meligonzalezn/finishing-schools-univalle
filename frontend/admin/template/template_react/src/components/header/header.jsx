@@ -10,7 +10,7 @@ import { get_user_basic_info } from '../../utils/user-axios.js';
 import { refreshToken } from '../../utils/logout-axios.js';
 
 const Header = () => {
-	const [companyName, setCompanyName] = useState("");
+	const [userName, setUserName] = useState("");
 	const {
 		toggleAppSidebarMobile,
 		toggleAppSidebarEnd,
@@ -27,21 +27,21 @@ const Header = () => {
 	const getUserBasicInfo =  async () => {
 		let accessToken = sessionStorage.getItem("access_token");
 		if (accessToken) {
-			const response = await get_user_basic_info(sessionStorage.getItem("access_token"))
-			setCompanyName(response.company_name)
+			const response = await get_user_basic_info(sessionStorage.getItem("access_token"), sessionStorage.getItem("type"))
+			setUserName(response.user_name)
 		}
 	}
 	
 	useEffect(() => {
 		getUserBasicInfo();
 		const interval = setInterval(() => {
-			refreshToken()
-			.then(response => {
-			  	sessionStorage.setItem("access_token",response.access);
-			})
-			.catch(error => {
-			  console.log(error);
-			});
+			refreshToken(sessionStorage.getItem("type"))
+				.then(response => {
+					sessionStorage.setItem("access_token",response.access);
+				})
+				.catch(error => {
+				console.log(error);
+				});
 		  }, 5 * 60 * 1000);
 	  
 		  return () => clearInterval(interval);
@@ -104,7 +104,7 @@ const Header = () => {
 				<DropdownLanguage />
 				)}
 
-				<DropdownProfile companyNameProp={companyName}/>
+				<DropdownProfile userNameProp={userName}/>
 
 				{appSidebarTwo && (
 				<div className="navbar-divider d-none d-md-block"></div>

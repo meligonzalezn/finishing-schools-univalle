@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    get_env("FRONTEND_URL")
 ]
 
 MIDDLEWARE = [
@@ -75,7 +75,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
+    get_env("FRONTEND_URL")
 ]
 
 
@@ -173,8 +173,8 @@ REST_FRAMEWORK = {
 #JWT configuration
 SIMPLE_JWT = {
    "ALGORITHM": 'RS256',
-   "SIGNING_KEY": os.getenv('PRIVATE_KEY'),
-   "VERIFYING_KEY": os.getenv('PUBLIC_KEY'),
+   "SIGNING_KEY": os.getenv('COMPANY_PRIVATE_KEY'),
+   "VERIFYING_KEY": os.getenv('COMPANY_PUBLIC_KEY'),
    "AUTH_HEADER_TYPES": ("Bearer",),
    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),

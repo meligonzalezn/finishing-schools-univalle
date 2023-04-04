@@ -8,14 +8,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from urllib.request import Request
 from rest_framework import status
-from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from .serializers import GoogleSocialAuthSerializer
 from rest_framework_simplejwt.views import TokenRefreshView
 from Crypto.PublicKey import RSA
 from .scraping import get_github_information, get_gitlab_information
-import jwt
-import os
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,6 +24,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
     http_method_names = ['get', 'post', 'put']
+
+    @action(detail=False, methods=['GET'])
+    def get_user_basic_info(this, request: Request) -> Response:
+        User = get_user_model()
+        authToken = request.headers.get('Authorization')
+        authToken = authToken[7:]
+        try: 
+            decodedToken = jwt.decode(authToken, os.getenv('STUDENT_PUBLIC_KEY'), algorithms=["RS256"])
+            user = User.objects.get(pk=decodedToken['user_id'])
+            return Response({"user_name": user.name}, status=status.HTTP_200_OK)
+        except:
+            return Response("Signature verification failed", status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['POST'])
     def decode_jwt(this, request: Request) -> Response:
@@ -71,3 +82,17 @@ class GoogleSocialAuthView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         data = ((serializer.validated_data)['auth_token'])
         return Response(data, status=status.HTTP_200_OK)
+
+
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST) 

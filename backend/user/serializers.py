@@ -4,8 +4,7 @@ from . import google
 from .register import register_social_user
 import os
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+
 
 
 
