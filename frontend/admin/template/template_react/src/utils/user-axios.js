@@ -16,7 +16,7 @@ async function get_user_basic_info(auth_token, user_type){
         const response  = await axios({
   
             // Endpoint to send files
-            url: backend_url+"/"+user_type+"/user/get_user_basic_info/",
+            url: backend_url+"/"+ "auth"+"/user/get_user_basic_info/",
             method: "GET",
             headers: {
         

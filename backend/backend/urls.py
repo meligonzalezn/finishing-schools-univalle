@@ -10,7 +10,7 @@ from rest_framework.schemas import get_schema_view
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('student/', include('user.urls')),
+    path('auth/', include('user.urls')),
     path('', include(router.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

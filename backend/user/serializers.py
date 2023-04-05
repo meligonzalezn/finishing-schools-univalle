@@ -4,7 +4,7 @@ from . import google
 from .register import register_social_user
 import os
 from rest_framework.exceptions import AuthenticationFailed
-
+import uuid
 
 
 
@@ -12,12 +12,19 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         User = get_user_model()
         model = User
-        fields = ('id', 'sub_key', 'email', 'name', 'last_name', 'state', 'github_user', 'gitlab_user', 'linkedin_user')
-        extra_kwargs = {'password': {'write_only': True, 'required': False}}
+        fields = ('id', 'sub_key', 'email', 'name', 'last_name', 'state', 'role', 'password')
+        extra_kwargs = {'password': {'write_only': True, 'required': False}, 'sub_key': {'required': False}}
     
     def create(self, validated_data):
+        print("--------------------------------------------------", validated_data )
         User = get_user_model()
-        user = User.objects.create_user(**validated_data)
+        user_data = {
+            'email': validated_data["email"],
+            'password': validated_data["password"]}
+        user = User.objects.create_user(**user_data)
+        user.name = validated_data["name"]
+        user.sub_key = str(uuid.uuid4())
+        user.save()
         return user
 
 

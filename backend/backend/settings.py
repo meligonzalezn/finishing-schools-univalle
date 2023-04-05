@@ -121,7 +121,7 @@ DATABASES = {
 }
 
 #User model for authentication
-AUTH_USER_MODEL = "user.Student"
+AUTH_USER_MODEL = "user.User"
 
 # #Default authentication backend 
 # AUTHENTICATION_BACKENDS = ['users.auth_backends.EmailBackend']

@@ -16,7 +16,8 @@ from .scraping import get_github_information, get_gitlab_information
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsCreationOrIsAuthenticated]
@@ -26,6 +27,38 @@ class UserViewSet(viewsets.ModelViewSet):
 
     http_method_names = ['get', 'post', 'put']
 
+    #Login for company users
+    @action(detail=False, methods=['POST'])
+    def login(this, request: Request) -> Response:
+        """
+        Check given credentials to login the user and returns access and refresh token
+        """
+        data = request.data
+        registered_user = authenticate(username=data['email'], password=data['password'])
+        if registered_user is not None:
+           auth_token = {
+                    'email': registered_user.email,
+                    'tokens': registered_user.tokens()}
+           return Response(auth_token, status=status.HTTP_200_OK)
+        else:
+            raise AuthenticationFailed(
+                    detail='Authentication with given credentials failed') 
+    
+    @action(detail=False, methods=['POST'])
+    def check_email(this, request: Request) -> Response:
+        """
+        Check if the email given in request.body has been registered.
+        """
+        try:
+            data = json.loads(request.body)
+            Email = str(data["email"])
+            User = get_user_model()
+            query = User.objects.get(email=Email)
+            return Response("Email already registered", status=status.HTTP_200_OK)
+        except:
+            return Response("Email not registered", status=status.HTTP_200_OK)
+    
+    #From the authorization token in header obtains the user and return their basic info (Name)
     @action(detail=False, methods=['GET'])
     def get_user_basic_info(this, request: Request) -> Response:
         User = get_user_model()
@@ -42,31 +75,30 @@ class UserViewSet(viewsets.ModelViewSet):
     def decode_jwt(this, request: Request) -> Response:
         data = request.data
         try: 
-            decoded = jwt.decode(data['auth-token'], os.getenv('PUBLIC_KEY'), algorithms=["RS256"])
+            decoded = jwt.decode(data['auth-token'], os.getenv('COMPANY_PUBLIC_KEY'), algorithms=["RS256"])
             return Response(decoded, status=status.HTTP_200_OK)
         except:
             return Response("Signature verification failed", status=status.HTTP_200_OK)
 
+    # @action(detail=False, methods=['POST'])
+    # def github_information(this, request: Request) -> Response:
+    #     """
+    #     Recieves the profile url from user. Scrapes through the site to obtain the programming 
+    #     languages user has worked with based on public repositories
+    #     """
+    #     profile_url = request.data["url"]
+    #     githubInformation = get_github_information(profile_url)
+    #     return Response(githubInformation, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['POST'])
-    def github_information(this, request: Request) -> Response:
-        """
-        Recieves the profile url from user. Scrapes through the site to obtain the programming 
-        languages user has worked with based on public repositories
-        """
-        profile_url = request.data["url"]
-        githubInformation = get_github_information(profile_url)
-        return Response(githubInformation, status=status.HTTP_200_OK)
-
-    @action(detail=False, methods=['POST'])
-    def gitlab_information(this, request: Request) -> Response:
-        """
-        Recieves the profile url from user. Scrapes through the site to obtain the programming 
-        languages user has worked with based on personal projects
-        """
-        profile_url = request.data["url"]
-        gitlabInformation = get_gitlab_information(profile_url)
-        return Response(gitlabInformation, status=status.HTTP_200_OK)
+    # @action(detail=False, methods=['POST'])
+    # def gitlab_information(this, request: Request) -> Response:
+    #     """
+    #     Recieves the profile url from user. Scrapes through the site to obtain the programming 
+    #     languages user has worked with based on personal projects
+    #     """
+    #     profile_url = request.data["url"]
+    #     gitlabInformation = get_gitlab_information(profile_url)
+    #     return Response(gitlabInformation, status=status.HTTP_200_OK)
 
 
 class GoogleSocialAuthView(GenericAPIView):

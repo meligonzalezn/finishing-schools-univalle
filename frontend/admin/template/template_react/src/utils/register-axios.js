@@ -6,7 +6,7 @@ import axios from 'axios'
  */
 async function checkEmail(email) {
      try {
-       const request = await axios.post(process.env.REACT_APP_COMPANY_BACKEND_URL+"/company/user/check_email/", { email: email })
+       const request = await axios.post(process.env.REACT_APP_COMPANY_BACKEND_URL+"/auth/user/check_email/", { "email": email })
        return [request.data, null];
      }
      catch (err) {
@@ -21,12 +21,12 @@ async function checkEmail(email) {
  */
 async function registerCompany(data) {
     const company = {
-        company_name: data.companyName,
-        email: data.email,
-        password: data.password,
+        'name': data.companyName,
+        'email': data.email,
+        'password': data.password,
     }
     try {
-        const request = await axios.post(process.env.REACT_APP_COMPANY_BACKEND_URL+'/company/user/', company);
+        const request = await axios.post(process.env.REACT_APP_COMPANY_BACKEND_URL+'/auth/user/', company);
         return [request, null];
       }
       catch (err) {

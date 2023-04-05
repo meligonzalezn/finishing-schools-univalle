@@ -12,7 +12,7 @@ async function logout(){
           backend_url= process.env.REACT_APP_COMPANY_BACKEND_URL
         }
     const response  = await axios({
-        url: backend_url+"/" + user_type+"/api/logout/",
+        url: backend_url+"/" + "auth"+"/api/logout/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),
@@ -46,7 +46,7 @@ async function refreshToken(user_type){
           backend_url= process.env.REACT_APP_COMPANY_BACKEND_URL
         }
     const response  = await axios({
-        url: backend_url+"/"+user_type+"/api/refresh/",
+        url: backend_url+"/"+ "auth"+"/api/refresh/",
         method: "POST",
         headers: {
             authorization: "Bearer "+ sessionStorage.getItem("access_token"),
