@@ -27,7 +27,7 @@ const Header = () => {
 	const getUserBasicInfo =  async () => {
 		let accessToken = sessionStorage.getItem("access_token");
 		if (accessToken) {
-			const response = await get_user_basic_info(sessionStorage.getItem("access_token"), sessionStorage.getItem("type"))
+			const response = await get_user_basic_info()
 			setUserName(response["user_name"])
 		}
 	}
@@ -35,7 +35,7 @@ const Header = () => {
 	useEffect(() => {
 		getUserBasicInfo();
 		const interval = setInterval(() => {
-			refreshToken(sessionStorage.getItem("type"))
+			refreshToken()
 				.then(response => {
 					sessionStorage.setItem("access_token",response.access);
 				})

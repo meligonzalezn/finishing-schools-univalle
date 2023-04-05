@@ -11,7 +11,7 @@ services:
       - ./scraping-service:/app
     env_file:
       - .env
-  backend_student:
+  backend_auth:
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -40,7 +40,7 @@ services:
     volumes:
       - ./frontend/admin/template/template_react:/frontend
     depends_on:
-      - backend_student
+      - backend_auth
       - backend_company
     env_file:
       - .env
