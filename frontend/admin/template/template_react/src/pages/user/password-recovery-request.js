@@ -68,7 +68,7 @@ function PasswordRecoveryRequest(){
 		<div className="login-container" style={{"maxWidth": "fit-content", "boxShadow": "0px 0px 9px -4px rgb(0 0 0 / 75%)", "padding": "53px 10px"}}>
 			<div className="login-header" style={{"display": "flex", "justifyContent": "center"}}>
 					<Link to="/" style={{"width": "15%"}}>
-						<img className='logo' src={logoSimboloUnivalle} style={{ "width": "100%","padding-right": "12px"}} alt="logo-simbolo-univalle"/>
+						<img className='logo' src={logoSimboloUnivalle} style={{ "width": "100%","paddingRight": "12px"}} alt="logo-simbolo-univalle"/>
 					</Link>				<div>
 					<div className="d-flex align-items-center">
 						 <h1 style={{"fontSize": "1.5rem"}}> Finishing Schools </h1>

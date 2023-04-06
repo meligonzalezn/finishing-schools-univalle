@@ -248,7 +248,7 @@ const RegisterCompany = () => {
                                 </button>
                             </div>
                             <div className="mb-4 pb-5">
-                                ¿Ya tienes una cuenta? Ingresa <Link to="/user/login/company">aquí</Link>
+                                ¿Ya tienes una cuenta? Ingresa <Link to="/user/company/login">aquí</Link>
                             </div>
                         </form>
                         <ReactNotifications />

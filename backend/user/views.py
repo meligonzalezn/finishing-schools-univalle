@@ -64,7 +64,7 @@ class UserViewSet(viewsets.ModelViewSet):
         authToken = request.headers.get('Authorization')
         authToken = authToken[7:]
         try: 
-            decodedToken = jwt.decode(authToken, os.getenv('STUDENT_PUBLIC_KEY'), algorithms=["RS256"])
+            decodedToken = jwt.decode(authToken, os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
             user = User.objects.get(pk=decodedToken['user_id'])
             return Response({"user_name": user.name}, status=status.HTTP_200_OK)
         except:
@@ -74,7 +74,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def decode_jwt(this, request: Request) -> Response:
         data = request.data
         try: 
-            decoded = jwt.decode(data['auth-token'], os.getenv('COMPANY_PUBLIC_KEY'), algorithms=["RS256"])
+            decoded = jwt.decode(data['auth-token'], os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
             return Response(decoded, status=status.HTTP_200_OK)
         except:
             return Response("Signature verification failed", status=status.HTTP_200_OK)

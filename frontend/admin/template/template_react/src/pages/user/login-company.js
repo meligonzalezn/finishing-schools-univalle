@@ -159,7 +159,7 @@ function LoginCompany(){
 								<Link to="/request_password_recovery/" className="text-primary"> ¿Olvidaste tu contraseña?</Link>
 							</div>
 							<div className="text-inverse">
-							 ¿Aún no tienes una cuenta?  Haz click <Link to="/user/register/company" className="text-primary"> aquí</Link> para registrarte
+							 ¿Aún no tienes una cuenta?  Haz click <Link to="/user/company/register" className="text-primary"> aquí</Link> para registrarte
 							</div>
 						</form>
 					</div>

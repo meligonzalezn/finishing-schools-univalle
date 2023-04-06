@@ -230,9 +230,9 @@ const AppRoute = [
 				path: 'user/*', 
 				element: <Outlet />,
 				children: [
-					{ path: 'login/student', element:<LoginStudent /> },
-					{ path: 'login/company', element:<LoginCompany /> },
-					{ path: 'register/company', element: <RegisterCompany /> }	
+					{ path: 'univalle/login', element:<LoginStudent /> },
+					{ path: 'company/login', element:<LoginCompany /> },
+					{ path: 'company/register', element: <RegisterCompany /> }	
 				]
 			},  
 			{

@@ -44,21 +44,21 @@ const LoginPortal = () => {
 						<small className="d-block fs-15px lh-16">Este sistema te permitirá desarrollar todas las habilidades requeridas para ingresar al mercado laboral.</small>
 					</div>
 					<div className="text-gray pb-4">
-						<b>¡Bienvenido!</b> Inicia sesión y descubre todo lo que tenemos para ofrecer
+						<b>¡Bienvenido!</b> Inicia sesión para explorar todas las funcionalidades que tenemos disponibles
 					</div>
 					<div className="login-content login-portal-buttons">
-						<Link to="/user/login/student">
+						<Link to="/user/univalle/login">
 							<button className="btn btn-outline-primary">
-								Estudiante/Egresado
+								Universidad del Valle
 							</button>
 						</Link>
-						<Link to="/user/login/company">
+						<Link to="/user/company/login">
 							<button className="btn btn-outline-danger">
 								Empresa
 							</button>
 						</Link>
 						<div className="text-inverse">
-							 ¿Quieres registrar tu empresa? Haz click <Link to="/user/register/company" className="text-primary"> aquí</Link> para comenzar el registro
+							 ¿Quieres registrar tu empresa? Haz click <Link to="/user/company/register" className="text-primary"> aquí</Link> para comenzar el registro
 						</div>
 					</div>
 				</div>
