@@ -18,7 +18,6 @@ async function logout(){
     });
     if(response.status===205){
         sessionStorage.clear()
-        console.log(response.data)
         return response.data
     }
     else{
