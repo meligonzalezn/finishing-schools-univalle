@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppSettings } from './config/app-settings.js';
 import { slideToggle } from './composables/slideToggle.js';
-
 import Header from './components/header/header.jsx';
 import Sidebar from './components/sidebar/sidebar.jsx';
 import SidebarRight from './components/sidebar-right/sidebar-right.jsx';

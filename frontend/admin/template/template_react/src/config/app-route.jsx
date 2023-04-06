@@ -70,6 +70,7 @@ import ExtraProductDetails from './../pages/extra/extra-product-details.js';
 import LoginStudent from './../pages/user/login-student.js';
 import LoginCompany from '../pages/user/login-company.js';
 import RegisterCompany from '../pages/user/register-company.js';
+import LoginPortal from '../pages/user/login-portal.js';
 import HelperCSS from './../pages/helper/helper-css.js';
 import PasswordRecovery from '../pages/user/password-recovery.js';
 import PasswordRecoveryRequest from '../pages/user/password-recovery-request.js';
@@ -82,7 +83,7 @@ const AppRoute = [
     children: [
     	{
 				path: '', 
-				element: <RegisterCompany /> 
+				element: <LoginPortal /> 
 		},		{
 			path: 'password_recovery/', 
 			element: <PasswordRecovery /> 
@@ -231,6 +232,7 @@ const AppRoute = [
 				children: [
 					{ path: 'login/student', element:<LoginStudent /> },
 					{ path: 'login/company', element:<LoginCompany /> },
+					{ path: 'register/company', element: <RegisterCompany /> }	
 				]
 			},  
 			{
