@@ -4,11 +4,9 @@ import axios from "axios";
  * Log out the user
  * @returns 
  */
-
 async function logout(){
-
     const response  = await axios({
-        url: process.env.REACT_APP_AUTH_BACKEND_URL+"/auth/api/logout/",
+        url: `${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/api/logout/`,
         method: "POST",
         headers: {
             authorization: "Bearer "+ localStorage.getItem("access_token"),
@@ -20,7 +18,6 @@ async function logout(){
     });
     if(response.status===205){
         localStorage.clear()
-        console.log(response.data)
         return response.data
     }
     else{
@@ -28,17 +25,14 @@ async function logout(){
     }
 }
 
-
 /**
  * Refresh access token
  * @param {str} user_type Type of user (student/company)
  * @returns 
  */
-
 async function refreshToken(){
-
     const response  = await axios({
-        url: process.env.REACT_APP_AUTH_BACKEND_URL+"/auth/api/refresh/",
+        url: `${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/api/refresh/`,
         method: "POST",
         headers: {
             authorization: "Bearer "+ localStorage.getItem("access_token"),
@@ -54,7 +48,6 @@ async function refreshToken(){
     else{
       return undefined
     }
-      
 }
 
 export {logout, refreshToken}

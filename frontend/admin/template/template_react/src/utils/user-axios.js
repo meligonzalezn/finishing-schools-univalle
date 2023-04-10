@@ -4,20 +4,16 @@ import axios from "axios";
  * Gets username
  * @returns 
  */
-
 async function get_user_basic_info(){
         const response  = await axios({
-  
             // Endpoint to send files
-            url: process.env.REACT_APP_AUTH_BACKEND_URL +"/auth/user/get_user_basic_info/",
+            url: `${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/user/get_user_basic_info/`,
             method: "GET",
             headers: {
-        
             // Add any auth token here
                authorization: "Bearer "+ localStorage.getItem("access_token"),
             },
-          })
-                
+          })    
             // Catch errors if any
             .catch((err) => { 
                 return err.response
@@ -27,8 +23,7 @@ async function get_user_basic_info(){
         }
         else{
           return undefined
-        }
-          
+        }     
 }
 
 export {get_user_basic_info}

@@ -69,6 +69,7 @@ import ExtraProducts from './../pages/extra/extra-products.js';
 import ExtraProductDetails from './../pages/extra/extra-product-details.js';
 import LoginStudent from './../pages/user/login-student.js';
 import LoginCompany from '../pages/user/login-company.js';
+import LoginPortal from '../pages/user/login-portal.js';
 import RegisterCompany from '../pages/user/register-company.js';
 import HelperCSS from './../pages/helper/helper-css.js';
 import PasswordRecovery from '../pages/user/password-recovery.js';
@@ -82,7 +83,7 @@ const AppRoute = [
     children: [
     	{
 				path: '', 
-				element: <RegisterCompany /> 
+				element: <LoginPortal /> 
 		},		{
 			path: 'password_recovery/', 
 			element: <PasswordRecovery /> 
@@ -229,8 +230,9 @@ const AppRoute = [
 				path: 'user/*', 
 				element: <Outlet />,
 				children: [
-					{ path: 'login/student', element:<LoginStudent /> },
-					{ path: 'login/company', element:<LoginCompany /> },
+					{ path: 'univalle/login', element:<LoginStudent /> },
+					{ path: 'company/login', element:<LoginCompany /> },
+					{ path: 'company/register', element: <RegisterCompany /> }	
 				]
 			},  
 			{

@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = get_env("SECRET_KEY_STUDENT", 'my_default_secret_key')
+SECRET_KEY = get_env("SECRET_KEY_AUTH", 'my_default_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -112,11 +112,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': get_env("POSTGRES_HOST_STUDENT"),
-        'NAME': get_env("POSTGRES_NAME_STUDENT"),
-        'USER': get_env("POSTGRES_USER_STUDENT"),
-        'PASSWORD': get_env("POSTGRES_PASSWORD_STUDENT"),
-        'PORT': get_env("POSTGRES_PORT_STUDENT"),
+        'HOST': get_env("POSTGRES_HOST_AUTH"),
+        'NAME': get_env("POSTGRES_NAME_AUTH"),
+        'USER': get_env("POSTGRES_USER_AUTH"),
+        'PASSWORD': get_env("POSTGRES_PASSWORD_AUTH"),
+        'PORT': get_env("POSTGRES_PORT_AUTH"),
     }
 }
 
@@ -188,8 +188,8 @@ REST_FRAMEWORK = {
 #JWT configuration
 SIMPLE_JWT = {
    "ALGORITHM": 'RS256',
-   "SIGNING_KEY": os.getenv('STUDENT_PRIVATE_KEY'),
-   "VERIFYING_KEY": os.getenv('STUDENT_PUBLIC_KEY'),
+   "SIGNING_KEY": os.getenv('AUTH_PRIVATE_KEY'),
+   "VERIFYING_KEY": os.getenv('AUTH_PUBLIC_KEY'),
    "AUTH_HEADER_TYPES": ("Bearer",),
    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
