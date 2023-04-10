@@ -25,7 +25,7 @@ const Header = () => {
 	} = useContext(AppSettings);
 
 	const getUserBasicInfo =  async () => {
-		let accessToken = sessionStorage.getItem("access_token");
+		let accessToken = localStorage.getItem("access_token");
 		if (accessToken) {
 			const response = await get_user_basic_info()
 			setUserName(response["user_name"])
@@ -37,7 +37,7 @@ const Header = () => {
 		const interval = setInterval(() => {
 			refreshToken()
 				.then(response => {
-					sessionStorage.setItem("access_token",response.access);
+					localStorage.setItem("access_token",response.access);
 				})
 				.catch(error => {
 				console.log(error);

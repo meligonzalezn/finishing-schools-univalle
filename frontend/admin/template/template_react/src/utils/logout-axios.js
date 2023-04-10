@@ -11,15 +11,15 @@ async function logout(){
         url: process.env.REACT_APP_AUTH_BACKEND_URL+"/auth/api/logout/",
         method: "POST",
         headers: {
-            authorization: "Bearer "+ sessionStorage.getItem("access_token"),
+            authorization: "Bearer "+ localStorage.getItem("access_token"),
         },
-        data: { "refresh_token": sessionStorage.getItem("refresh_token")},
+        data: { "refresh_token": localStorage.getItem("refresh_token")},
         })
     .catch((err) => { 
         return err.response
     });
     if(response.status===205){
-        sessionStorage.clear()
+        localStorage.clear()
         console.log(response.data)
         return response.data
     }
@@ -41,9 +41,9 @@ async function refreshToken(){
         url: process.env.REACT_APP_AUTH_BACKEND_URL+"/auth/api/refresh/",
         method: "POST",
         headers: {
-            authorization: "Bearer "+ sessionStorage.getItem("access_token"),
+            authorization: "Bearer "+ localStorage.getItem("access_token"),
         },
-        data: { 'refresh': sessionStorage.getItem("refresh_token")},
+        data: { 'refresh': localStorage.getItem("refresh_token")},
       })
         .catch((err) => { 
             return err.response

@@ -14,7 +14,7 @@ async function get_user_basic_info(){
             headers: {
         
             // Add any auth token here
-               authorization: "Bearer "+ sessionStorage.getItem("access_token"),
+               authorization: "Bearer "+ localStorage.getItem("access_token"),
             },
           })
                 
