@@ -55,6 +55,8 @@ function LoginStudent() {
 	  };
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	
 	if (redirect) {
 	  return <Navigate to='/dashboard/v3' />;
 	}

@@ -428,6 +428,8 @@ class App extends React.Component {
 			this.handleSetAppDarkMode(true);
 		}
     window.addEventListener('scroll', this.handleScroll);
+
+	  
     
 		if (localStorage) {
 			if (typeof localStorage.appTheme !== 'undefined') {
@@ -459,6 +461,8 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+	  
+	  
   }
   
   handleScroll = () => {

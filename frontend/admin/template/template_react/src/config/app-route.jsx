@@ -5,7 +5,7 @@ import App from './../app.jsx';
 
 import DashboardV1 from './../pages/dashboard/dashboard-v1.js';
 import DashboardV2 from './../pages/dashboard/dashboard-v2.js';
-import DashboardV3 from './../pages/dashboard/dashboard-v3.js';
+import DashboardV3 from './../pages/dashboard/test.js';
 import EmailInbox from './../pages/email/email-inbox.js';
 import EmailCompose from './../pages/email/email-compose.js';
 import EmailDetail from './../pages/email/email-detail.js';
