@@ -1,9 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import {logout } from '../../../utils/logout-axios';
+import { ReactNotifications, Store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
 
 
-const DropdownProfile = (props) => {
+
+
+function DropdownProfile (props) {
+  const navigate = useNavigate();
+  const handleLogout = (event) => {
+    event.preventDefault();
+    logout().then(
+      (res)=>{
+       if(res === undefined){
+        Store.addNotification({
+          title: 'Logout error',
+          message: 'Ocurrio un error inesperado. Por favor intenta nuevamente',
+          type: 'danger',
+          container: 'bottom-left',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+          dismiss: {
+          duration: 4000,
+          },
+        })
+       }
+       else{
+        navigate("/");
+   
+       }
+    })
+  };
+
   return (
     <div className="navbar-item navbar-user dropdown">
       <a href="#/" className="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
@@ -17,8 +46,9 @@ const DropdownProfile = (props) => {
         <a href="#/" className="dropdown-item">Edit Profile</a>
         <a href="#/" className="dropdown-item">Settings</a>
         <div className="dropdown-divider"></div>
-        <Link to="/" onClick={logout} className="dropdown-item">Log Out</Link>
+        <Link to="/" onClick={handleLogout} className="dropdown-item">Log Out</Link>
       </div>
+      <ReactNotifications />
     </div>
   );
 };

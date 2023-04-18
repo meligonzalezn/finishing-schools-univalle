@@ -92,7 +92,7 @@ class GoogleSocialAuthView(GenericAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
