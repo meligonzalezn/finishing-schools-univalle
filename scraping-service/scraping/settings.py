@@ -54,7 +54,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'scraping',
-    'profileUrl'
+    'profileUrl',
+    'portfolio',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -105,8 +108,12 @@ WSGI_APPLICATION = 'scraping.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': get_env("POSTGRES_HOST_PORTFOLIO"),
+        'NAME': get_env("POSTGRES_NAME_PORTFOLIO"),
+        'USER': get_env("POSTGRES_USER_PORTFOLIO"),
+        'PASSWORD': get_env("POSTGRES_PASSWORD_PORTFOLIO"),
+        'PORT': get_env("POSTGRES_PORT_PORTFOLIO"),
     }
 }
 
@@ -142,11 +149,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -155,6 +157,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        #'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+}
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'SECURE': True,
 }

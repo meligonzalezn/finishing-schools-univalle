@@ -11,7 +11,6 @@ from urllib.request import Request
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from .serializers import GoogleSocialAuthSerializer
-from rest_framework_simplejwt.views import TokenRefreshView
 from Crypto.PublicKey import RSA
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -66,9 +65,9 @@ class UserViewSet(viewsets.ModelViewSet):
         try: 
             decodedToken = jwt.decode(authToken, os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
             user = User.objects.get(pk=decodedToken['user_id'])
-            return Response({"user_name": user.name}, status=status.HTTP_200_OK)
+            return Response({"user_name": user.name, "user_last_name": user.last_name}, status=status.HTTP_200_OK)
         except:
-            return Response("Signature verification failed", status=status.HTTP_200_OK)
+            return Response("Signature verification failed", status=status.HTTP_401_UNAUTHORIZED)
 
     @action(detail=False, methods=['POST'])
     def decode_jwt(this, request: Request) -> Response:
@@ -77,7 +76,7 @@ class UserViewSet(viewsets.ModelViewSet):
             decoded = jwt.decode(data['auth-token'], os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
             return Response(decoded, status=status.HTTP_200_OK)
         except:
-            return Response("Signature verification failed", status=status.HTTP_200_OK)
+            return Response("Signature verification failed", status=status.HTTP_401_UNAUTHORIZED)
 
 class GoogleSocialAuthView(GenericAPIView):
     serializer_class = GoogleSocialAuthSerializer

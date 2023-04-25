@@ -59,7 +59,7 @@ function LoginCompany(){
   }
 
   if (redirect) {
-	return <Navigate to='/dashboard/v3' />;
+	return <Navigate to='/dashboard/services' />;
   }
 
   if(user !== null){
