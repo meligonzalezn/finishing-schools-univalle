@@ -3,6 +3,7 @@ import { Link, useNavigate} from 'react-router-dom';
 import {logout } from '../../../utils/logout-axios';
 import { ReactNotifications, Store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import profileDefault from '../../../assets/img/profile/user-image-default.png'
 
 
 
@@ -36,7 +37,7 @@ function DropdownProfile (props) {
   return (
     <div className="navbar-item navbar-user dropdown">
       <a href="#/" className="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-        <img src="/assets/img/user/user-13.jpg" alt="" />
+        <img src={profileDefault} alt="profile" />
         <span>
           <span className="d-none d-md-inline">{props.userNameProp}</span>
           <b className="caret"></b>

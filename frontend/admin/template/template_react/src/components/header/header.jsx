@@ -44,9 +44,9 @@ const Header = () => {
 				});
 		  }, 5 * 60 * 1000);
 	  
+		  console.log(userName)
 		  return () => clearInterval(interval);
-		 
-	}, [])
+	}, [userName])
 
 	return (
 		<div id="header" className={'app-header ' + (appHeaderInverse ? 'app-header-inverse' : '')}>

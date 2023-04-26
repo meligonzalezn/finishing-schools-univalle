@@ -74,8 +74,9 @@ import RegisterCompany from '../pages/user/register-company.js';
 import HelperCSS from './../pages/helper/helper-css.js';
 import PasswordRecovery from '../pages/user/password-recovery.js';
 import PasswordRecoveryRequest from '../pages/user/password-recovery-request.js';
-
-
+import ServiceDashboard from '../pages/dashboard/service-dashboard.js';
+import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
+import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
 const AppRoute = [
   {
     path: '*', 
@@ -96,6 +97,7 @@ const AppRoute = [
 				path: 'dashboard/*', 
 				element: <Outlet />,
 				children: [
+					{path: 'services', element: <ServiceDashboard />},
 					{ path: 'v1', element: <DashboardV1 /> },
 					{ path: 'v2', element: <DashboardV2 /> },
 					{ path: 'v3', element: <DashboardV3 /> }
@@ -232,7 +234,9 @@ const AppRoute = [
 				children: [
 					{ path: 'univalle/login', element:<LoginStudent /> },
 					{ path: 'company/login', element:<LoginCompany /> },
-					{ path: 'company/register', element: <RegisterCompany /> }	
+					{ path: 'company/register', element: <RegisterCompany /> },	
+					{ path: 'student/profile', element: <ScrapingForm /> },	
+					{ path: 'student/portfolio', element: <PortfolioForm /> },	
 				]
 			},  
 			{

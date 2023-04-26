@@ -1,9 +1,7 @@
 const Menu = [
-  { path: 'dashboard', icon: 'fa fa-sitemap', title: 'Dashboard',
+  { path: 'dashboard', icon: 'fa fa-sitemap', title: 'Services',
     children: [
-      { path: 'dashboard/v1', title: 'Dashboard v1' },
-      { path: 'dashboard/v2', title: 'Dashboard v2' },
-      { path: 'dashboard/v3', title: 'Dashboard v3' }
+      { path: 'dashboard/services', title: 'Services' }
     ]
   },
   { path: '/email', icon: 'fa fa-hdd', title: 'Email', badge: '10',
