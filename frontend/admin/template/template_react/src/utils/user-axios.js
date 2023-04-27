@@ -28,7 +28,7 @@ async function get_user_basic_info(){
 
 async function decodeJwt() {
   try {
-    const request = await axios.post(`${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/user/decode_jwt/`, { "auth-token": sessionStorage.getItem("access_token") })
+    const request = await axios.post(`${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/user/decode_jwt/`, { "auth-token": localStorage.getItem("access_token") })
     return [request.data, true];
   }
   catch (err) {

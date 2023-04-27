@@ -46,7 +46,7 @@ function LoginCompany(){
 			localStorage.setItem("access_token", res.tokens.access)
 			localStorage.setItem("refresh_token", res.tokens.refresh)
 			localStorage.setItem("user",  res.email)
-			localStorage.setItem("type", "company")
+			localStorage.setItem("role", "company")
 			setRedirect(true)
 			setLoader(false)
 		}
