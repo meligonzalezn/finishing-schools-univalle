@@ -12,25 +12,20 @@ from selenium.webdriver.support import expected_conditions as EC
 def get_github_information(profile_url):
     #Setting chrome options 
     chrome_options = webdriver.ChromeOptions()
-    
     #Configuration from the selenium/standalone-chrome container 
-    chrome_options.set_capability("browserVersion", "110.0")
+    chrome_options.set_capability("browserVersion", "111.0")
     chrome_options.set_capability("platformName", "Linux")
     #Solves issue with container size and chrome rendering large pages correctly(?)
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
-
     driver = webdriver.Remote(
-        command_executor='http://172.24.0.2:4444',
+        command_executor='http://172.19.0.6:4444',
         options=chrome_options
     )
-    
+
     try: 
         # Opening github's user profile
-        print("1------------------------")
         driver.get(profile_url)
-        print("2------------------------")
-
         time.sleep(5)
 
 
@@ -67,20 +62,17 @@ def get_github_information(profile_url):
         driver.quit() 
         return []
 
-
-
 def get_gitlab_information(profile_url):
-
     #Setting chrome options 
     chrome_options = webdriver.ChromeOptions()
     #Configuration from the selenium/standalone-chrome container 
-    chrome_options.set_capability("browserVersion", "110.0")
+    chrome_options.set_capability("browserVersion", "111.0")
     chrome_options.set_capability("platformName", "Linux")
     #Solves issue with container size and chrome rendering large pages correctly(?)
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.22.0.3:4444',
+        command_executor='http://172.19.0.6:4444',
         options=chrome_options
     )
     programmingLanguages = []
@@ -175,4 +167,3 @@ def get_gitlab_information(profile_url):
     except:
         driver.quit()
         return programmingLanguages
-    

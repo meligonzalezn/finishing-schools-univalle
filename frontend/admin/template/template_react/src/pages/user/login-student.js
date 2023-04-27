@@ -23,10 +23,10 @@ function LoginStudent() {
 	  const res = await loginStudent(response.credential);
   
 	  if (res !== undefined) {
-		sessionStorage.setItem("access_token", res.tokens.access)
-		sessionStorage.setItem("refresh_token", res.tokens.refresh)
-		sessionStorage.setItem("user",  res.email)
-		sessionStorage.setItem("type", "student")
+		localStorage.setItem("access_token", res.tokens.access)
+		localStorage.setItem("refresh_token", res.tokens.refresh)
+		localStorage.setItem("user",  res.email)
+		localStorage.setItem("role", "student")
 		setRedirect(true);
 	  } else {
 		setLoader(false);
@@ -55,8 +55,10 @@ function LoginStudent() {
 	  };
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	
 	if (redirect) {
-	  return <Navigate to='/dashboard/v3' />;
+	  return <Navigate to='/dashboard/services' />;
 	}
 
 	return (

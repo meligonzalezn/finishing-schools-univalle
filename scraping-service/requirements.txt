@@ -13,3 +13,4 @@ pycryptodome
 selenium 
 beautifulsoup4
 webdriver-manager
+django-cloudinary-storage

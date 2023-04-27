@@ -6,6 +6,7 @@ import logoUnivalle from '../../assets/img/register/logo-univalle.png'
 import 'react-notifications-component/dist/theme.css';
 import './styles/login.css'
 
+
 const LoginPortal = () => {
     /* eslint-disable */
     const context = useContext(AppSettings);
@@ -21,7 +22,8 @@ const LoginPortal = () => {
           context.handleSetAppContentClass('');
         };
       }, []);
-    
+
+	  
       
       return (
 			<div className="login login-with-news-feed">

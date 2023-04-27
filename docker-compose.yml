@@ -45,6 +45,9 @@ services:
     env_file:
       - .env
   selenium:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:111.0
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=6
     ports:
       - 4444:4444

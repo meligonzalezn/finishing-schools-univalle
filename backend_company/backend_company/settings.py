@@ -52,10 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
-    'rest_framework_simplejwt.token_blacklist',
-    'django_rest_passwordreset',
-    'rest_framework_simplejwt',
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -114,27 +111,7 @@ DATABASES = {
     }
 }
 
-#User model for authentication
-AUTH_USER_MODEL = "user.Company"
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 
 
 # Internationalization
@@ -162,31 +139,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#Default authentication classes 
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
-}
 
-#JWT configuration
-SIMPLE_JWT = {
-   "ALGORITHM": 'RS256',
-   "SIGNING_KEY": os.getenv('COMPANY_PRIVATE_KEY'),
-   "VERIFYING_KEY": os.getenv('COMPANY_PUBLIC_KEY'),
-   "AUTH_HEADER_TYPES": ("Bearer",),
-   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-   'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
-   'AUTH_TOKEN_CLASSES': (
-       'rest_framework_simplejwt.tokens.AccessToken',
-   )
-}
-
-#Configuration for sending emails
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIT_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')

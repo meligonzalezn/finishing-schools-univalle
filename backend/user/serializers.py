@@ -16,13 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True, 'required': False}, 'sub_key': {'required': False}}
     
     def create(self, validated_data):
-        print("--------------------------------------------------", validated_data )
         User = get_user_model()
         user_data = {
             'email': validated_data["email"],
             'password': validated_data["password"]}
         user = User.objects.create_user(**user_data)
         user.name = validated_data["name"]
+        user.role = 'company'
         user.sub_key = str(uuid.uuid4())
         user.save()
         return user
@@ -54,6 +54,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         email = user_data['email']
         name = user_data['given_name']
         last_name =  user_data['family_name']
+        role = 'student'
         provider = 'google'
         
         #Verifies domain of email. It has to be correounivalle.edu.co
@@ -63,4 +64,4 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             raise serializers.ValidationError("Domain has to be correounivalle.edu.co")
         
         return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name, last_name=last_name)
+            provider=provider, user_id=user_id, email=email, name=name, last_name=last_name, role=role)

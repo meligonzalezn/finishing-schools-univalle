@@ -11,7 +11,7 @@ async function get_user_basic_info(){
             method: "GET",
             headers: {
             // Add any auth token here
-               authorization: "Bearer "+ sessionStorage.getItem("access_token"),
+               authorization: "Bearer "+ localStorage.getItem("access_token"),
             },
           })    
             // Catch errors if any
@@ -26,4 +26,14 @@ async function get_user_basic_info(){
         }     
 }
 
-export {get_user_basic_info}
+async function decodeJwt() {
+  try {
+    const request = await axios.post(`${process.env.REACT_APP_AUTH_BACKEND_URL}/auth/user/decode_jwt/`, { "auth-token": localStorage.getItem("access_token") })
+    return [request.data, true];
+  }
+  catch (err) {
+    return [null, err]
+  }     
+} 
+
+export {get_user_basic_info, decodeJwt}
