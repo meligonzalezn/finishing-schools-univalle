@@ -11,3 +11,4 @@ cryptography
 pycryptodome
 pyjwt
 python-dotenv
+django-cloudinary-storage
