@@ -77,6 +77,7 @@ import PasswordRecoveryRequest from '../pages/user/password-recovery-request.js'
 import ServiceDashboard from '../pages/dashboard/service-dashboard.js';
 import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
 import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
+import CompanyForm from '../pages/user/company_profile/company-form.js';
 const AppRoute = [
   {
     path: '*', 
@@ -236,7 +237,9 @@ const AppRoute = [
 					{ path: 'company/login', element:<LoginCompany /> },
 					{ path: 'company/register', element: <RegisterCompany /> },	
 					{ path: 'student/profile', element: <ScrapingForm /> },	
-					{ path: 'student/portfolio', element: <PortfolioForm /> },	
+					{ path: 'student/portfolio', element: <PortfolioForm /> },
+					{ path: 'student/portfolio', element: <PortfolioForm /> },
+					{ path: 'company/profile', element: <CompanyForm /> },		
 				]
 			},  
 			{

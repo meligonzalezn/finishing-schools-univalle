@@ -91,7 +91,7 @@ class GoogleSocialAuthView(GenericAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
 
     def post(self, request):
         try:
