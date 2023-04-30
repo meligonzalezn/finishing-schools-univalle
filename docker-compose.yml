@@ -33,17 +33,17 @@ services:
       - ./backend_company:/app
     env_file:
       - .env
-  web:
-    build: frontend/admin/template/template_react
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend/admin/template/template_react:/frontend
-    depends_on:
-      - backend_auth
-      - backend_company
-    env_file:
-      - .env
+  # web:
+  #   build: frontend/admin/template/template_react
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend/admin/template/template_react:/frontend
+  #   depends_on:
+  #     - backend_auth
+  #     - backend_company
+  #   env_file:
+  #     - .env
   selenium:
     image: selenium/standalone-chrome:111.0
     environment:
