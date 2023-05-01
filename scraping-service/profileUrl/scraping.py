@@ -77,6 +77,7 @@ def get_gitlab_information(profile_url):
     threads = []
     projectsLinks = []
 
+    #Obtains the links of each repository (personal and contributed)
     def get_links(projects_type):
         #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
         driver = webdriver.Remote(
@@ -112,7 +113,6 @@ def get_gitlab_information(profile_url):
                 print("-------No personal projects found")
 
             for project in projects:
-                print("personal", project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
                 projectsLinks.append(project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
             driver.quit()
 
@@ -133,13 +133,11 @@ def get_gitlab_information(profile_url):
                 print("-------No contributed projects found")
 
             for project in projects:
-                print("contributed", project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
                 projectsLinks.append(project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
             driver.quit()
             
-
+    #Obtains the technologies used in the project repository from the link provided
     def scrape_page(link):
-            print("entre", link)
             driver = webdriver.Remote(
                 command_executor='http://172.18.0.2:4444',
                 options=chrome_options
@@ -166,75 +164,13 @@ def get_gitlab_information(profile_url):
                 driver.quit()
 
     try:
-        # # Opening gitlab's user profile
-        # driver.get(profile_url)
+        #Obtain urls
 
-        # # Waiting to emulate user actions
-        # time.sleep(2)
-
-        # # Searching for personal projects
-        # personalProjectsButton = WebDriverWait(driver, 5).until(    
-        # EC.presence_of_element_located((By.CSS_SELECTOR, '[data-action="projects"]'))
-        # )
-
-        # personalProjectsButton.click()
-                    
-        # time.sleep(4)
-
-        # #Obtaining urls to each project page  
-        # projectsList = WebDriverWait(driver, 10).until(
-        # EC.presence_of_element_located((By.XPATH, '//div[@id="projects"]'))
-        # )
-
-        # projects = []
-
-        # try:
-        #     projects = projectsList.find_elements(By.CSS_SELECTOR, '[class="project-row"]')
-        # except: 
-        #     print("-------No personal projects found")
-
-        # projectsLinks = []
-
-        # for project in projects:
-        #     print("personal", project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
-        #     projectsLinks.append(project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
-
-
-        # # Reopening gitlab's user profile
-        # driver.get(profile_url)
-
-        # # Waiting to emulate user actions
-        # time.sleep(2)
-            
-        # # Searching for contributed projects
-        # contributedProjectsButton = driver.find_element(By.CSS_SELECTOR, '[data-action="contributed"]')
-        # contributedProjectsButton.click()
-
-        # time.sleep(4)
-
-        # #Obtaining urls to each project page   
-        # projectsList2 = driver.find_element(By.CSS_SELECTOR, '[id="contributed"]')
-
-        # try:
-        #     projects = projectsList2.find_elements(By.CSS_SELECTOR, '[class="project-row"]')
-        # except:
-        #     projects = []
-        #     print("-------No contributed projects found")
-
-        # for project in projects:
-        #     print("contributed", project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
-        #     projectsLinks.append(project.find_element(By.TAG_NAME, 'a').get_attribute("href"))
-
-        #############################################
-        #Obtaining urls
-
-         # Create a thread for each page URL
-     
-        thread = threading.Thread(target=get_links, args=("personal",))
-        threads.append(thread)
-        
-        thread = threading.Thread(target=get_links, args=("contributed",))
-        threads.append(thread)
+        # Create a thread for each project repository type
+        types = ["personal", "contributed"]
+        for type in types:
+            thread = threading.Thread(target=get_links, args=(type,))
+            threads.append(thread)
 
         # Start each thread
         for thread in threads:
@@ -244,12 +180,11 @@ def get_gitlab_information(profile_url):
         for thread in threads:
             thread.join()
 
-
         threads = []
-        #############################################3
-        #Accessing each project url    
+
+        #Access urls
+
         # Create a thread for each page URL
-        print("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------project links:", len(projectsLinks))
         for link in projectsLinks:
             thread = threading.Thread(target=scrape_page, args=(link,))
             threads.append(thread)
@@ -261,29 +196,7 @@ def get_gitlab_information(profile_url):
         # Wait for each thread to finish
         for thread in threads:
             thread.join()
-            
-        # #Obtains technologies used in personal and contributed projects
-        # for link in projectsLinks:
-        #     #Redirect to each project page
-        #     driver.get(link)
-        #     time.sleep(2)
-            
-        #     #Obtain programming languages
-        #     try:
-        #         programmingLanguagesBar = WebDriverWait(driver, 5).until(
-        #         EC.presence_of_element_located((By.CSS_SELECTOR, '[class="progress repository-languages-bar js-show-on-project-root"]'))
-        #         )
-        #         programmingLanguagesHtml = programmingLanguagesBar.find_elements(By.TAG_NAME, 'div')
-
-        #         for item in programmingLanguagesHtml:
-        #             languageItem = item.get_attribute("title")
-        #             soup = BeautifulSoup(languageItem, 'html.parser')
-        #             programmingLanguages.append(soup.find("span", {"class":"repository-language-bar-tooltip-language"}).text)
-
-        #     except:
-        #         print("---",driver.current_url)
-
-
+         
         programmingLanguages = [*set(programmingLanguages)]
         return programmingLanguages
 
