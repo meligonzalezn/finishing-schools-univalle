@@ -9,6 +9,7 @@ import { get_user_basic_info } from '../../../utils/user-axios';
 import { getPortfolioStudent, registerPortfolioStudent, updatePortfolioStudent } from '../../../utils/scraping-axios';
 import ReactTags from 'react-tag-autocomplete';
 import { getCompanyData, registerCompanyData, updateCompanyData } from '../../../utils/company-axios';
+import "../styles/tags.css"
 
 
 const CompanyForm = () => {
@@ -355,7 +356,7 @@ const CompanyForm = () => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col-4">
                                         <label className="form-label col-form-label col-md-3"> Ubicación </label>
                                         <input
                                             name='address'
@@ -367,7 +368,7 @@ const CompanyForm = () => {
                                             onBlur={formik.handleBlur}
                                         />
                                     </div>
-                                    <div className="col-4">
+                                    <div className="col">
                                         <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> Ciudad </label>
                                         <input
                                             name='city'
@@ -383,7 +384,7 @@ const CompanyForm = () => {
                                         <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> + </label>
                                         <button
                                             type='button'
-                                            className="btn btn-success w-120px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem" }}
+                                            className="btn btn-light w-120px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem"  , "color": "#444", "padding": "1px 6px" }}
                                             onClick={(e) => {
                                                 if (formik.values.address !== "" || formik.values.city !== "") {
                                                     setLocations([...locations, { address: formik.values.address, city: formik.values.city }])
@@ -391,13 +392,16 @@ const CompanyForm = () => {
                                                     formik.values.city = ""
                                                 }
                                             }}>
-                                            +
+                                            <i class="bi bi-plus-square-dotted" style={{ "font-size": "1.1rem" }}></i>
                                         </button>
+                                    </div>
+                                    <div className="col">
+                                        <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> + </label>
                                     </div>
                                 </div>
                                 {locations.map((location, index) => (
                                     <div className="row" key={index}>
-                                        <div className="col-6">
+                                        <div className="col-4">
                                             <label style={{ "visibility": "hidden" }}> Ubicación </label>
                                             <input
                                                 type="text"
@@ -406,7 +410,7 @@ const CompanyForm = () => {
                                                 disabled={true}
                                             />
                                         </div>
-                                        <div className="col-4">
+                                        <div className="col">
                                             <label style={{ "visibility": "hidden" }}> Ciudad </label>
                                             <input
                                                 type="text"
@@ -419,17 +423,21 @@ const CompanyForm = () => {
                                             <label style={{ "visibility": "hidden" }}> x </label>
                                             <button
                                                 type='button'
-                                                className="btn btn-danger w-120px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem" }}
+                                                className="btn btn-light w-120px me-5px d-flex justify-content-center align-items-center"style={{ "gap": "0.5rem"  , "color": "#444", "padding": "1px 6px" }}
                                                 onClick={(e) => { setLocations([...locations.slice(0, index), ...locations.slice(index + 1)]) }}>
-                                                x
+                                                <i class="bi bi-dash-square-dotted" style={{ "font-size": "1.1rem" }}></i>
                                             </button>
+                                        </div>
+                                        <div className="col">
+                                            <label style={{ "visibility": "hidden" }}> x </label>
                                         </div>
                                     </div>
                                 ))}
                                 <div className="row">
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3" > Especialidades </label>
-                                        <ReactTags tags={specialties} onDelete={handleDelete} onAddition={handleAddition} allowNew={true} />
+                                        <ReactTags tags={specialties} onDelete={handleDelete} onAddition={handleAddition} allowNew={true}
+                                        className="react-tags__selected-tag"  />
                                     </div>
                                 </div>
                                 <div style={{ "marginTop": "2rem", "display": "flex", "justifyContent": "space-between" }}>
