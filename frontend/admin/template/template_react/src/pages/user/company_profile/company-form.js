@@ -304,6 +304,7 @@ const CompanyForm = () => {
                                             value={formik.values.aboutUs}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
+                                            style={{"resize":"none", "height":"6rem"}}
                                         />
                                     </div>
                                 </div>

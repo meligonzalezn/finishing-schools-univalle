@@ -8,6 +8,7 @@ import TopMenu from './components/top-menu/top-menu.jsx';
 import Content from './components/content/content.jsx';
 import ThemePanel from './components/theme-panel/theme-panel.jsx';
 
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -416,7 +417,8 @@ class App extends React.Component {
 				gray800Rgb: window.getComputedStyle(document.body).getPropertyValue('--bs-gray-800-rgb').trim(),
 				gray900Rgb: window.getComputedStyle(document.body).getPropertyValue('--bs-gray-900-rgb').trim(),
 				blackRgb: window.getComputedStyle(document.body).getPropertyValue('--bs-black-rgb').trim()
-			}
+			},
+
 		};
 	}
 	
@@ -427,8 +429,8 @@ class App extends React.Component {
 		if (this.state.appDarkMode) {
 			this.handleSetAppDarkMode(true);
 		}
-    window.addEventListener('scroll', this.handleScroll);
-
+   		window.addEventListener('scroll', this.handleScroll);
+		
 	  
     
 		if (localStorage) {
@@ -461,7 +463,7 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
-	  
+
 	  
   }
   
@@ -484,6 +486,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<AppSettings.Provider value={this.state}>
+				
 				<div className={
 					'app ' +
 					(this.state.appGradientEnabled ? 'app-gradient-enabled ' : '') + 
@@ -510,6 +513,7 @@ class App extends React.Component {
 					{!this.state.appContentNone && (<Content />)}
 					<ThemePanel />
 				</div>
+				
 			</AppSettings.Provider>
 		)
 	}

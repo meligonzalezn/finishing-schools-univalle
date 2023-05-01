@@ -38,6 +38,7 @@ const Header = () => {
 	
 	useEffect(() => {
 		getUserBasicInfo();
+		console.log("HOLAAAAA")
 		const interval = setInterval(() => {
 			console.log("porque no funciona?")
 			refreshToken()
