@@ -10,15 +10,12 @@ async function registerPortfolioStudent(data) {
             let student = new FormData()
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
-            student.append('github_profile', data.github)
-            student.append('gitlab_profile', data.gitlab)
-            student.append('linkedin_profile', data.linkedin)
+            student.append('github_profile', data.github_profile)
+            student.append('gitlab_profile', data.gitlab_profile)
+            student.append('linkedin_profile', data.linkedin_profile)
             student.append('isFilled', true)
             if (decodeData[0].sub_key) {
                 student.append('sub_key', decodeData[0].sub_key)
-            }
-            if(data.image) {
-                student.append('image_profile', data.image, data.image.name) 
             }
             const config = {
                 headers: {
@@ -73,28 +70,33 @@ async function getPortfolioStudent() {
 }
 
 async function updatePortfolioStudent(data, imageChanged) {
-    try {        
+    try {
         // use decode_jwt to obtain sub_key
         const decodeData = await decodeJwt()
         if(decodeData[0] !== null) {
             let student= new FormData()
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
-            student.append('github_profile', data.github)
-            student.append('gitlab_profile', data.gitlab)
-            student.append('linkedin_profile', data.linkedin)
+            student.append('github_profile', data.github_profile)
+            student.append('gitlab_profile', data.gitlab_profile)
+            student.append('linkedin_profile', data.linkedin_profile)
             student.append('isFilled', true)
-            console.log(student)
             if (decodeData[0].sub_key) {
                 student.append('sub_key', decodeData[0].sub_key)
             }
-            if(data.image) {
+            if (data.description) {
+                student.append('description', data.description)
+            }
+            if(data.image_profile) {
                 if (imageChanged){
-                    student.append('image_profile', data.image, data.image.name) 
+                    student.append('image_profile', data.image_profile, data.image_profile.name) 
                 }
                 else {
-                    student.append('image_profile', data.image)
+                    student.append('image_profile', data.image_profile)
                 }
+            }
+            if(data.scrapeInfoSaved){
+                student.append('scrapeInfoSaved', data.scrapeInfoSaved)
             }
             const response = await axios.put(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData[0].sub_key}/`, student, {
                 headers: {
@@ -102,7 +104,6 @@ async function updatePortfolioStudent(data, imageChanged) {
                     'Accept': 'application/json',
                   },
                 }).then((res) => {
-                  console.log('hola', res);
                   return res;
                 });
                 return response;
@@ -112,4 +113,23 @@ async function updatePortfolioStudent(data, imageChanged) {
     } 
 }
 
-export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent}
+async function getScrapingInfo(url, platform) {
+    try {
+        const response  = await axios({
+              url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/get-basic-info/scrape/`,
+              method: "POST",
+              data: { 
+                'platform': platform,
+                'url': url
+            },
+        }).then((res) => {  
+            return res;
+        })
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+
+export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent, getScrapingInfo}

@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import Student, WorkExperience, Studies, CertificationLicenses, Languages, Technologies
+from .models import Student, WorkExperience, Studies, CertificationLicenses, Languages, Skills
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Student
-        fields = ['sub_key', 'idCard', 'issueDate','github_profile','gitlab_profile', 'linkedin_profile', 'image_profile', 'description', 'isFilled']
+        fields = ['sub_key', 'idCard', 'issueDate','github_profile','gitlab_profile', 'linkedin_profile', 'image_profile', 'description', 'isFilled', 'scrapeInfoSaved']
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta: 
         model = WorkExperience
-        fields = ['id', 'student_id', 'company_name','roles', 'start_date', 'end_date', 'description']
+        fields = ['id', 'student_id', 'company_name', 'roles', 'experience_time', 'description']
 
-class WorkExperienceSerializer(serializers.ModelSerializer):
+class StudiesSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Studies
         fields = ['id', 'student_id', 'degree','school', 'start_date', 'end_date', 'description']
@@ -26,7 +26,7 @@ class LanguagesSerializer(serializers.ModelSerializer):
         model = Languages
         fields = ['id', 'student_id', 'language', 'proficiency']
 
-class TechnologiesSerializer(serializers.ModelSerializer):
+class SkillsSerializer(serializers.ModelSerializer):
     class Meta: 
-        model = Technologies
+        model = Skills
         fields = ['id', 'student_id', 'name']
