@@ -10,7 +10,7 @@ import { get_user_basic_info } from '../../utils/user-axios.js';
 import { refreshToken } from '../../utils/logout-axios.js';
 
 const Header = () => {
-	const [userName, setUserName] = useState("");
+	const [userName, setUserName] = useState(localStorage.getItem("user_name"));
 	const {
 		toggleAppSidebarMobile,
 		toggleAppSidebarEnd,
@@ -25,28 +25,32 @@ const Header = () => {
 	} = useContext(AppSettings);
 
 	const getUserBasicInfo =  async () => {
-		let accessToken = sessionStorage.getItem("access_token");
-		if (accessToken) {
-			const response = await get_user_basic_info()
-			setUserName(response["user_name"])
+		if(localStorage.getItem("user_name")== null){
+			let accessToken = localStorage.getItem("access_token");
+			if (accessToken) {
+				const response = await get_user_basic_info()
+				localStorage.setItem("user_name",response["user_name"] )
+				setUserName(response["user_name"])
+			}
 		}
+		
 	}
 	
 	useEffect(() => {
 		getUserBasicInfo();
+		console.log("HOLAAAAA")
 		const interval = setInterval(() => {
+			console.log("porque no funciona?")
 			refreshToken()
 				.then(response => {
-					sessionStorage.setItem("access_token",response.access);
+					localStorage.setItem("access_token",response.access);
 				})
 				.catch(error => {
 				console.log(error);
 				});
-		  }, 5 * 60 * 1000);
-	  
-		  console.log(userName)
+		  }, 4 * 60 * 1000);
 		  return () => clearInterval(interval);
-	}, [userName])
+	}, [])
 
 	return (
 		<div id="header" className={'app-header ' + (appHeaderInverse ? 'app-header-inverse' : '')}>

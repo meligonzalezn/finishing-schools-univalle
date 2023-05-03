@@ -15,7 +15,7 @@ async function checkEmail(email) {
    }
 
 /**
- * Function that register company in database
+ * Function that register company users in the auth service
  * @param {*} data
  * @returns 
  */

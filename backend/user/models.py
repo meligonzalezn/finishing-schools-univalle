@@ -53,6 +53,7 @@ class CustomRefreshToken(RefreshToken):
     def for_user(cls, user):
         token = super().for_user(user)
         token.payload['sub_key'] = user.sub_key
+        token.payload['role'] = user.role
         # if 'user_id' in token.payload:
         #     del token.payload['user_id']
         return token

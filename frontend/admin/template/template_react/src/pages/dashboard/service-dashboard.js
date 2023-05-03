@@ -1,11 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from "react";
+import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { AppSettings } from '../../config/app-settings.js';
 
 const ServiceDashboard = () => {
-    const [role, setRole] = useState('')
-    useEffect(() => {
-        setRole(sessionStorage.getItem("type"));
-    }, [])
+      /* eslint-disable */
+  //Avoids user going back by error(with back button from browser) to the login page 
+  window.history.pushState(null, null, window.location.pathname);
+  
+  const [redirect, setRedirect] = useState(false)
+  const context = useContext(AppSettings);
+  const [role, setRole] = useState('')
+ 
+  
+  useLayoutEffect(() => {
+	if(localStorage.getItem("access_token") === null){
+      
+      context.handleSetAppSidebarNone(true);
+      context.handleSetAppHeaderNone(true);
+      context.handleSetAppContentClass('p-0');
+      setRedirect(true)
+      return () => {
+      context.handleSetAppSidebarNone(false);
+      context.handleSetAppHeaderNone(false);
+      context.handleSetAppContentClass('');
+      };
+    }
+    else{
+
+      setRole(localStorage.getItem("role"));
+
+      window.addEventListener('popstate', function(event) {
+        if (window.location.pathname === '/company/login' ||window.location.pathname === '/univalle/login' ) {
+          window.location.replace('/dashboard/v3');
+        }
+        });
+      return () => {
+        window.removeEventListener('popstate', function(event) {
+          if (window.location.pathname === '/company/login' ||window.location.pathname === '/univalle/login' ) {
+            window.location.replace('/dashboard/v3');
+          }
+          });
+      };
+
+    }
+
+	}, [redirect]);
+
+    if(redirect){
+        return <Navigate to='/' />;
+    }
 
 	return (
         <div>
@@ -38,7 +82,7 @@ const ServiceDashboard = () => {
                                 <small>Gestiona la información relacionada con la empresa</small>	
                             </div>
                             <div className="stats-link">
-                                <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                                <Link to="/user/company/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>
@@ -54,7 +98,7 @@ const ServiceDashboard = () => {
                             }
                         </div>
                         <div className="stats-link">
-                            <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                            <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
 					</div>
 				</div>

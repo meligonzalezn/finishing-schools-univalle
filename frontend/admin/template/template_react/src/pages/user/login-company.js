@@ -15,7 +15,7 @@ function LoginCompany(){
 	const [invalidLogin, setInvalidLogin] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-	const user = sessionStorage.getItem("user")
+	const user = localStorage.getItem("user")
 
 	useLayoutEffect(() => {
 		context.handleSetAppSidebarNone(true);
@@ -43,10 +43,10 @@ function LoginCompany(){
 		
 		
 		if(res!==undefined){
-			sessionStorage.setItem("access_token", res.tokens.access)
-			sessionStorage.setItem("refresh_token", res.tokens.refresh)
-			sessionStorage.setItem("user",  res.email)
-			sessionStorage.setItem("type", "company")
+			localStorage.setItem("access_token", res.tokens.access)
+			localStorage.setItem("refresh_token", res.tokens.refresh)
+			localStorage.setItem("user",  res.email)
+			localStorage.setItem("role", "company")
 			setRedirect(true)
 			setLoader(false)
 		}
