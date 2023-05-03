@@ -107,25 +107,57 @@ const PortfolioForm = () => {
               }
             } else {
               setScraping(true); 
+              let scrapingInfo = []
               if (student?.linkedin_profile !== '') {
-                const linkedinInfo = await getScrapingInfo(student.linkedin_profile, 'linkedin');
-                if (linkedinInfo) {
-                  const data = linkedinInfo.data[0];
-                  setAbout(data.about);
-                  setExperience(data.experience);
-                  setEducation(data.education);
-                  setCertifications(data.certifications);
-                  setLanguages(data.languages);
-                }
+                const url = student.linkedin_profile
+                scrapingInfo.push({platform: 'linkedin', url: url})
+
+                // const linkedinInfo = await getScrapingInfo(student.linkedin_profile, 'linkedin');
+
+                // if (linkedinInfo) {
+                //   const data = linkedinInfo.data[0];
+                //   setAbout(data.about);
+                //   setExperience(data.experience);
+                //   setEducation(data.education);
+                //   setCertifications(data.certifications);
+                //   setLanguages(data.languages);
+                // }
               }
               if (student?.github_profile !== '') {
-                const githubInfo = await getScrapingInfo(student.github_profile, 'github');
-                setSkills(prevSkills => [...new Set([...prevSkills, ...githubInfo.data])]);
+                const url =  student.github_profile
+                scrapingInfo.push({platform:  'github', url: url})
+
+                // const githubInfo = await getScrapingInfo(student.github_profile, 'github');
+
+                // setSkills(prevSkills => [...new Set([...prevSkills, ...githubInfo.data])]);
               }
               if (student?.gitlab_profile !== '') {
-                const gitlabInfo = await getScrapingInfo(student.gitlab_profile, 'gitlab');
-                setSkills(prevSkills => [...new Set([...prevSkills, ...gitlabInfo.data])]);
+                const url =  student.gitlab_profile
+                scrapingInfo.push({platform:  'gitlab', url: url})
+
+                // const gitlabInfo = await getScrapingInfo(student.gitlab_profile, 'gitlab');
+
+                // setSkills(prevSkills => [...new Set([...prevSkills, ...gitlabInfo.data])]);
               }
+
+              const res_scrapedInfo = await getScrapingInfo({"scraping-data":scrapingInfo});
+              const scrapedInfo = res_scrapedInfo.data
+              console.log(scrapedInfo)
+              if(scrapedInfo.linkedinInfo !== ""){
+                    const data = scrapedInfo.linkedinInfo[0];
+                    setAbout(data.about);
+                    setExperience(data.experience);
+                    setEducation(data.education);
+                    setCertifications(data.certifications);
+                    setLanguages(data.languages);
+              }
+              if(scrapedInfo.githubInfo !== ""){
+                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.githubInfo])]);
+              }
+              if(scrapedInfo.gitlabInfo !== ""){
+                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.gitlabInfo])]);
+              }
+             
             }
             setInfoLoaded(true);
           } catch (error) {

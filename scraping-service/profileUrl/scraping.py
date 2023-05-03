@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import threading
+from .linkedin import get_linkedin_information
 
 
 
@@ -20,7 +21,7 @@ def get_github_information(profile_url):
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.19.0.6:4444',
+        command_executor='http://172.18.0.2:4444',
         options=chrome_options
     )
 
@@ -202,3 +203,22 @@ def get_gitlab_information(profile_url):
 
     except:
         return programmingLanguages
+
+
+
+def scrape_info(platform, profile_url, results):
+        if platform == "github":
+            githubInformation = get_github_information(profile_url)
+            results["githubInfo"] = githubInformation
+        
+        elif platform == "gitlab":
+            gitlabInformation = get_gitlab_information(profile_url)
+            results["gitlabInfo"] = gitlabInformation
+        
+        elif platform == "linkedin":
+            linkedInData = get_linkedin_information(profile_url)
+            results["linkedinInfo"] = linkedInData
+        
+        else:
+            None
+        
