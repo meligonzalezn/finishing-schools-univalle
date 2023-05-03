@@ -112,4 +112,31 @@ async function updatePortfolioStudent(data, imageChanged) {
     } 
 }
 
-export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent}
+
+/**
+ * Returns if the student's portfolio has been filled up.
+ * @returns 
+ */
+async function get_portfolio_state(){
+    const response  = await axios({
+        // Endpoint to send files
+        url:`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/get_portfolio_state/`,
+        method: "GET",
+        headers: {
+        // Add any auth token here
+           authorization: "Bearer "+ localStorage.getItem("access_token"),
+        },
+      })    
+        // Catch errors if any
+        .catch((err) => { 
+            return err.response
+        });
+    if(response.status===200){
+      return response.data
+    }
+    else{
+      return undefined
+    }     
+}
+
+export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent, get_portfolio_state}

@@ -172,6 +172,7 @@ const CompanyForm = () => {
                         type: "danger",
                         ...defaultOptions
                     });
+                    setIsFilled(true)
                     setInfoLoaded(true)
                 }
             }

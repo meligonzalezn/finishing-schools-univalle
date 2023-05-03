@@ -6,6 +6,8 @@ from urllib.request import Request
 from .serializers import StudentSerializer
 from rest_framework import status
 from rest_framework.decorators import action
+from .tokens_handler import handleAuthToken
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -55,5 +57,23 @@ class StudentViewSet(viewsets.ModelViewSet):
             return Response("User updated", status=status.HTTP_200_OK)
         except:
             return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def get_portfolio_state(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            print("monda")
+            student = get_object_or_404(Student.objects.all(),pk=sub_key)
+            print("eeee0", student) 
+            registerState = "Filled"
+            if(not student.isFilled):
+                registerState = "In progress"
+            return Response({"state": registerState}, status=status.HTTP_200_OK)
+        except:
+            return Response("Error", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
