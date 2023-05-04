@@ -120,7 +120,7 @@ async function updatePortfolioStudent(data, imageChanged) {
 async function get_portfolio_state(){
     const response  = await axios({
         // Endpoint to send files
-        url:`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/get_portfolio_state/`,
+        url:`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/get_portfolio_state/` ,
         method: "GET",
         headers: {
         // Add any auth token here

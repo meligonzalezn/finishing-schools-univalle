@@ -64,7 +64,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         if sub_key == 'invalid_token':
             return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            print("monda")
+            print("monda", sub_key)
             student = get_object_or_404(Student.objects.all(),pk=sub_key)
             print("eeee0", student) 
             registerState = "Filled"

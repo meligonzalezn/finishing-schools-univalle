@@ -58,14 +58,14 @@ const ServiceDashboard = () => {
             console.log("state: " , res)
             if(res.state==="In progress"){
                 Store.addNotification({
-                    title: 'Register incomplete',
-                    message: 'Registro de perfil incompleto. Debes completar tu portafolio para un mejor posicionamiento en el sistema de vacantes',
+                    title: 'Registro incompleto',
+                    message: 'Debes completar tu portafolio para un mejor posicionamiento en el sistema de vacantes',
                     type: 'danger',
                     container: 'bottom-left',
                     animationIn: ['animated', 'fadeIn'],
                     animationOut: ['animated', 'fadeOut'],
                     dismiss: {
-                      duration: 4000,
+                      duration: 6000,
                     },
                   });
             }
