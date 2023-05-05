@@ -48,6 +48,6 @@ services:
     image: selenium/standalone-chrome:111.0
     environment:
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
-      - SE_NODE_MAX_SESSIONS=20
+      - SE_NODE_MAX_SESSIONS=10
     ports:
       - 4444:4444
