@@ -63,16 +63,14 @@ class StudentViewSet(viewsets.ModelViewSet):
         sub_key = handleAuthToken(request)
         if sub_key == 'invalid_token':
             return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        registerState = "In progress"
         try:
-            print("monda", sub_key)
-            student = get_object_or_404(Student.objects.all(),pk=sub_key)
-            print("eeee0", student) 
-            registerState = "Filled"
-            if(not student.isFilled):
-                registerState = "In progress"
+            student = Student.objects.all().get(pk=sub_key)
+            if(student.isFilled):
+                registerState = "Filled"
             return Response({"state": registerState}, status=status.HTTP_200_OK)
         except:
-            return Response("Error", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"state": registerState},status=status.HTTP_200_OK)
 
 
 
