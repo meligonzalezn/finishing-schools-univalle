@@ -28,40 +28,42 @@ def get_github_information(profile_url):
     try: 
         # Opening github's user profile
         driver.get(profile_url)
-        time.sleep(5)
+        time.sleep(4)
 
 
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
         
-        # Waiting for the page to load
-        time.sleep(5)
-
-
+        print("1")
         # Searching for repositories
         repositoriesButton = driver.find_element(By.CSS_SELECTOR, '[data-tab-item="repositories"]').click()
 
-        time.sleep(5)
-
-
+        time.sleep(4)
+       
+        print(2)
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
 
 
         #Getting proggramming languages 
         languagesList = soup.find("details", {"id":"language-options"})
+        print("3", languagesList)
         languagesItems = languagesList.find_all("label", {"class":"SelectMenu-item"})
         programmingLanguages = []
+        print("por aqui pase")
 
         for item in languagesItems:
             programmingLanguages.append(item.find("span", {"class":"text-normal"}).text)
-
+            print("dddddd", programmingLanguages)
+       
+        
         programmingLanguages.pop(0)   
         #Close/Delete the session
         driver.quit() 
         return programmingLanguages
     except:
         driver.quit() 
+        print("exceptionnnnnnnnn")
         return []
 
 def get_gitlab_information(profile_url):
@@ -209,11 +211,11 @@ def get_gitlab_information(profile_url):
 def scrape_info(platform, profile_url, results):
         if platform == "github":
             githubInformation = get_github_information(profile_url)
-            results["githubInfo"] = githubInformation
+            results["githubInfo"]=githubInformation
         
         elif platform == "gitlab":
             gitlabInformation = get_gitlab_information(profile_url)
-            results["gitlabInfo"] = gitlabInformation
+            results["gitlabInfo"]=gitlabInformation
         
         elif platform == "linkedin":
             linkedInData = get_linkedin_information(profile_url)
