@@ -38,9 +38,8 @@ const Header = () => {
 	
 	useEffect(() => {
 		getUserBasicInfo();
-		console.log("HOLAAAAA")
+		
 		const interval = setInterval(() => {
-			console.log("porque no funciona?")
 			refreshToken()
 				.then(response => {
 					localStorage.setItem("access_token",response.access);
@@ -49,8 +48,10 @@ const Header = () => {
 				console.log(error);
 				});
 		  }, 4 * 60 * 1000);
+	  
+		
 		  return () => clearInterval(interval);
-	}, [])
+	}, [userName])
 
 	return (
 		<div id="header" className={'app-header ' + (appHeaderInverse ? 'app-header-inverse' : '')}>

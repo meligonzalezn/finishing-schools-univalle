@@ -1,7 +1,9 @@
-import React, { useContext, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AppSettings } from '../../config/app-settings.js';
+import { get_portfolio_state } from "../../utils/scraping-axios.js";
+import { ReactNotifications, Store } from 'react-notifications-component';
 
 const ServiceDashboard = () => {
       /* eslint-disable */
@@ -46,6 +48,33 @@ const ServiceDashboard = () => {
     }
 
 	}, [redirect]);
+
+
+
+    useEffect(() => {
+        
+        if(localStorage.getItem("role") === "student"){
+          get_portfolio_state().then((res)=>{
+            console.log("state: " , res)
+            if(res.state==="In progress"){
+                Store.addNotification({
+                    title: 'Registro incompleto',
+                    message: 'Debes completar tu portafolio para un mejor posicionamiento en el sistema de vacantes',
+                    type: 'danger',
+                    container: 'bottom-left',
+                    animationIn: ['animated', 'fadeIn'],
+                    animationOut: ['animated', 'fadeOut'],
+                    dismiss: {
+                      duration: 6000,
+                    },
+                  });
+            }
+          })  
+           
+        }
+    
+        }, [redirect]);
+
 
     if(redirect){
         return <Navigate to='/' />;
@@ -158,7 +187,8 @@ const ServiceDashboard = () => {
                             <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
                     </div>
-				</div>              
+				</div>   
+                <ReactNotifications />           
 			</div>
         </div>
 	)}

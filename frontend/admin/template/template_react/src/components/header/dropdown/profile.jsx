@@ -69,14 +69,14 @@ function DropdownProfile(props) {
         <a href="#/" className="dropdown-item">Settings</a>
         <div className="dropdown-divider"></div>
         <Link to="/" onClick={handleLogout} className="dropdown-item">
+          Log Out
           {loading ?
           
-            <div class="spinner-border spinner-border-sm" style={{"margin": "0rem 0.3rem 0rem 0rem"}} role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-            : 
-            <></>}
-          Log Out
+          <div class="spinner-border spinner-border-sm" style={{"margin": "0rem 0rem 0rem 0.3rem"}} role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          : 
+          <></>}
         </Link>
 
       </div>
