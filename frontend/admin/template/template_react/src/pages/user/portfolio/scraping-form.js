@@ -124,7 +124,7 @@ const ScrapingForm = () => {
             if (response?.status === 200) {
                 setInfoUpdated(false)
                 Store.addNotification({
-                    title: "Register Success",
+                    title: "Actualización exitosa",
                     message: "Información actualizada",
                     type: "success",
                     ...defaultOptions

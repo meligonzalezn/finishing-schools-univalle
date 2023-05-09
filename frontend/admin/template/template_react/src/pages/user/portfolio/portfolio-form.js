@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import CardPortfolio from "../../../components/cards/card";
 import ProfileImage from "../../../assets/img/profile/user-image-default.png"
 import { getPortfolioStudent, getScrapingInfo, updatePortfolioStudent } from "../../../utils/scraping-axios";
 import { ReactNotifications, Store } from 'react-notifications-component';
-import { registerPortfolioStudentInformation, getPortfolioStudentInformation } from "../../../utils/portfolio-axios";
-
+import { registerPortfolioStudentInformation, getPortfolioStudentInformation, updatePortfolioStudentInformation } from "../../../utils/portfolio-axios";
+import { selectAbout, setAbout, selectImage, setImage, selectExperience, 
+    setExperiences,setSingleExperience, selectEducation, setEducation, selectCertifications, 
+    setCertifications, selectLanguages, setLanguages, selectSkills, setSkills, 
+    selectShowModalExperience, setShowModalExperience} from "../../../reducers/portfolioSlice";
+import ModalAdd from "../../../components/modal/modalAdd";
+import { experienceFields } from "./fields";
 const PortfolioForm = () => {
+    const dispatch = useDispatch();
     const [portfolioStudent, setPortfolioStudent] = useState({}) 
-    const [image, setImage] = useState("")
+    const image = useSelector(selectImage);
     const [imageChanged, setImageChanged] = useState(false)
-    const [about, setAbout] = useState("")
-    const [experience, setExperience] = useState([])
-    const [education, setEducation] = useState([])
-    const [certifications, setCertifications] = useState([])
-    const [languages, setLanguages] = useState([])
-    const [skills, setSkills] = useState([])
+    const about = useSelector(selectAbout);
+    const experience = useSelector(selectExperience);
+    const education = useSelector(selectEducation);
+    const certifications = useSelector(selectCertifications);
+    const languages = useSelector(selectLanguages);
+    const skills = useSelector(selectSkills);
     const [infoLoaded, setInfoLoaded] = useState(false)
     const [updateDescriptionImage, setUpdateDescriptionImage] = useState(false)
     const [infoSaved, setInfoSaved] = useState(false)
+    const [infoUpdated, setInfoUpdated] = useState(false)
     const [isScrape, setIsScrape] = useState(false)
     const [scraping, setScraping] = useState(false);
+    const modalExperience = useSelector(selectShowModalExperience);
 
     /**
      * Default options for warning, success and error messages
@@ -93,17 +102,17 @@ const PortfolioForm = () => {
           try {
             const student = await getPortfolioStudent();
             setPortfolioStudent(student);
-            setImage(student.image_profile);
+            dispatch(setImage(student.image_profile));
             if (student.scrapeInfoSaved) {
-              setAbout(student.description);
+              dispatch(setAbout(student.description));
               setIsScrape(student.scrapeInfoSaved);
               const portfolioInformation = await getPortfolioStudentInformation(student.sub_key);
               if (portfolioInformation) {
-                setExperience(portfolioInformation.experience.data);
-                setEducation(portfolioInformation.education.data);
-                setCertifications(portfolioInformation.certifications.data);
-                setLanguages(portfolioInformation.languages.data);                  
-                setSkills(portfolioInformation.skills);
+                dispatch(setExperiences(portfolioInformation.experience.data));
+                dispatch(setEducation(portfolioInformation.education.data));
+                dispatch(setCertifications(portfolioInformation.certifications.data));
+                dispatch(setLanguages(portfolioInformation.languages.data));                  
+                dispatch(setSkills(portfolioInformation.skills));
               }
             } else {
               setScraping(true); 
@@ -111,51 +120,31 @@ const PortfolioForm = () => {
               if (student?.linkedin_profile !== '') {
                 const url = student.linkedin_profile
                 scrapingInfo.push({platform: 'linkedin', url: url})
-
-                // const linkedinInfo = await getScrapingInfo(student.linkedin_profile, 'linkedin');
-
-                // if (linkedinInfo) {
-                //   const data = linkedinInfo.data[0];
-                //   setAbout(data.about);
-                //   setExperience(data.experience);
-                //   setEducation(data.education);
-                //   setCertifications(data.certifications);
-                //   setLanguages(data.languages);
-                // }
               }
               if (student?.github_profile !== '') {
                 const url =  student.github_profile
                 scrapingInfo.push({platform:  'github', url: url})
-
-                // const githubInfo = await getScrapingInfo(student.github_profile, 'github');
-
-                // setSkills(prevSkills => [...new Set([...prevSkills, ...githubInfo.data])]);
               }
               if (student?.gitlab_profile !== '') {
                 const url =  student.gitlab_profile
                 scrapingInfo.push({platform:  'gitlab', url: url})
-
-                // const gitlabInfo = await getScrapingInfo(student.gitlab_profile, 'gitlab');
-
-                // setSkills(prevSkills => [...new Set([...prevSkills, ...gitlabInfo.data])]);
               }
 
-              const res_scrapedInfo = await getScrapingInfo({"scraping-data":scrapingInfo});
-              const scrapedInfo = res_scrapedInfo.data
-              console.log(scrapedInfo)
+              const resScrapedInfo = await getScrapingInfo({"scraping-data":scrapingInfo});
+              const scrapedInfo = resScrapedInfo.data
               if(scrapedInfo.linkedinInfo !== ""){
                     const data = scrapedInfo.linkedinInfo[0];
-                    setAbout(data.about);
-                    setExperience(data.experience);
-                    setEducation(data.education);
-                    setCertifications(data.certifications);
-                    setLanguages(data.languages);
+                    dispatch(setAbout(data.about));
+                    dispatch(setExperiences(data.experience));
+                    dispatch(setEducation(data.education));
+                    dispatch(setCertifications(data.certifications));
+                    dispatch(setLanguages(data.languages));
               }
               if(scrapedInfo.githubInfo !== ""){
-                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.githubInfo])]);
+                dispatch(setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.githubInfo])]));
               }
               if(scrapedInfo.gitlabInfo !== ""){
-                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.gitlabInfo])]);
+                dispatch(setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.gitlabInfo])]));
               }
              
             }
@@ -207,6 +196,35 @@ const PortfolioForm = () => {
         // eslint-disable-next-line
       }, [portfolioStudent, imageChanged, updateDescriptionImage]);
 
+    const handleUpdatePortfolio = async (event) => {
+        event.preventDefault();
+        if(formik.isValid){
+            if(formik.values.image !== '' || formik.values.about !== '') {
+                setPortfolioStudent(prevState => ({...prevState, image_profile: formik.values.image, description: formik.values.about}));
+                setUpdateDescriptionImage(true)
+            }
+            setInfoUpdated(true)
+            const response = await updatePortfolioStudentInformation(formik.values, portfolioStudent.sub_key)
+            if (response?.status === 200) {
+                setInfoUpdated(false)
+                Store.addNotification({
+                    title: "Actualización exitosa",
+                    message: "Información actualizada",
+                    type: "success",
+                    ...defaultOptions
+                });
+            }
+            else {
+                setInfoUpdated(false)
+                Store.addNotification({
+                    title: "Error",
+                    message: "Error actualizando la información",
+                    type: "danger",
+                    ...defaultOptions
+                });
+            }
+        }
+    } 
     return (
         <div>
             {
@@ -238,7 +256,7 @@ const PortfolioForm = () => {
                                             El tamaño máximo de archivo permitido es de 10MB
                                         </p>
                                     </div>
-                                </div> 
+                                </div>
                             <div className="row">
                                 <div className="col">
                                     <div className="d-flex justify-content-between align-items-center">
@@ -257,7 +275,12 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center">                            
                                         <h5>Experiencia Laboral</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                            <button className="border-0 bg-white" onClick={(event) => {
+                                                    event.preventDefault();
+                                                    dispatch(setShowModalExperience(true));
+                                                }}>
+                                                <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                            </button>
                                             <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
                                         </div>
                                     </div>
@@ -350,8 +373,17 @@ const PortfolioForm = () => {
                                 {
                                     isScrape ? (
                                         <button 
+                                            onClick={(event) => handleUpdatePortfolio(event)}
                                             className="btn btn-primary w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
                                                 Actualizar
+                                            {
+                                                infoUpdated ? (
+                                                    <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div> 
+                                                )
+                                                : null
+                                            }
                                         </button>
                                         ) : 
                                         (
@@ -383,6 +415,17 @@ const PortfolioForm = () => {
             )
         }
         <ReactNotifications />
+        {
+            modalExperience ? (
+                <ModalAdd 
+                    title={"Añadir experiencia"} 
+                    description={"Por favor, completa los siguientes campos para añadir una nueva experiencia:"} 
+                    fields={experienceFields} 
+                    action={setSingleExperience}
+                    showModalAction={setShowModalExperience}
+                    />
+            ): null
+        }
         </div>
     )
 }

@@ -38,9 +38,7 @@ const Header = () => {
 	
 	useEffect(() => {
 		getUserBasicInfo();
-		console.log("HOLAAAAA")
 		const interval = setInterval(() => {
-			console.log("porque no funciona?")
 			refreshToken()
 				.then(response => {
 					localStorage.setItem("access_token",response.access);

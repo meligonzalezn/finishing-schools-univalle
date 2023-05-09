@@ -21,7 +21,7 @@ const CardPortfolio = ({list, titleKey, firstTimeKey, secondTimeKey, subtitleKey
                                             <span key={key} className="badge bg-gray-500" style={{"fontSize": "12px"}}>{role}</span>
                                         )
                                     }
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>

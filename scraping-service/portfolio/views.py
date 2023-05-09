@@ -88,6 +88,25 @@ class WorkExperienceViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering work experiences", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['put'], url_path='update_work_experience/(?P<student_id>[^/.]+)')
+    def update_work_experience(self, request, student_id=None):
+        try:
+            work_experiences = request.data.get('experience', [])
+            for experience_data in work_experiences:
+                work_experience_id = experience_data.get('id', None)
+                if not work_experience_id:
+                    continue
+                work_experience = WorkExperience.objects.get(student_id=student_id, id=work_experience_id)
+                serializer = self.serializer_class(work_experience, data=experience_data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+
+            return Response("Work experiences updated successfully", status=status.HTTP_200_OK)
+        except WorkExperience.DoesNotExist:
+            return Response("Work experience not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error updating work experiences", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class StudiesViewSet(viewsets.ModelViewSet):
     serializer_class = StudiesSerializer
@@ -121,6 +140,25 @@ class StudiesViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering studies", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['put'], url_path='update_studies/(?P<student_id>[^/.]+)')
+    def update_studies(self, request, student_id=None):
+        try:
+            studies = request.data.get('education', [])
+            for studies_data in studies:
+                studies_id = studies_data.get('id', None)
+                if not studies_id:
+                    continue
+                studies = Studies.objects.get(student_id=student_id, id=studies_id)
+                serializer = self.serializer_class(studies, data=studies_data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+
+            return Response("Studies updated successfully", status=status.HTTP_200_OK)
+        except Studies.DoesNotExist:
+            return Response("Studies not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error updating studies", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CertificationsLicensesViewSet(viewsets.ModelViewSet):
     serializer_class = CertificationLicensesSerializer
@@ -154,6 +192,25 @@ class CertificationsLicensesViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering certifications or licenses", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['put'], url_path='update_certifications_licenses/(?P<student_id>[^/.]+)')
+    def update_certifications_licenses(self, request, student_id=None):
+        try:
+            certifications_licenses = request.data.get('certifications', [])
+            for certifications_licenses_data in certifications_licenses:
+                certifications_licenses_id = certifications_licenses_data.get('id', None)
+                if not certifications_licenses_id:
+                    continue
+                certifications_licenses = CertificationLicenses.objects.get(student_id=student_id, id=certifications_licenses_id)
+                serializer = self.serializer_class(certifications_licenses, data=certifications_licenses_data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+
+            return Response("Certifications or licenses updated successfully", status=status.HTTP_200_OK)
+        except CertificationLicenses.DoesNotExist:
+            return Response("Certifications or licenses not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error updating certifications or licenses", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LanguagesViewSet(viewsets.ModelViewSet):
     serializer_class = LanguagesSerializer
@@ -187,6 +244,25 @@ class LanguagesViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering languages", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['put'], url_path='update_languages/(?P<student_id>[^/.]+)')
+    def update_languages(self, request, student_id=None):
+        try:
+            languages = request.data.get('languages', [])
+            for languages_data in languages:
+                languages_id = languages_data.get('id', None)
+                if not languages_id:
+                    continue
+                languages = Languages.objects.get(student_id=student_id, id=languages_id)
+                serializer = self.serializer_class(languages, data=languages_data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+
+            return Response("Languages updated successfully", status=status.HTTP_200_OK)
+        except Languages.DoesNotExist:
+            return Response("Languages not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error updating languages", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class SkillsViewSet(viewsets.ModelViewSet):
     serializer_class = SkillsSerializer
@@ -220,4 +296,22 @@ class SkillsViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering skills", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+    @action(detail=False, methods=['put'], url_path='update_skills/(?P<student_id>[^/.]+)')
+    def update_skills(self, request, student_id=None):
+        try:
+            skills = request.data.get('skills', [])
+            for skills_data in skills:
+                skills_id = skills_data.get('id', None)
+                if not skills_id:
+                    continue
+                skills = Skills.objects.get(student_id=student_id, id=skills_id)
+                serializer = self.serializer_class(skills, data=skills_data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+
+            return Response("Skills updated successfully", status=status.HTTP_200_OK)
+        except Skills.DoesNotExist:
+            return Response("Skills not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error updating skills", status=status.HTTP_500_INTERNAL_SERVER_ERROR)      
