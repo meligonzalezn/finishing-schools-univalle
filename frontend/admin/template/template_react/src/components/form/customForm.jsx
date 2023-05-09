@@ -1,24 +1,35 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ReactTags from 'react-tag-autocomplete';
 
 function CustomForm ({fields, onSubmit, action, showModalAction}) {
     const dispatch = useDispatch()
     const [formValues, setFormValues] = useState({});
     const [fieldErrors, setFieldErrors] = useState({});
-    
+    const [roles, setRoles] = useState([])
+
     function handleFieldChange(event){
         event.preventDefault();
         const { name, value } = event.target;
         if (name === "roles") {
-            console.log("hiiiiii aqui va el rol")
-            setFormValues((prevValues) => ({
-                ...prevValues,
-                [name]: prevValues[name] ? [...prevValues[name], value] : [value]
-            }));
+            setRoles((prevRoles) => [...prevRoles, value]);
+            setFormValues((prevValues) => ({ ...prevValues, [name]: roles }));
         } else {
             setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
         }
     }
+    
+    function handleAddition(role) {
+        setRoles([...roles, role]);
+        setFormValues((prevValues) => ({ ...prevValues, roles: [...roles, role] }));
+    }
+    
+    function handleDelete(i) {
+        const newRoles = roles.filter((role, index) => index !== i);
+        setRoles(newRoles);
+        setFormValues((prevValues) => ({ ...prevValues, roles: newRoles }));
+    }
+    
 
     function handleSubmit(event){
         event.preventDefault();
@@ -37,8 +48,12 @@ function CustomForm ({fields, onSubmit, action, showModalAction}) {
             return;
         }
         setFieldErrors({}); 
-        console.log('valores', formValues)
-        dispatch(action(formValues))
+        // Convert roles to a simple array of strings
+        const rolesArray = roles.map(role => role.name);
+        // Merge the original formValues with the roles array
+        const valuesWithRoles = {...formValues, roles: rolesArray};
+        console.log('valores', valuesWithRoles)
+        dispatch(action(valuesWithRoles))
         dispatch(showModalAction(false))
     }
     
@@ -49,15 +64,25 @@ function CustomForm ({fields, onSubmit, action, showModalAction}) {
                     <label className="form-label col-form-label" htmlFor={field.name}>{field.label}</label>
                     {
                         field.name !== "description" ? (
-                            <input
-                                className="form-control" 
-                                type={field.type}
-                                name={field.name}
-                                id={field.name}
-                                value={formValues[field.name] || ''}
-                                onChange={handleFieldChange}
-                                required={field.required}
-                            />
+                            field.name !== "roles" ? (
+                                <input
+                                    className="form-control" 
+                                    type={field.type}
+                                    name={field.name}
+                                    id={field.name}
+                                    value={formValues[field.name] || ''}
+                                    onChange={handleFieldChange}
+                                    required={field.required}
+                                />
+                            ) : (
+                                <ReactTags 
+                                    tags={roles}
+                                    onDelete={handleDelete} 
+                                    onAddition={handleAddition}
+                                    allowNew={true}
+                                    className="react-tags__selected-tag"  
+                                />
+                            )
                         ): 
                         (
                             <textarea

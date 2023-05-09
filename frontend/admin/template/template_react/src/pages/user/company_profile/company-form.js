@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom'
-import DatePicker from 'react-datepicker';
 import ProfileImage from '../../../assets/img/profile/user-image-default.png'
 import { ReactNotifications, Store } from 'react-notifications-component';
-import { get_user_basic_info } from '../../../utils/user-axios';
-import { getPortfolioStudent, registerPortfolioStudent, updatePortfolioStudent } from '../../../utils/scraping-axios';
 import ReactTags from 'react-tag-autocomplete';
 import { getCompanyData, registerCompanyData, updateCompanyData } from '../../../utils/company-axios';
 import "../styles/tags.css"

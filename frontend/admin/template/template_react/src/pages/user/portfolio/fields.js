@@ -23,6 +23,35 @@ const experienceFields = [
     }
 ]
 
+const studiesFields = [
+    {
+        name: "degree", 
+        label: "Título", 
+        type: "text", 
+    },
+    {
+        name: "school",
+        label: "Academia*",
+        type: "text",
+        required: true,
+
+    },
+    {
+        name: "start_date",
+        label: "Fecha de inicio",
+        type: "date",
+    },
+    {
+        name: "end_date",
+        label: "Fecha de finalización",
+        type: "date"
+    },
+    {
+        name: "description",
+        label: "Descripción", 
+        type: "textarea"
+    }
+]
 
 
-export {experienceFields}
+export {experienceFields, studiesFields}

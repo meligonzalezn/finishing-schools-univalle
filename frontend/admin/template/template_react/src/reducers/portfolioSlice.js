@@ -9,6 +9,7 @@ const initialState = {
     languages: [],
     skills: [],
     showModalExperience: false,
+    showModalEducation: false,
 }
 
 const portfolioSlice = createSlice({
@@ -33,6 +34,9 @@ const portfolioSlice = createSlice({
         setEducation(state, action) {
             state.education = action.payload;
         },
+        setShowModalEducation(state, action){
+            state.showModalEducation = action.payload;
+        },
         setCertifications(state, action){
             state.certifications = action.payload;
         },
@@ -54,6 +58,10 @@ export const selectCertifications = (state) => state.portfolio.certifications;
 export const selectLanguages = (state) => state.portfolio.languages;
 export const selectSkills = (state) => state.portfolio.skills;
 export const selectShowModalExperience = (state) => state.portfolio.showModalExperience;
+export const selectShowModalEducation = (state) => state.portfolio.showModalEducation;
 
-export const {setAbout, setImage, setExperiences, setSingleExperience, setEducation, setCertifications, setLanguages, setSkills, setShowModalExperience} = portfolioSlice.actions;
+export const {setAbout, setImage, setExperiences, setSingleExperience, 
+            setEducation, setCertifications, setLanguages, setSkills, 
+            setShowModalExperience, setShowModalEducation} = portfolioSlice.actions;
+
 export default portfolioSlice.reducer;

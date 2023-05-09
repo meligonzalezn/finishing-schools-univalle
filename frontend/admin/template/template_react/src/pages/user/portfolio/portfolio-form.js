@@ -225,6 +225,8 @@ const PortfolioForm = () => {
             }
         }
     } 
+
+    console.log(experience)
     return (
         <div>
             {
