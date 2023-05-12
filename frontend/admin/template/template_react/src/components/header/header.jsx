@@ -11,6 +11,7 @@ import { refreshToken } from '../../utils/logout-axios.js';
 
 const Header = () => {
 	const [userName, setUserName] = useState(localStorage.getItem("user_name"));
+	const [refreshSession, setRefreshSession] = useState(false)
 	const {
 		toggleAppSidebarMobile,
 		toggleAppSidebarEnd,
@@ -39,6 +40,20 @@ const Header = () => {
 	useEffect(() => {
 		getUserBasicInfo();
 		
+		if(sessionStorage.getItem("token") == null){
+			//Refresh the acces_token in case the user got in to page without login in. 
+			//(Didn't logout, closed the page and opened the page
+			// again, now with the access_token already exdpired)
+			refreshToken()
+				.then(response => {
+					localStorage.setItem("access_token",response.access);
+				})
+				.catch(error => {
+				console.log(error);
+				});
+			sessionStorage.setItem("token", "active")
+			setRefreshSession(true)
+		}
 		const interval = setInterval(() => {
 			refreshToken()
 				.then(response => {
@@ -51,7 +66,7 @@ const Header = () => {
 	  
 		
 		  return () => clearInterval(interval);
-	}, [userName])
+	}, [userName, refreshSession])
 
 	return (
 		<div id="header" className={'app-header ' + (appHeaderInverse ? 'app-header-inverse' : '')}>

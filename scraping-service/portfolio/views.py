@@ -7,12 +7,15 @@ from rest_framework import status
 from rest_framework.decorators import action
 from .tokens_handler import handleAuthToken
 from django.shortcuts import get_object_or_404
+from .permissions import HasRole
+
 
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put'] 
 
@@ -21,6 +24,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         """
             return a all users on DB.\n
             @return users: List[Object]
+        
         """
         try:
             query = Student.objects.all().get(pk=pk)
@@ -28,7 +32,7 @@ class StudentViewSet(viewsets.ModelViewSet):
                 query, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response("User doesn't exist", status=status.HTTP_400_BAD_REQUEST)
+            return Response("User doesn't exist", status=status.HTTP_404_NOT_FOUND)
  
     @action(detail=True, methods=['put'])
     def update_user(this, request: Request, pk: int) -> Response:
@@ -65,11 +69,24 @@ class StudentViewSet(viewsets.ModelViewSet):
         registerState = "In progress"
         try:
             student = Student.objects.all().get(pk=sub_key)
-            if(student.isFilled):
+            if(student.isFilled and student.scrapeInfoSaved):
                 registerState = "Filled"
             return Response({"state": registerState}, status=status.HTTP_200_OK)
         except:
             return Response({"state": registerState},status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'])
+    def get_pfp(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        print("entre")
+        student = get_object_or_404(Student.objects.all(), pk=sub_key)
+        serializer = StudentSerializer(student)
+        return Response({"profile_picture": serializer.data["image_profile"]}, status=status.HTTP_200_OK)
+       
+        
+    
 
 
 

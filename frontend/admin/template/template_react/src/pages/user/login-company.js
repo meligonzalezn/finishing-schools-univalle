@@ -47,6 +47,7 @@ function LoginCompany(){
 			localStorage.setItem("refresh_token", res.tokens.refresh)
 			localStorage.setItem("user",  res.email)
 			localStorage.setItem("role", "company")
+			sessionStorage.setItem("token", "active")
 			setRedirect(true)
 			setLoader(false)
 		}

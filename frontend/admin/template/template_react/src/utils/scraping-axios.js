@@ -21,6 +21,7 @@ async function registerPortfolioStudent(data) {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                   'Accept': 'application/json',
+                  authorization: "Bearer " + localStorage.getItem("access_token"),
                 },
             };
             
@@ -49,9 +50,9 @@ async function getPortfolioStudent() {
                 url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData[0].sub_key}/get_user/`,
                 method: "GET",
                 headers: {
-                // Add any auth token here
-                   authorization: "Bearer "+ sessionStorage.getItem("access_token"),
-                },
+                    // Add any auth token here
+                    authorization: "Bearer " + localStorage.getItem("access_token"),
+                  },
               })    
                 // Catch errors if any
                 .catch((err) => { 
@@ -60,6 +61,9 @@ async function getPortfolioStudent() {
             if(response.status===200){
               return response.data
             }
+            if(response.status===404){
+                return "unregistered"
+              }
             else{
               return undefined
             }  
@@ -102,7 +106,9 @@ async function updatePortfolioStudent(data, imageChanged) {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Accept': 'application/json',
+                     authorization: "Bearer " + localStorage.getItem("access_token"),
                   },
+                 
                 }).then((res) => {
                   return res;
                 });
@@ -121,6 +127,10 @@ async function getScrapingInfo(scrapingInfo) {
               url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/get-basic-info/scrape/`,
               method: "POST",
               data: scrapingInfo,
+              headers: {
+                // Add any auth token here
+                authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
         })
         return response;
     } catch (error) {
@@ -131,30 +141,6 @@ async function getScrapingInfo(scrapingInfo) {
 
 
 
-/**
- * Returns if the student's portfolio has been filled up.
- * @returns 
- */
-async function get_portfolio_state(){
-    const response  = await axios({
-        // Endpoint to send files
-        url:`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/get_portfolio_state/` ,
-        method: "GET",
-        headers: {
-        // Add any auth token here
-           authorization: "Bearer "+ localStorage.getItem("access_token"),
-        },
-      })    
-        // Catch errors if any
-        .catch((err) => { 
-            return err.response
-        });
-    if(response.status===200){
-      return response.data
-    }
-    else{
-      return undefined
-    }     
-}
 
-export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent, getScrapingInfo, get_portfolio_state }
+
+export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent, getScrapingInfo}

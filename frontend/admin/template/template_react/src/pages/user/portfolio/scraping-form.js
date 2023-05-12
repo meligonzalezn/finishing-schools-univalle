@@ -92,7 +92,7 @@ const ScrapingForm = () => {
               setName(basicInfo['user_name']);
               setLastname(basicInfo['user_last_name']);  
             }
-            if (portfolioStudent) {
+            if (portfolioStudent !== "unregistered") {
                 setIdCard(portfolioStudent['idCard'])
                 setIssueDate(new Date(portfolioStudent['issueDate']))
                 setGithub(portfolioStudent['github_profile'])

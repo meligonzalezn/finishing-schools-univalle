@@ -358,7 +358,7 @@ const CompanyForm = () => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-4">
+                                    <div className="col-6">
                                         <label className="form-label col-form-label col-md-3"> Ubicación </label>
                                         <input
                                             name='address'
@@ -370,7 +370,7 @@ const CompanyForm = () => {
                                             onBlur={formik.handleBlur}
                                         />
                                     </div>
-                                    <div className="col">
+                                    <div className="col-5">
                                         <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> Ciudad </label>
                                         <input
                                             name='city'
@@ -397,13 +397,10 @@ const CompanyForm = () => {
                                             <i class="bi bi-plus-square-dotted" style={{ "font-size": "1.1rem" }}></i>
                                         </button>
                                     </div>
-                                    <div className="col">
-                                        <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> + </label>
-                                    </div>
                                 </div>
                                 {locations.map((location, index) => (
                                     <div className="row" key={index}>
-                                        <div className="col-4">
+                                        <div className="col-6">
                                             <label style={{ "visibility": "hidden" }}> Ubicación </label>
                                             <input
                                                 type="text"
@@ -412,7 +409,7 @@ const CompanyForm = () => {
                                                 disabled={true}
                                             />
                                         </div>
-                                        <div className="col">
+                                        <div className="col-5">
                                             <label style={{ "visibility": "hidden" }}> Ciudad </label>
                                             <input
                                                 type="text"
@@ -430,9 +427,6 @@ const CompanyForm = () => {
                                                 <i class="bi bi-dash-square-dotted" style={{ "font-size": "1.1rem" }}></i>
                                             </button>
                                         </div>
-                                        <div className="col">
-                                            <label style={{ "visibility": "hidden" }}> x </label>
-                                        </div>
                                     </div>
                                 ))}
                                 <div className="row">
@@ -442,7 +436,7 @@ const CompanyForm = () => {
                                         className="react-tags__selected-tag"  />
                                     </div>
                                 </div>
-                                <div style={{ "marginTop": "2rem", "display": "flex", "justifyContent": "space-between" }}>
+                                <div style={{ "marginTop": "2rem", "display": "flex", "justifyContent": "right" }}>
                                     <div className='d-flex'>
                                         {
                                             isFilled ? (
@@ -477,29 +471,9 @@ const CompanyForm = () => {
                                                     </button>
                                                 )
                                         }
-                                        {/* <button 
-                                        type='submit' 
-                                        onClick={formik.handleSubmit}
-                                        disabled={isFilled ? true : false}
-                                        className="btn btn-success w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
-                                            Guardar
-                                        {
-                                            infoSaved ? (
-                                            <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
-                                                <span className="sr-only">Loading...</span>
-                                            </div> 
-                                            ) : null
-                                        }
-                                    </button> */}
-
+                                    
                                     </div>
-                                    <Link to="/user/student/portfolio">
-                                        <button
-                                            type='submit'
-                                            className="btn btn-gray w-120px me-5px" >
-                                            Continuar
-                                        </button>
-                                    </Link>
+                                    
                                 </div>
                             </form>
                         </div>

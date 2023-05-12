@@ -27,6 +27,7 @@ function LoginStudent() {
 		localStorage.setItem("refresh_token", res.tokens.refresh)
 		localStorage.setItem("user",  res.email)
 		localStorage.setItem("role", "student")
+		sessionStorage.setItem("token", "active")
 		setRedirect(true);
 	  } else {
 		setLoader(false);

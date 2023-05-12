@@ -21,7 +21,7 @@ def get_github_information(profile_url):
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.18.0.2:4444',
+        command_executor='http://172.18.0.5:4444',
         options=chrome_options
     )
 
@@ -34,27 +34,27 @@ def get_github_information(profile_url):
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
         
-        print("1")
+  
         # Searching for repositories
         repositoriesButton = driver.find_element(By.CSS_SELECTOR, '[data-tab-item="repositories"]').click()
 
         time.sleep(4)
        
-        print(2)
+     
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
 
 
         #Getting proggramming languages 
         languagesList = soup.find("details", {"id":"language-options"})
-        print("3", languagesList)
+    
         languagesItems = languagesList.find_all("label", {"class":"SelectMenu-item"})
         programmingLanguages = []
-        print("por aqui pase")
+   
 
         for item in languagesItems:
             programmingLanguages.append(item.find("span", {"class":"text-normal"}).text)
-            print("dddddd", programmingLanguages)
+            
        
         
         programmingLanguages.pop(0)   
@@ -63,7 +63,6 @@ def get_github_information(profile_url):
         return programmingLanguages
     except:
         driver.quit() 
-        print("exceptionnnnnnnnn")
         return []
 
 def get_gitlab_information(profile_url):

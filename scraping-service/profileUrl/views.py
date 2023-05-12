@@ -4,12 +4,12 @@ from .scraping import get_github_information, get_gitlab_information, scrape_inf
 from .linkedin import get_linkedin_information
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .permissions import IsAuthenticated, HasRole
+from .permissions import HasRole
 import threading
 
 
 class BasicInfo(APIView):
-    permission_classes = (IsAuthenticated, HasRole)
+    permission_classes = [HasRole]
 
     def post(self, request, format=None):
         

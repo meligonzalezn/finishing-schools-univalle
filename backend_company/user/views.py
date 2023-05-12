@@ -11,6 +11,8 @@ import jwt
 import os
 from django.shortcuts import get_object_or_404
 from django.http import QueryDict
+from rest_framework.decorators import action
+from rest_framework.decorators import api_view
         
 class CompanyView(APIView):
     def post(self, request):
@@ -89,10 +91,31 @@ class CompanyView(APIView):
         company.delete()
         return Response(status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_profile_state(request):
+    sub_key = handleAuthToken(request)
+    if sub_key == 'invalid_token':
+        return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+    registerState = "In progress"
+    try:
+        company = Company.objects.all().get(pk=sub_key)
+        registerState = "Filled"
+        return Response({"state": registerState}, status=status.HTTP_200_OK)
+    except:
+        return Response({"state": registerState},status=status.HTTP_200_OK)
+
+
+
+
+@api_view(['GET'])
+def get_pfp( request):
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        company = get_object_or_404(Company.objects.all(), pk=sub_key)
+        serializer = CompanySerializer(company)
+    
+        return Response({"profile_picture": serializer.data["image"]}, status=status.HTTP_200_OK)
+       
         
-        
-
-
-
-
- 

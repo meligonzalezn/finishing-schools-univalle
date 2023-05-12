@@ -22,6 +22,7 @@ def register_social_user(provider, user_id, email, name, last_name, role):
                 'tokens': registered_user.tokens()}
 
         else:
+            print("aqui?")
             raise AuthenticationFailed(
                 detail='Please continue your login using ' + filtered_user_by_email[0].auth_provider)
 
@@ -37,7 +38,7 @@ def register_social_user(provider, user_id, email, name, last_name, role):
         user.name = name
         user.last_name= last_name
         user.role = role
-        print('usuario', user)
+        
         user.save()
         
         new_user = authenticate(
