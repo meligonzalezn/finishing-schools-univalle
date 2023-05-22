@@ -12,7 +12,7 @@ async function registerExperience(experience, studentId) {
         method: "POST",
         data: {
           student_id: studentId,
-          experience: experience,
+          experience: experience
         },
       });
     } catch (error) {
@@ -23,23 +23,42 @@ async function registerExperience(experience, studentId) {
 /**
  * Update array that store objects with experience of user
  * @param {*} experience Array of objects representing work experiences
+ * @param {*} experienceId to be updated
  * @param {*} studentId string representing the id of student
  */
-async function updateExperience(experience, studentId) {
-    try {
-        await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/update_work_experience/${studentId}/`,
-            method: "PUT",
-            data: { 
-                "experience": experience
-          }
-      });
-    } catch (error) {
-        throw error
-    }
+async function updateExperience(studentId, experienceId, experience) {
+  try {
+    const response = await axios({
+      url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/update_work_experience/${studentId}/${experienceId}/`,
+      method: "PUT",
+      data: {
+        "experience": experience
+      }
+    });
+    return response; 
+  } catch (error) {
+    throw error;
+  }
 }
 
-  
+
+
+/**
+ * Delete information related with student
+ * @param {*} studentId Student ID for delete information
+ * @param {*} workExperienceId experience ID to be deleted
+ * @returns 
+ */
+async function deleteExperienceBack(studentId, workExperienceId) {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/delete_work_experience/${studentId}/${workExperienceId}/`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
   /**
    * Register an array that store objects with education of user
    * @param {*} education Array of objects representing education
@@ -60,22 +79,41 @@ async function updateExperience(experience, studentId) {
     }
   }
 
+
   /**
    * Update an array that store objects with education of user
    * @param {*} education Array of objects representing education
+   * @param {*} studieId to be updated
    * @param {*} studentId string representing the id of the student
    */  
-  async function updateEducation(education, studentId) {
+  async function updateEducation(studentId, studieId, education) {
     try {
-        await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/update_studies/${studentId}/`,
+        const response = await axios({
+            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/update_studies/${studentId}/${studieId}/`,
             method: "PUT",
             data: { 
                 "education": education
           }
       });
+      return response;
     } catch (error) {
         throw error;
+    }
+  }
+
+
+  /**
+   * Delete information related with student
+   * @param {*} studentId Student ID for delete information
+   * @param {*} studiesId studie ID to be deleted
+   * @returns 
+   */
+  async function deleteEducationBack(studentId, studiesId) {
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/delete_studies/${studentId}/${studiesId}/`);
+      return response;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -99,22 +137,39 @@ async function updateExperience(experience, studentId) {
     }
   }
 
-   /**
+  /**
    * update an array that store objects with certifications and licenses of user
    * @param {*} certificationsLicenses Array of objects representing certifications and licenses
+   * @param {*} certificationId to be updated
    * @param {*} studentId string representing the id of the student
    */
-  async function updateCertificationsLicenses(certificationsLicenses, studentId){
+  async function updateCertificationsLicenses(studentId, certificationId, certificationsLicenses){
     try {
-        await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/update_certifications_licenses/${studentId}/`,
+        const response = await axios({
+            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/update_certifications_licenses/${studentId}/${certificationId}/`,
             method: "PUT",
             data: { 
                 "certifications": certificationsLicenses
           }
       });
+      return response;
     } catch (error) {
         throw error;
+    }
+  }
+
+  /**
+   * Delete information related with student
+   * @param {*} studentId Student ID for delete information
+   * @param {*} certificationLicensesId certification or licenses ID to be deleted
+   * @returns 
+   */
+  async function deleteCertificationsLicensesBack(studentId, certificationLicensesId) {
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/delete_certifications_licenses/${studentId}/${certificationLicensesId}/`);
+      return response;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -141,21 +196,38 @@ async function updateExperience(experience, studentId) {
    /**
    * Update an array that store objects with languages of user
    * @param {*} languages Array of objects representing languages
+   * @param {*} languageId to be updated
    * @param {*} studentId string representing the id of the student
    */
-  async function updateLanguages(languages, studentId) {
+  async function updateLanguages(studentId, languageId, languages) {
     try {
-        await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/update_languages/${studentId}/`,
+      const response = await axios({
+            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/update_languages/${studentId}/${languageId}/`,
             method: "PUT",
             data: { 
                 "languages": languages
           }
       });
+      return response;
     } catch (error) {
         throw error;
     }
   }
+
+  /**
+   * Delete information related with student
+   * @param {*} studentId Student ID for delete information
+   * @param {*} languageId language ID to be deleted
+   * @returns 
+   */
+    async function deleteLanguagesBack(studentId, languageId) {
+      try {
+        const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/delete_languages/${studentId}/${languageId}/`);
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    }
 
   /**
    * Register an array that store objects with skills of user
@@ -163,14 +235,13 @@ async function updateExperience(experience, studentId) {
    * @param {*} studentId string representing the id of the student
    */
   async function registerSkills(skills, studentId) {
-    const formattedSkills = skills.map((skill) => ({ name: skill }));
     try {
       await axios({
         url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/create_skills/create_skills/`,
         method: "POST",
         data: {
           student_id: studentId,
-          skills: formattedSkills,
+          skills: skills,
         },
       });
     } catch (error) {
@@ -185,16 +256,30 @@ async function updateExperience(experience, studentId) {
    */
   async function updateSkills(skills, studentId){
     try {
-        const formattedSkills = skills.map(skill => ({ "name": skill }));
         await axios({
             url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/update_skills/${studentId}/`,
             method: "PUT",
             data: { 
-                "skills": formattedSkills
+                "skills": skills
           }
       });
     } catch (error) {
         throw error;
+    }
+  }
+
+  /**
+   * Delete information related with student
+   * @param {*} studentId Student ID for delete information
+   * @param {*} skillId skill ID to be deleted
+   * @returns 
+   */
+  async function deleteSkillsBack(studentId, skillId) {
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/delete_skills/${studentId}/${skillId}/`);
+      return response;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -246,45 +331,51 @@ async function registerPortfolioStudentInformation(data, studentId) {
  * @returns {Promise<Object>} An object containing the fetched information
  */
 async function getPortfolioStudentInformation(studentId) {
-    try {
-        let experienceResponse, educationResponse, certificationResponse, languagesResponse, skillsResponse;
-        experienceResponse  = await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/${studentId}/get_work_experience/`,
-            method: "GET",
-        });
-        educationResponse  = await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/${studentId}/get_studies/`,
-            method: "GET",
-        });
-        
-        certificationResponse  = await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/${studentId}/get_certifications_licenses/`,
-            method: "GET",
-        });
-        
-        languagesResponse  = await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/${studentId}/get_languages/`,
-            method: "GET",
-        });
-        skillsResponse  = await axios({
-            url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/${studentId}/get_skills/`,
-            method: "GET",
-        });
-        const skillsArray = skillsResponse.data.map((skill) => {
-            return skill.name
-        })      
-      return {
-        "experience": experienceResponse,
-        "certifications": certificationResponse,
-        "education": educationResponse,
-        "languages": languagesResponse,
-        "skills": [...new Set(skillsArray)],
-      }
-    }
-    catch(error){
-        throw error
-    }
+  try {
+    const requests = [
+      await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/${studentId}/get_work_experience/`,
+        method: "GET",
+      }),
+      await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/${studentId}/get_studies/`,
+        method: "GET",
+      }),
+      await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/${studentId}/get_certifications_licenses/`,
+        method: "GET",
+      }),
+      await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/${studentId}/get_languages/`,
+        method: "GET",
+      }),
+      await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/${studentId}/get_skills/`,
+        method: "GET",
+      }),
+    ];
+
+    const [
+      experienceResponse,
+      educationResponse,
+      certificationResponse,
+      languagesResponse,
+      skillsResponse,
+    ] = await Promise.all(requests);
+
+  
+    return {
+      experience: experienceResponse,
+      certifications: certificationResponse,
+      education: educationResponse,
+      languages: languagesResponse,
+      skills: skillsResponse,
+    };
+  } catch (error) {
+    throw error;
+  }
 }
+
 
 /**
  * Updates portfolio student information for the given student ID
@@ -320,4 +411,8 @@ async function updatePortfolioStudentInformation(data, studentId) {
     }
 } 
 
-export {registerPortfolioStudentInformation, getPortfolioStudentInformation, updatePortfolioStudentInformation}
+export {registerPortfolioStudentInformation, getPortfolioStudentInformation, updatePortfolioStudentInformation, 
+        registerExperience, registerCertificationsLicenses, registerEducation, registerLanguages,
+        registerSkills, updateExperience, updateEducation, updateCertificationsLicenses, updateLanguages,
+        updateSkills, deleteExperienceBack, deleteEducationBack, deleteCertificationsLicensesBack, deleteLanguagesBack,
+        deleteSkillsBack}

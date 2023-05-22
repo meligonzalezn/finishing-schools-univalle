@@ -9,7 +9,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta: 
         model = WorkExperience
-        fields = ['id', 'student_id', 'company_name', 'roles', 'experience_time', 'description']
+        fields = ['id', 'student_id', 'company_name', 'roles', 'experience_time','start_date', 'end_date','description']
 
 class StudiesSerializer(serializers.ModelSerializer):
     class Meta: 

@@ -21,7 +21,7 @@ def get_github_information(profile_url):
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.19.0.4:4444',
+        command_executor='http://172.19.0.5:4444',
         options=chrome_options
     )
 
@@ -82,7 +82,7 @@ def get_gitlab_information(profile_url):
     def get_links(projects_type):
         #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
         driver = webdriver.Remote(
-                command_executor='http://172.19.0.4:4444',
+                command_executor='http://172.19.0.5:4444',
                 options=chrome_options
             )
         # Opening gitlab's user profile

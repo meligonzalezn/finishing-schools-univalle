@@ -47,7 +47,7 @@ def get_linkedin_information(profile_url):
 
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.19.0.4:4444',
+        command_executor='http://172.19.0.5:4444',
         options=chrome_options
     )
 
@@ -229,12 +229,13 @@ def get_linkedin_information(profile_url):
             print('-------------- No languages information')
         # Concatenate the lists and append to the experience list
         experience = [item for sublist in experience for item in sublist]
+        print(experience[::-1])
         userPortfolio.append({
             "about": about,
-            "experience": experience,
-            "education": educationInfo,
-            "certifications": certifications,
-            "languages": languagesInfo
+            "experience": experience[::-1],
+            "education": educationInfo[::-1],
+            "certifications": certifications[::-1],
+            "languages": languagesInfo[::-1]
         })
         driver.quit()
         return userPortfolio

@@ -12,7 +12,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
 
-    http_method_names = ['get', 'post', 'put'] 
+    http_method_names = ['get', 'post', 'put', 'delete'] 
 
     @action(detail=True, methods=['get'])
     def get_user(this, request: Request, pk: int) -> Response:
@@ -60,7 +60,7 @@ class WorkExperienceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkExperienceSerializer
     queryset = WorkExperience.objects.all()
 
-    http_method_names = ['get', 'post', 'put'] 
+    http_method_names = ['get', 'post', 'put', 'delete'] 
 
     @action(detail=False, methods=['get'], url_path='get_work_experience/(?P<student_id>[^/.]+)')
     def get_work_experience(self, request, student_id=None):
@@ -88,31 +88,44 @@ class WorkExperienceViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering work experiences", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['put'], url_path='update_work_experience/(?P<student_id>[^/.]+)')
-    def update_work_experience(self, request, student_id=None):
+
+    @action(detail=False, methods=['put'], url_path='update_work_experience/(?P<student_id>[^/.]+)/(?P<experience_id>[^/.]+)')
+    def update_work_experience(self, request, student_id=None, experience_id=None):
         try:
-            work_experiences = request.data.get('experience', [])
-            for experience_data in work_experiences:
-                work_experience_id = experience_data.get('id', None)
-                if not work_experience_id:
+            experiences = request.data.get('experience', [])
+            for experience_data in experiences:
+                experience_id = experience_data.get('id', None)
+                if not experience_id:
                     continue
-                work_experience = WorkExperience.objects.get(student_id=student_id, id=work_experience_id)
+                work_experience = WorkExperience.objects.get(student_id=student_id, id=experience_id)
                 serializer = self.serializer_class(work_experience, data=experience_data, partial=True)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
 
-            return Response("Work experiences updated successfully", status=status.HTTP_200_OK)
+            return Response("Work experience updated successfully", status=status.HTTP_200_OK)
         except WorkExperience.DoesNotExist:
             return Response("Work experience not found", status=status.HTTP_404_NOT_FOUND)
         except:
-            return Response("Error updating work experiences", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("Error updating work experience", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @action(detail=True, methods=['delete'], url_path='delete_work_experience/(?P<student_id>[^/.]+)/(?P<experience_id>[^/.]+)')
+    def delete_work_experience(self, request, student_id=None, experience_id=None):
+        try:
+            work_experience = WorkExperience.objects.get(student_id=student_id, id=experience_id)
+            work_experience.delete()
+            return Response("Work experience deleted successfully", status=status.HTTP_200_OK)
+        except WorkExperience.DoesNotExist:
+            return Response("Work experience not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error deleting work experience", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class StudiesViewSet(viewsets.ModelViewSet):
     serializer_class = StudiesSerializer
     queryset = Studies.objects.all()
 
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post', 'put', 'delete']
 
     @action(detail=True, methods=['get'], url_path='get_studies/(?P<student_id>[^/.]+)')
     def get_studies(self, request, student_id=None):
@@ -141,8 +154,9 @@ class StudiesViewSet(viewsets.ModelViewSet):
         except:
             return Response("Error registering studies", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    @action(detail=False, methods=['put'], url_path='update_studies/(?P<student_id>[^/.]+)')
-    def update_studies(self, request, student_id=None):
+
+    @action(detail=False, methods=['put'], url_path='update_studies/(?P<student_id>[^/.]+)/(?P<studies_id>[^/.]+)')
+    def update_studies(self, request, student_id=None, studies_id=None):
         try:
             studies = request.data.get('education', [])
             for studies_data in studies:
@@ -154,17 +168,29 @@ class StudiesViewSet(viewsets.ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
 
-            return Response("Studies updated successfully", status=status.HTTP_200_OK)
+            return Response("Studie updated successfully", status=status.HTTP_200_OK)
         except Studies.DoesNotExist:
-            return Response("Studies not found", status=status.HTTP_404_NOT_FOUND)
+            return Response("Studie not found", status=status.HTTP_404_NOT_FOUND)
         except:
-            return Response("Error updating studies", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("Error updating studie", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @action(detail=True, methods=['delete'], url_path='delete_studies/(?P<student_id>[^/.]+)/(?P<studies_id>[^/.]+)')
+    def delete_studies(self, request, student_id=None, studies_id=None):
+        try:
+            studies = Studies.objects.get(student_id=student_id, id=studies_id)
+            studies.delete()
+            return Response("Studie deleted successfully", status=status.HTTP_200_OK)
+        except Studies.DoesNotExist:
+            return Response("Studie not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error deleting studie", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CertificationsLicensesViewSet(viewsets.ModelViewSet):
     serializer_class = CertificationLicensesSerializer
     queryset = CertificationLicenses.objects.all()
 
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post', 'put', 'delete']
 
     @action(detail=True, methods=['get'], url_path='get_certifications_licenses/(?P<student_id>[^/.]+)')
     def get_certifications_licenses(self, request, student_id=None):
@@ -193,8 +219,9 @@ class CertificationsLicensesViewSet(viewsets.ModelViewSet):
         except:
             return Response("Error registering certifications or licenses", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    @action(detail=False, methods=['put'], url_path='update_certifications_licenses/(?P<student_id>[^/.]+)')
-    def update_certifications_licenses(self, request, student_id=None):
+
+    @action(detail=False, methods=['put'], url_path='update_certifications_licenses/(?P<student_id>[^/.]+)/(?P<certifications_licenses_id>[^/.]+)')
+    def update_certifications_licenses(self, request, student_id=None, certifications_licenses_id=None):
         try:
             certifications_licenses = request.data.get('certifications', [])
             for certifications_licenses_data in certifications_licenses:
@@ -206,17 +233,29 @@ class CertificationsLicensesViewSet(viewsets.ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
 
-            return Response("Certifications or licenses updated successfully", status=status.HTTP_200_OK)
+            return Response("Certification or license updated successfully", status=status.HTTP_200_OK)
         except CertificationLicenses.DoesNotExist:
-            return Response("Certifications or licenses not found", status=status.HTTP_404_NOT_FOUND)
+            return Response("Certification or license not found", status=status.HTTP_404_NOT_FOUND)
         except:
-            return Response("Error updating certifications or licenses", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("Error updating certification or license", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @action(detail=True, methods=['delete'], url_path='delete_certifications_licenses/(?P<student_id>[^/.]+)/(?P<certifications_licenses_id>[^/.]+)')
+    def delete_certifications_licenses(self, request, student_id=None, certifications_licenses_id=None):
+        try:
+            certifications_licenses = CertificationLicenses.objects.get(student_id=student_id, id=certifications_licenses_id)
+            certifications_licenses.delete()
+            return Response("Certifications or license deleted successfully", status=status.HTTP_200_OK)
+        except CertificationLicenses.DoesNotExist:
+            return Response("Certification or license not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error deleting certification or license", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LanguagesViewSet(viewsets.ModelViewSet):
     serializer_class = LanguagesSerializer
     queryset = Languages.objects.all()
 
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post', 'put', 'delete']
 
     @action(detail=True, methods=['get'], url_path='get_languages/(?P<student_id>[^/.]+)')
     def get_languages(self, request, student_id=None):
@@ -244,9 +283,9 @@ class LanguagesViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response("Error registering languages", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['put'], url_path='update_languages/(?P<student_id>[^/.]+)')
-    def update_languages(self, request, student_id=None):
+        
+    @action(detail=False, methods=['put'], url_path='update_languages/(?P<student_id>[^/.]+)/(?P<languages_id>[^/.]+)')
+    def update_languages(self, request, student_id=None, languages_id=None):
         try:
             languages = request.data.get('languages', [])
             for languages_data in languages:
@@ -258,17 +297,29 @@ class LanguagesViewSet(viewsets.ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
 
-            return Response("Languages updated successfully", status=status.HTTP_200_OK)
+            return Response("Language updated successfully", status=status.HTTP_200_OK)
         except Languages.DoesNotExist:
-            return Response("Languages not found", status=status.HTTP_404_NOT_FOUND)
+            return Response("Language not found", status=status.HTTP_404_NOT_FOUND)
         except:
-            return Response("Error updating languages", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("Error updating Language", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        
+    @action(detail=True, methods=['delete'], url_path='delete_languages/(?P<student_id>[^/.]+)/(?P<languages_id>[^/.]+)')
+    def delete_languages(self, request, student_id=None, languages_id=None):
+        try:
+            languages = Languages.objects.get(student_id=student_id, id=languages_id)
+            languages.delete()
+            return Response("Language deleted successfully", status=status.HTTP_200_OK)
+        except Languages.DoesNotExist:
+            return Response("Language not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error deleting language", status=status.HTTP_500_INTERNAL_SERVER_ERROR)   
 
 class SkillsViewSet(viewsets.ModelViewSet):
     serializer_class = SkillsSerializer
     queryset = Skills.objects.all()
 
-    http_method_names = ['get', 'post', 'put'] 
+    http_method_names = ['get', 'post', 'put', 'delete'] 
 
     @action(detail=True, methods=['get'], url_path='get_skills/(?P<student_id>[^/.]+)')
     def get_skills(self, request, student_id=None):
@@ -315,3 +366,14 @@ class SkillsViewSet(viewsets.ModelViewSet):
             return Response("Skills not found", status=status.HTTP_404_NOT_FOUND)
         except:
             return Response("Error updating skills", status=status.HTTP_500_INTERNAL_SERVER_ERROR)      
+    
+    @action(detail=True, methods=['delete'], url_path='delete_skills/(?P<student_id>[^/.]+)/(?P<skills_id>[^/.]+)')
+    def delete_skills(self, request, student_id=None, skills_id=None):
+        try:
+            skills = Skills.objects.get(student_id=student_id, id=skills_id)
+            skills.delete()
+            return Response("Skill deleted successfully", status=status.HTTP_200_OK)
+        except Skills.DoesNotExist:
+            return Response("Skill not found", status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response("Error deleting skill", status=status.HTTP_500_INTERNAL_SERVER_ERROR)   

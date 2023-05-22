@@ -22,6 +22,8 @@ class WorkExperience(models.Model):
     company_name = models.CharField(max_length=1000)
     roles = ArrayField(models.CharField(max_length=100), blank=True, null=True)
     experience_time = models.CharField(max_length=500, blank=True)
+    start_date = models.CharField(max_length=500, blank=True)
+    end_date = models.CharField(max_length=500, blank=True)
     description = models.CharField(blank=True, max_length=10000)
 
 class Studies(models.Model):

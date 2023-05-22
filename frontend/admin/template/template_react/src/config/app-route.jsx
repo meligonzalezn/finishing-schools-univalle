@@ -78,6 +78,8 @@ import ServiceDashboard from '../pages/dashboard/service-dashboard.js';
 import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
 import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
 import CompanyForm from '../pages/user/company_profile/company-form.js';
+import PortfolioEdit from '../pages/user/portfolio/portfolio-edit.js';
+
 const AppRoute = [
   {
     path: '*', 
@@ -238,7 +240,7 @@ const AppRoute = [
 					{ path: 'company/register', element: <RegisterCompany /> },	
 					{ path: 'student/profile', element: <ScrapingForm /> },	
 					{ path: 'student/portfolio', element: <PortfolioForm /> },
-					{ path: 'student/portfolio', element: <PortfolioForm /> },
+					{ path: 'student/portfolio/edit', element: <PortfolioEdit/>},
 					{ path: 'company/profile', element: <CompanyForm /> },		
 				]
 			},  
