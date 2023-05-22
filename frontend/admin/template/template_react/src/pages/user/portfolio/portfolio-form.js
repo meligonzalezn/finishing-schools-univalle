@@ -245,7 +245,7 @@ const PortfolioForm = () => {
                 setUpdateDescriptionImage(true)
             }
             const response = await updatePortfolioStudentInformation(formik.values, portfolioStudent.sub_key)
-            console.log('dasdsad', response)
+            console.log(response)
             if (response?.status === 200) {
                 Store.addNotification({
                     title: "Actualización exitosa",
@@ -510,19 +510,22 @@ const PortfolioForm = () => {
                                     isScrape ? 
                                     null : 
                                         (
-                                        <button 
-                                            type='submit' 
-                                            onClick={formik.handleSubmit}
-                                            className="btn btn-success w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
-                                                Guardar
-                                            {
-                                                infoSaved ? (
-                                                <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
-                                                    <span className="sr-only">Loading...</span>
-                                                </div> 
-                                                ) : null
-                                            }
-                                        </button>
+                                        <div className="row m-4">
+                                            <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping o si estás registrando tu portafolio por primera vez.</p>
+                                            <button 
+                                                type='submit' 
+                                                onClick={formik.handleSubmit}
+                                                className="btn btn-success w-80px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
+                                                    Guardar
+                                                {
+                                                    infoSaved ? (
+                                                    <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div> 
+                                                    ) : null
+                                                }
+                                            </button>
+                                        </div>
                                         )
                                     }
                             </div>

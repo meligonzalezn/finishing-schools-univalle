@@ -134,12 +134,10 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
         setRoles([...roles, value]);
         setFormValues((prevValues) => ({ ...prevValues, roles: [...roles, value] }));
       } else {
-        if (!skills.includes(value)) { // Verificar si el valor ya existe en la lista de skills
+        if (skills.some(skill => skill.name === value)) {
           setSkills([...skills, value]);
           setFormValues((prevValues) => ({ ...prevValues, skills: [...skills, value] }));
-        } else {
-          console.log('El valor ya existe en la lista de skills');
-        }
+        } 
       }
     }
     
