@@ -1,0 +1,60 @@
+.containerClassName{
+    display:flex;
+
+}
+.containerClassName li::marker {
+    display: none;
+  }
+
+.pageClassName{
+    display: list-item;
+    font-weight: 600;
+}
+
+.pageLinkClassName{
+    position: relative;
+    display: block;
+    
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(32,37,42,0.75);
+    text-decoration: none;
+    background-color: white;
+    border: 1px solid #ced4da;
+    margin: 0px 8px 0px 0px;
+    border-radius: 4px;
+    /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
+}
+
+.previousClassName{
+     /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
+}
+
+.previousClassName::marker {
+    content: "";
+
+    /* other styles */
+  }
+
+.pageLinkClassName:not(.activeLinkClassName):hover {
+    background-color: #f1f1f1;
+    color: #20252a;
+    border-color: #ced4da ;
+    
+  }
+
+.activeLinkClassName{
+    background-color:#348fe2;
+    border-color: #348fe2;
+    color: white;
+}
+
+.disabledClassName{
+    position: relative;
+
+    display: inline-block;
+    background-color: black ;
+    border-color: #ced4da;    
+
+}
