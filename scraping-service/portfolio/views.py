@@ -55,6 +55,8 @@ class StudentViewSet(viewsets.ModelViewSet):
                 user.image_profile = request.data['image_profile']
             if('description' in request.data):
                 user.description = request.data['description']
+            if('phone_number' in request.data):
+                user.phone_number = request.data['phone_number']
             user.save()
 
             return Response("User updated", status=status.HTTP_200_OK)
@@ -84,6 +86,36 @@ class StudentViewSet(viewsets.ModelViewSet):
         student = get_object_or_404(Student.objects.all(), pk=sub_key)
         serializer = StudentSerializer(student)
         return Response({"profile_picture": serializer.data["image_profile"]}, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'])
+    def get_info_to_apply(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            student = Student.objects.all().get(pk=sub_key)
+            experience = student.workexperience_set.all()
+            studies = student.studies_set.all()
+            certifications = student.certificationlicenses_set.all()
+            languages = student.languages_set.all()
+            skills = student.skills_set.all()
+            
+            portfolio = {}
+            data = {"name": student.name, "phone_number": student.phone_number, "portfolio": portfolio}
+            if(len(experience) != 0):
+                portfolio["experience"] = experience
+            if(len(studies) != 0):
+                portfolio["studies"] = studies
+            if(len(certifications) != 0):
+                portfolio["certifications"] = certifications
+            if(len(languages) != 0):
+                portfolio["languages"] = languages
+            if(len(skills) != 0):
+                portfolio["skills"] = skills
+            
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+           return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
        
         
     
@@ -94,6 +126,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 class WorkExperienceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkExperienceSerializer
     queryset = WorkExperience.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put'] 
 
@@ -127,6 +160,7 @@ class WorkExperienceViewSet(viewsets.ModelViewSet):
 class StudiesViewSet(viewsets.ModelViewSet):
     serializer_class = StudiesSerializer
     queryset = Studies.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put']
 
@@ -160,6 +194,7 @@ class StudiesViewSet(viewsets.ModelViewSet):
 class CertificationsLicensesViewSet(viewsets.ModelViewSet):
     serializer_class = CertificationLicensesSerializer
     queryset = CertificationLicenses.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put']
 
@@ -193,6 +228,7 @@ class CertificationsLicensesViewSet(viewsets.ModelViewSet):
 class LanguagesViewSet(viewsets.ModelViewSet):
     serializer_class = LanguagesSerializer
     queryset = Languages.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put']
 
@@ -226,6 +262,7 @@ class LanguagesViewSet(viewsets.ModelViewSet):
 class SkillsViewSet(viewsets.ModelViewSet):
     serializer_class = SkillsSerializer
     queryset = Skills.objects.all()
+    permission_classes = [HasRole]
 
     http_method_names = ['get', 'post', 'put'] 
 

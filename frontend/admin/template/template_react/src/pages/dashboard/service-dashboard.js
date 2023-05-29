@@ -202,7 +202,7 @@ const ServiceDashboard = () => {
                             <small>Información actualizada sobre las oportunidades de trabajo</small>	
                         </div>
                         <div className="stats-link">
-                            <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                            <Link to="/vacancies/search">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
                     </div>
 				</div>   

@@ -8,6 +8,8 @@ async function registerPortfolioStudent(data) {
         if(decodeData[0] !== null) {
             // save info in database
             let student = new FormData()
+            student.append('name', data.firstName + " " + data.lastName)
+            student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
             student.append('github_profile', data.github_profile)
@@ -79,6 +81,8 @@ async function updatePortfolioStudent(data, imageChanged) {
         const decodeData = await decodeJwt()
         if(decodeData[0] !== null) {
             let student= new FormData()
+            student.append('name', data.firstName + " " + data.lastName)
+            student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
             student.append('github_profile', data.github_profile)

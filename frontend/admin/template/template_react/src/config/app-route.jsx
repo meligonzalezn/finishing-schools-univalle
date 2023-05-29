@@ -57,7 +57,7 @@ import PageWithTransparentSidebar from './../pages/option/page-with-transparent-
 import PageWithSearchSidebar from './../pages/option/page-with-search-sidebar.js';
 import ExtraTimeline from './../pages/extra/extra-timeline.js';
 import ExtraComingSoon from './../pages/extra/extra-coming-soon.js';
-import ExtraSearch from './../pages/extra/extra-search.js';
+import VacanciesSearch from './../pages/extra/extra-search.js';
 import ExtraInvoice from './../pages/extra/extra-invoice.js';
 import ExtraError from './../pages/extra/extra-error.js';
 import ExtraProfile from './../pages/extra/extra-profile.js';
@@ -104,6 +104,15 @@ const AppRoute = [
 					{ path: 'v3', element: <DashboardV3 /> }
 				]
 			},
+			{
+				path: 'vacancies/*', 
+				element: <Outlet />,
+				children: [
+					{ path: 'search', element:<VacanciesSearch /> },
+
+				]
+			}, 
+
 			{
 				path: 'email/*', 
 				element: <Outlet />,
@@ -217,7 +226,7 @@ const AppRoute = [
 				children: [
 					{ path: 'timeline', element:<ExtraTimeline /> },
 					{ path: 'coming-soon', element:<ExtraComingSoon />},
-					{ path: 'search', element:<ExtraSearch /> },
+					
 					{ path: 'invoice', element:<ExtraInvoice /> },
 					{ path: 'error', element:<ExtraError /> },
 					{ path: 'profile', element:<ExtraProfile /> },

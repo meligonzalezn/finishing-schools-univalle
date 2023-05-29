@@ -1,42 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import "./searchVacancies.css";
 import numeral from 'numeral';
 import DatePicker from 'react-datepicker';
 import { Collapse } from 'react-bootstrap';
+import { getInfoToApply} from '../../utils/vacancies-axios';
+import ModalApply from '../../components/modal/applyModal';
+import { ReactNotifications, Store } from 'react-notifications-component';
 
-const ExtraSearch = () => {
+const VacanciesSearch = () => {
+	/* eslint-disable */
 	const [data, setData] = useState([
 		{
-			name: "Desarrollador frontend1", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:1,        name: "Desarrollador frontend1", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at:"2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador frontend2", company: "Perficient", description: "Pana trabajador", salary: "1700000", modality: "Presencial",
+			id:2, name: "Desarrollador frontend2", company: "Perficient", description: "Pana trabajador", salary: "1700000", modality: "Presencial",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at: "2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador backend", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:3, name: "Desarrollador backend", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at:"2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador frontend4", company: "Perficient", description: "Pana trabajador", salary: "1300000", modality: "Virtual", place: " United State, BY 10089 ",
+			id:4, name: "Desarrollador frontend4", company: "Perficient", description: "Pana trabajador", salary: "1300000", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at: "2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador frontend5", company: "Perficient", description: "Pana trabajador", salary: "2000001", modality: "Presencial", place: " United State, BY 10089 ",
-			contract: "Prestación de servicios", experience: "1 año+", keywords: "Ingraestructura cloud, TDD", created_at: "2023-05-22 02:26:56.61116+00"
+			id:5, name: "Desarrollador frontend5", company: "Perficient", description: "Pana trabajador", salary: "2000001", modality: "Presencial", place: " United State, BY 10089 ",
+			contract: "Prestación de servicios", experience: "1 año", keywords: "Ingraestructura cloud, TDD", created_at: "2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador frontend6", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:6, name: "Desarrollador frontend6", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD, backend", created_at: "2023-05-22 02:26:56.61116+00"
 		},
 		{
-			name: "Especialista en infraestructura", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:7, name: "Especialista en infraestructura", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at:"2023-06-21 02:26:56.61116+00"
 		},
 		{
-			name: "Desarrollador frontend8", company: "Perficientback", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:8, name: "Desarrollador frontend8", company: "Perficientback", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at: "2023-06-22 02:26:56.61116+00"
 		},
 
@@ -50,6 +54,8 @@ const ExtraSearch = () => {
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
 	const currentPosts = vacancies.slice(indexOfFirstPost, indexOfLastPost);
 	const [currentVacancy, setCurrentVacany] = useState(currentPosts[0])
+	const [applyInfo, setApplyInfo] = useState("")
+
 	const [filter, setFilter] = useState(false);
 
 	const [minSalary, setMinSalary] = useState("$ ")
@@ -59,6 +65,10 @@ const ExtraSearch = () => {
 	const [startDate, setStartDate] = useState("")
 	const [finishDate, setFinishDate] = useState("")
 	const [search, setSearch] = useState("")
+
+	const [isApplying, setIsApplying] = useState(false)
+	const [notify, setNotify] = useState("")
+	
 
 	const paginate = ({ selected }) => {
 		setCurrentPage(selected + 1);
@@ -101,7 +111,7 @@ const ExtraSearch = () => {
 			);
 		}
 		if (experience !== "--------") {
-
+			
 			filteredData = filteredData.filter((item) =>
 				item.experience.toLowerCase().includes(experience.toLowerCase())
 
@@ -147,6 +157,56 @@ const ExtraSearch = () => {
 
 	}
 
+	
+
+	const defaultOptions = {
+        container: 'bottom-left',
+        animationIn: ['animated', 'fadeIn'],
+        animationOut: ['animated', 'fadeOut'],
+        dismiss: {
+          duration: 3000
+        },
+    }
+
+	useEffect(() => {
+		if(applyInfo === ""){
+			getInfoToApply().then((res)=> {
+				if(res === undefined){
+					setApplyInfo({})
+				}
+				else{
+					setApplyInfo(res)
+					console.log(res)
+				}
+				
+			})
+		}
+		if(notify !== ""){
+			if(notify === "successful"){
+				
+				Store.addNotification({
+                    title: "Success",
+                    message: "Tu solicitud se registró con exito",
+                    type: "success",
+                    ...defaultOptions
+                });
+				setNotify("")
+				  
+			}
+			else{
+				Store.addNotification({
+					title: "Error",
+					message: "Por favor, intenta nuevamente",
+					type: "danger",
+					...defaultOptions
+				});
+				setNotify("")
+
+			}
+		}
+        
+      }, [applyInfo, notify]);
+
 	return (
 		<div>
 			<h1 className="page-header">Consultar vacantes <small> {vacancies.length} resultados</small></h1>
@@ -180,9 +240,9 @@ const ExtraSearch = () => {
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label"> Modalidad </label>
 												<div className="dropdown me-2" >
-													<a href="#/" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
+													<button className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
 														{modality} <b className="caret"></b>
-													</a>
+													</button>
 													<div className="dropdown-menu dropdown-menu-start" role="menu">
 														<p className="dropdown-item" onClick={(e) => setModalty(e.target.textContent)}>Presencial</p>
 														<p className="dropdown-item" onClick={(e) => setModalty(e.target.textContent)}>Virtual</p>
@@ -237,15 +297,15 @@ const ExtraSearch = () => {
 											<div >
 												<label className="form-label col-form-label"> Experiencia </label>
 												<div className="dropdown me-2" style={{ "paddingRight": "0.6rem" }}>
-													<a href="#/" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
+													<button  className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
 														{experience} <b className="caret"></b>
-													</a>
+													</button>
 													<div className="dropdown-menu dropdown-menu-start" role="menu">
-														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>1 año+ </p>
-														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>2 año+ </p>
-														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>5 años+</p>
-														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}> 0 exp </p>
-														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}> -------- </p>
+														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>1 año</p>
+														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>2 año</p>
+														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>5 años</p>
+														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>0 exp</p>
+														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>--------</p>
 													</div>
 												</div>
 											</div>
@@ -376,11 +436,26 @@ const ExtraSearch = () => {
 					</div>
 
 					<div className="card-footer bg-none d-flex p-3">
-						<button type="button" class="btn btn-primary ms-auto">Aplicar</button>
+						<button type="button" class="btn btn-primary ms-auto" onClick={()=>setIsApplying(true)}>Aplicar</button>
 
 					</div>
 				</div>
+				{ isApplying ? 
+					<ModalApply
+					title={"Información de contacto"} 
+					description={"Por favor, ingresa la información a la que te gustaria que te contacten:"} 
+				
+					defaultContact={applyInfo}
+					showModalAction={setIsApplying}
+					currentVacancy={currentVacancy}
+					applyInfo={applyInfo}
+					setNotify={setNotify}
 
+					
+				/>
+				:
+					null
+				}
 				<div className="col-md-6 " >
 					<div className=" overflow-auto" style={{ "height": "34rem" }}>
 						<div className="result-list">
@@ -446,9 +521,10 @@ const ExtraSearch = () => {
 				</div>
 
 			</div>
+			<ReactNotifications />
 		</div>
 	)
 
 }
 
-export default ExtraSearch;
+export default VacanciesSearch;
