@@ -6,7 +6,7 @@ import CardPortfolio from "../../../components/cards/card";
 import ProfileImage from "../../../assets/img/profile/user-image-default.png"
 import { getPortfolioStudent, getScrapingInfo, updatePortfolioStudent } from "../../../utils/scraping-axios";
 import { ReactNotifications, Store } from 'react-notifications-component';
-import { registerPortfolioStudentInformation, getPortfolioStudentInformation, updatePortfolioStudentInformation,
+import { registerPortfolioStudentInformation, getPortfolioStudentInformation,
         registerExperience,
         registerEducation,
         registerCertificationsLicenses,
@@ -71,52 +71,18 @@ const PortfolioForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            image: image || '',
-            about: about || '',
-            experience: experience || [],
-            education: education || [],
-            certifications: certifications || [],
-            skills: skills || [],
-            languages: languages || []
+          image: image || '',
+          about: about || '',
+          experience: experience || [],
+          education: education || [],
+          certifications: certifications || [],
+          skills: skills || [],
+          languages: languages || []
         },
-        onSubmit: async (values) => {
-            if(formik.isValid){
-                if(formik.values.image !== '' || formik.values.about !== '') {
-                    const newValuesPortfolioStudent = {...portfolioStudent, image_profile: formik.values.image, description: formik.values.about, scrapeInfoSaved: true}
-                    dispatch(setPortfolioStudent(newValuesPortfolioStudent));
-                    setUpdateDescriptionImage(true)
-                }
-                setInfoSaved(true)
-                const response = await registerPortfolioStudentInformation(values, portfolioStudent.sub_key)
-                if(response.status === 200 ){
-                    setInfoSaved(false)
-                    Store.addNotification({
-                        title: "Register Success",
-                        message: "Información registrada",
-                        type: "success",
-                        dismiss: {
-                            duration: 3000,
-                        },
-                        ...defaultOptions
-                    });
-                } else {
-                    setInfoSaved(false)
-                    Store.addNotification({
-                        title: "Error",
-                        message: "Error registrando la información",
-                        type: "danger",
-                        dismiss: {
-                            duration: 3000,
-                        },
-                        ...defaultOptions
-                    });
-                }
-            }
-        },
+        onSubmit: {},
         validationSchema: Yup.object({
           image: Yup.mixed().optional(),
-          about: Yup.string()
-            .required('Campo obligatorio'),
+          about: Yup.string().required('Campo obligatorio'),
           experience: Yup.array().of(Yup.object()).optional(),
           education: Yup.array().of(Yup.object()).optional(),
           certifications: Yup.array().of(Yup.object()).optional(),
@@ -124,7 +90,8 @@ const PortfolioForm = () => {
           languages: Yup.array().of(Yup.object()).optional(),
         }),
         enableReinitialize: true,
-    })
+      });
+      
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -138,10 +105,10 @@ const PortfolioForm = () => {
               setIsScrape(student.scrapeInfoSaved);
               const portfolioInformation = await getPortfolioStudentInformation(student.sub_key);
               if (portfolioInformation) {
-                dispatch(setExperiences(portfolioInformation.experience.data.reverse()));
-                dispatch(setEducation(portfolioInformation.education.data.reverse()));
-                dispatch(setCertifications(portfolioInformation.certifications.data.reverse()));
-                dispatch(setLanguages(portfolioInformation.languages.data.reverse()));
+                dispatch(setExperiences(portfolioInformation.experience.data));
+                dispatch(setEducation(portfolioInformation.education.data));
+                dispatch(setCertifications(portfolioInformation.certifications.data));
+                dispatch(setLanguages(portfolioInformation.languages.data));
                 const uniqueList = portfolioInformation.skills.data.filter(
                     (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
                 );
@@ -173,21 +140,17 @@ const PortfolioForm = () => {
                     dispatch(setCertifications(data.certifications.reverse()));
                     dispatch(setLanguages(data.languages.reverse()));
               }
-
               if (scrapedInfo.githubInfo !== "") {
-                const uniqueList = scrapedInfo.githubInfo.filter(
-                    (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
-                );
-                dispatch(setSkills([...skills, uniqueList]))
+                const newSkills = [...new Set([...scrapedInfo.githubInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills([...skills, ...formattedSkills]));
               }
               
               if (scrapedInfo.gitlabInfo !== "") {
-                const uniqueList = scrapedInfo.gitlabInfo.filter(
-                    (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
-                );
-                dispatch(setSkills([...skills, uniqueList]));
+                const newSkills = [...new Set([...scrapedInfo.gitlabInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills([...skills, ...formattedSkills]));
               }
-             
             } 
             setInfoLoaded(true);
           } catch (error) {
@@ -237,6 +200,50 @@ const PortfolioForm = () => {
         // eslint-disable-next-line
       }, [portfolioStudent, imageChanged, updateDescriptionImage]);
 
+    const handleSubmitPortfolio = async (event) => {
+        event.preventDefault();
+        if (formik.isValid) {
+            if (formik.values.image !== '' || formik.values.about !== '') {
+              const newValuesPortfolioStudent = {
+                ...portfolioStudent,
+                image_profile: formik.values.image,
+                description: formik.values.about,
+                scrapeInfoSaved: true
+              };
+              dispatch(setPortfolioStudent(newValuesPortfolioStudent));
+              setUpdateDescriptionImage(true);
+            }
+            setInfoSaved(true);
+            const response = await registerPortfolioStudentInformation(
+              formik.values,
+              portfolioStudent.sub_key
+            );
+            if (response.status === 200) {
+              setInfoSaved(false);
+              Store.addNotification({
+                title: "Register Success",
+                message: "Información registrada",
+                type: "success",
+                dismiss: {
+                  duration: 3000,
+                },
+                ...defaultOptions
+              });
+            } else {
+              setInfoSaved(false);
+              Store.addNotification({
+                title: "Error",
+                message: "Error registrando la información",
+                type: "danger",
+                dismiss: {
+                  duration: 3000,
+                },
+                ...defaultOptions
+              });
+            }
+        }
+    }
+
     const handleUpdatePortfolio = async (event) => {
         event.preventDefault();
             if(formik.values.image !== '' || formik.values.about !== '') {
@@ -244,8 +251,7 @@ const PortfolioForm = () => {
                 dispatch(setPortfolioStudent(newValuesPortfolio));
                 setUpdateDescriptionImage(true)
             }
-            const response = await updatePortfolioStudentInformation(formik.values, portfolioStudent.sub_key)
-            console.log(response)
+            const response = await updatePortfolioStudent(formik.values, imageChanged)
             if (response?.status === 200) {
                 Store.addNotification({
                     title: "Actualización exitosa",
@@ -303,7 +309,7 @@ const PortfolioForm = () => {
                                         <h5>Sobre mí</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
                                             {
-                                                isScrape && about !== "" ? 
+                                                about !== "" ? 
                                                 <button className="border-0 bg-white" onClick={(event) => {
                                                     event.preventDefault();
                                                     dispatch(setShowModalAboutEdit(true));
@@ -346,7 +352,7 @@ const PortfolioForm = () => {
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                isScrape && experience?.length !== 0 ? 
+                                                experience?.length !== 0 ? 
                                                 <button type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("experience"))
                                                     dispatch(setEditForm(true))
@@ -383,7 +389,7 @@ const PortfolioForm = () => {
                                                     <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                isScrape && education?.length !== 0 ? 
+                                                education?.length !== 0 ? 
                                                 <button type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("education"))
                                                     dispatch(setEditForm(true))
@@ -421,7 +427,7 @@ const PortfolioForm = () => {
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                isScrape && certifications?.length !== 0 ? 
+                                                certifications?.length !== 0 ? 
                                                 <button type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("certifications"))
                                                     dispatch(setEditForm(true))
@@ -484,7 +490,7 @@ const PortfolioForm = () => {
                                                         <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                                 </button>
                                                 {
-                                                isScrape && languages?.length !== 0 ? 
+                                                languages?.length !== 0 ? 
                                                 <button type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("languages"))
                                                     dispatch(setEditForm(true))
@@ -514,8 +520,8 @@ const PortfolioForm = () => {
                                             <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping o si estás registrando tu portafolio por primera vez.</p>
                                             <button 
                                                 type='submit' 
-                                                onClick={formik.handleSubmit}
-                                                className="btn btn-success w-80px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
+                                                onClick={(event) => {handleSubmitPortfolio(event)}}
+                                                className="btn btn-success w-100px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
                                                     Guardar
                                                 {
                                                     infoSaved ? (
@@ -549,7 +555,8 @@ const PortfolioForm = () => {
                     fields={descriptionField} 
                     action={setSingleAbout}
                     showModalAction={setShowModalAbout}
-                    onSubmit={updatePortfolioStudent}
+                    onUpdate={updatePortfolioStudent}
+                    isAbout={true}
                 />
             ): null
         }
@@ -576,6 +583,7 @@ const PortfolioForm = () => {
                     action={setSingleExperience}
                     showModalAction={setShowModalExperience}
                     onSubmit={registerExperience}
+                    isAbout={false}
                 />
             ): null
         }
@@ -588,6 +596,7 @@ const PortfolioForm = () => {
                     action={setSingleEducation}
                     showModalAction={setShowModalEducation}
                     onSubmit={registerEducation}
+                    isAbout={false}
                 />
             ) : null
         }
@@ -600,6 +609,7 @@ const PortfolioForm = () => {
                     action={setSingleCertification}
                     showModalAction={setShowModalCertification}
                     onSubmit={registerCertificationsLicenses}
+                    isAbout={false}
                 />
             ) : null
         }
@@ -612,18 +622,20 @@ const PortfolioForm = () => {
                     action={setSingleLanguage}
                     showModalAction={setShowModalLanguage}
                     onSubmit={registerLanguages}
+                    isAbout={false}
                 />
             ) : null
         }
         {
             modalSkills ? (
                 <ModalAdd 
-                    title={"Añadir idioma"} 
-                    description={"Por favor, completa los siguientes campos para registrar sus competencias:"} 
+                    title={"Añadir competencias"} 
+                    description={"Por favor complete los siguientes campos para registrar sus competencias. Recuerde evitar agregar competencias duplicadas."} 
                     fields={skillsFields} 
                     action={setSingleSkills}
                     showModalAction={setShowModalSkills}
                     onSubmit={registerSkills}
+                    isAbout={false}
                 />
             ): null
         }

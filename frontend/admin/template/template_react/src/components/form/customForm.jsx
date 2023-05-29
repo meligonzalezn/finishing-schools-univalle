@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectImageChanged, selectPortfolioStudent, selectStudentId, setPortfolioStudent, selectEditForm, selectEditObjectId, setShowNotificationUpdateSuccess, setShowNotificationUpdateError, setShowNotificationUpdatePortfolioSuccess, setShowNotificationUpdatePortfolioError, setShowNotificationCreateSuccess, setShowNotificationCreateError } from "../../reducers/portfolioSlice";
+import { selectImageChanged, selectPortfolioStudent, selectStudentId, setPortfolioStudent, selectEditForm, selectEditObjectId, setShowNotificationUpdateSuccess, setShowNotificationUpdateError, setShowNotificationUpdatePortfolioSuccess, setShowNotificationUpdatePortfolioError, setShowNotificationCreateSuccess, setShowNotificationCreateError, selectSkills } from "../../reducers/portfolioSlice";
 import ReactTags from 'react-tag-autocomplete';
 import { Store } from 'react-notifications-component';
 import { monthsOptions } from "../../pages/user/portfolio/fields";
@@ -24,6 +24,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
     const studentPortfolio = useSelector(selectPortfolioStudent);
     const isEditing = useSelector(selectEditForm);
     const editId = useSelector(selectEditObjectId);
+    const skillsState = useSelector(selectSkills);
 
 
     /**
@@ -134,7 +135,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
         setRoles([...roles, value]);
         setFormValues((prevValues) => ({ ...prevValues, roles: [...roles, value] }));
       } else {
-        if (skills.some(skill => skill.name === value)) {
+        if (!skills.some(skill => skill.name === value.name) && !skillsState.some(skill => skill.name === value.name)) {
           setSkills([...skills, value]);
           setFormValues((prevValues) => ({ ...prevValues, skills: [...skills, value] }));
         } 
@@ -153,7 +154,6 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
             setFormValues((prevValues) => ({ ...prevValues, skills: newSkills }));
         }
     }
-    
     async function handleSubmit(event){
         event.preventDefault();
         // To verify required fields
@@ -173,7 +173,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
             return;
         }
         setFieldErrors({}); 
-        if (skills.length > 0){
+        if (skills.length > 0 && !isAbout){
             const valuesWithSkills = {...formValues, skills: skills};
             dispatch(action(skills))
             setLoadingCreate(true)
@@ -220,7 +220,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                         valuesWithDates[field.name] = formValues[field.name];
                     }
                 });
-                if(roles.length > 0) {
+                if(roles.length > 0 && !isAbout) {
                     // Convert roles to a simple array of strings
                     const rolesArray = roles.map(role => role.name);
                     // Merge the original formValues with the roles array
@@ -325,7 +325,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                     } else {
                       dispatch(action(valuesWithDates))
                       setLoadingCreate(true)
-                      const response = await onSubmit([valuesWithDates], studentId) 
+                      const response = await onSubmit([valuesWithDates], studentId)
                       if(response !== undefined){
                         setLoadingCreate(false)
                         dispatch(setShowNotificationCreateError(true))
@@ -355,42 +355,12 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                     }    
                 }
             }
-            else {
+            else if(fields.some(field => field.specialField && isAbout)) {
                 fields.forEach(async field => {
                   const newPortfolioStudent = {...studentPortfolio, description: formValues.description}
                   dispatch(setPortfolioStudent(newPortfolioStudent))
-                  dispatch(action(formValues))
-                    if(field.specialField && !isAbout) {
-                      setLoadingCreate(true)
-                      const response = await onSubmit(newPortfolioStudent, imageChanged)
-                      if(response !== undefined){
-                        setLoadingCreate(false)
-                        dispatch(setShowNotificationCreateError(true))
-                        Store.addNotification({
-                          title: "Error",
-                          message: "Error registrando la información",
-                          type: "danger",
-                          dismiss: {
-                              duration: 3000,
-                          },
-                          ...defaultOptions
-                        })
-                      }
-                      else {
-                        setLoadingCreate(false)
-                        dispatch(setShowNotificationCreateSuccess(true))
-                        Store.addNotification({
-                          title: "Registro",
-                          message: "Información registrada",
-                          type: "success",
-                          dismiss: {
-                              duration: 3000,
-                          },
-                          ...defaultOptions
-                        });
-                      }
-                    }
-                    if(field.specialField && isAbout){
+                  if(field.specialField && isAbout){
+                      dispatch(action(formValues))
                       setLoadingUpdate(true)
                       const response = await onUpdate(newPortfolioStudent, imageChanged)
                       if(response.status === 200){
@@ -453,36 +423,38 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       ...defaultOptions
                     })
                   }
-                  dispatch(action(formValues))
-                  setLoadingCreate(false)
-                  const result = await onSubmit([formValues], studentId)
-                  if(result !== undefined){
-                    setLoadingCreate(true)
-                    dispatch(setShowNotificationCreateError(true))
-                    Store.addNotification({
-                      title: "Error",
-                      message: "Error registrando la información",
-                      type: "danger",
-                      dismiss: {
-                          duration: 3000,
-                      },
-                      ...defaultOptions
-                    })
-                  }
-                  else {
-                    setLoadingCreate(true)
-                    dispatch(setShowNotificationCreateSuccess(true))
-                    Store.addNotification({
-                      title: "Registro",
-                      message: "Información registrada",
-                      type: "success",
-                      dismiss: {
-                          duration: 3000,
-                      },
-                      ...defaultOptions
-                    });
-                  }
                 }
+            }
+            else {
+              dispatch(action(formValues))
+              setLoadingCreate(true)
+              const result = await onSubmit([formValues], studentId)
+              if(result !== undefined){
+                setLoadingCreate(false)
+                dispatch(setShowNotificationCreateError(true))
+                Store.addNotification({
+                  title: "Error",
+                  message: "Error registrando la información",
+                  type: "danger",
+                  dismiss: {
+                      duration: 3000,
+                  },
+                  ...defaultOptions
+                })
+              }
+              else {
+                setLoadingCreate(false)
+                dispatch(setShowNotificationCreateSuccess(true))
+                Store.addNotification({
+                  title: "Registro",
+                  message: "Información registrada",
+                  type: "success",
+                  dismiss: {
+                      duration: 3000,
+                  },
+                  ...defaultOptions
+                });
+              }
             }
         }
         dispatch(showModalAction(false))
