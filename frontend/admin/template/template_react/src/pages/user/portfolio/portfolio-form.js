@@ -203,13 +203,13 @@ const PortfolioForm = () => {
     const handleSubmitPortfolio = async (event) => {
         event.preventDefault();
         if (formik.isValid) {
+            const newValuesPortfolioStudent = {
+              ...portfolioStudent,
+              image_profile: formik.values.image,
+              description: formik.values.about,
+              scrapeInfoSaved: true
+            };
             if (formik.values.image !== '' || formik.values.about !== '') {
-              const newValuesPortfolioStudent = {
-                ...portfolioStudent,
-                image_profile: formik.values.image,
-                description: formik.values.about,
-                scrapeInfoSaved: true
-              };
               dispatch(setPortfolioStudent(newValuesPortfolioStudent));
               setUpdateDescriptionImage(true);
             }
@@ -246,12 +246,12 @@ const PortfolioForm = () => {
 
     const handleUpdatePortfolio = async (event) => {
         event.preventDefault();
+        const newValuesPortfolio = {...portfolioStudent, image_profile: event.target.files[0], description: formik.values.about}
             if(formik.values.image !== '' || formik.values.about !== '') {
-                const newValuesPortfolio = {...portfolioStudent, image_profile: formik.values.image, description: formik.values.about}
                 dispatch(setPortfolioStudent(newValuesPortfolio));
                 setUpdateDescriptionImage(true)
             }
-            const response = await updatePortfolioStudent(formik.values, imageChanged)
+            const response = await updatePortfolioStudent(newValuesPortfolio, imageChanged)
             if (response?.status === 200) {
                 Store.addNotification({
                     title: "Actualización exitosa",
@@ -293,7 +293,7 @@ const PortfolioForm = () => {
                                             onChange={async (event) => {
                                                 formik.setFieldValue('image', event.target.files[0]);
                                                 dispatch(setImageChanged(true));
-                                                handleUpdatePortfolio(event)
+                                                await handleUpdatePortfolio(event)
                                             }}
                                             onBlur={formik.handleBlur}
                                             accept='.png, .jpg, jpeg'

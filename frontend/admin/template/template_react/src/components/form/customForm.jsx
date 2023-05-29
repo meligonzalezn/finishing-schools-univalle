@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectImageChanged, selectPortfolioStudent, selectStudentId, setPortfolioStudent, selectEditForm, selectEditObjectId, setShowNotificationUpdateSuccess, setShowNotificationUpdateError, setShowNotificationUpdatePortfolioSuccess, setShowNotificationUpdatePortfolioError, setShowNotificationCreateSuccess, setShowNotificationCreateError, selectSkills } from "../../reducers/portfolioSlice";
+import { selectImageChanged, selectPortfolioStudent, selectStudentId, setPortfolioStudent, selectEditForm, selectEditObjectId, setShowNotificationUpdateSuccess, setShowNotificationUpdateError, setShowNotificationUpdatePortfolioSuccess, setShowNotificationUpdatePortfolioError, setShowNotificationCreateSuccess, setShowNotificationCreateError, selectSkills, setImageChanged } from "../../reducers/portfolioSlice";
 import ReactTags from 'react-tag-autocomplete';
 import { Store } from 'react-notifications-component';
 import { monthsOptions } from "../../pages/user/portfolio/fields";
@@ -362,6 +362,7 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                   if(field.specialField && isAbout){
                       dispatch(action(formValues))
                       setLoadingUpdate(true)
+                      dispatch(setImageChanged(false))
                       const response = await onUpdate(newPortfolioStudent, imageChanged)
                       if(response.status === 200){
                         setLoadingUpdate(false)
