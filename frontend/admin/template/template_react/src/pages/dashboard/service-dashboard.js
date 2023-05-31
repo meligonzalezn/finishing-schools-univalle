@@ -10,47 +10,11 @@ const ServiceDashboard = () => {
   //Avoids user going back by error(with back button from browser) to the login page 
   window.history.pushState(null, null, window.location.pathname);
   
-  const [redirect, setRedirect] = useState(false)
+
   const context = useContext(AppSettings);
-  const [role, setRole] = useState('')
+  const [role, setRole] = useState(localStorage.getItem("role"))
  
   
-  useLayoutEffect(() => {
-	if(localStorage.getItem("access_token") === null){
-      
-      context.handleSetAppSidebarNone(true);
-      context.handleSetAppHeaderNone(true);
-      context.handleSetAppContentClass('p-0');
-      setRedirect(true)
-      return () => {
-      context.handleSetAppSidebarNone(false);
-      context.handleSetAppHeaderNone(false);
-      context.handleSetAppContentClass('');
-      };
-    }
-    else{
-
-      setRole(localStorage.getItem("role"));
-
-      window.addEventListener('popstate', function(event) {
-        if (window.location.pathname === '/company/login' ||window.location.pathname === '/univalle/login' ) {
-          window.location.replace('/dashboard/v3');
-        }
-        });
-      return () => {
-        window.removeEventListener('popstate', function(event) {
-          if (window.location.pathname === '/company/login' ||window.location.pathname === '/univalle/login' ) {
-            window.location.replace('/dashboard/v3');
-          }
-          });
-      };
-
-    }
-
-	}, [redirect]);
-
-
-
     useEffect(() => {
         
         if(localStorage.getItem("role") === "student"){
@@ -91,12 +55,8 @@ const ServiceDashboard = () => {
             })   
           }
     
-        }, [redirect]);
+        }, []);
 
-
-    if(redirect){
-        return <Navigate to='/' />;
-    }
 
 	return (
         <div>

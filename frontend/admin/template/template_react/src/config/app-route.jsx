@@ -78,43 +78,106 @@ import ServiceDashboard from '../pages/dashboard/service-dashboard.js';
 import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
 import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
 import CompanyForm from '../pages/user/company_profile/company-form.js';
+import { Navigate } from 'react-router-dom';
+import { isExpired, decodeToken } from "react-jwt";
+
+const ProtectedRoute = ({
+	allow,
+	redirectPath = '/',
+	children,
+}) => {
+
+
+	if (!(allow.includes(decodeToken(localStorage.getItem("access_token")).role))) {
+
+		return <Navigate to={redirectPath} replace />;
+	}
+
+	return children ? children : <Outlet />;
+};
+
+
 const AppRoute = [
-  {
-    path: '*', 
-    element: <App />,
-    children: [
-    	{
-				path: '', 
-				element: <LoginPortal /> 
-		},		{
-			path: 'password_recovery/', 
-			element: <PasswordRecovery /> 
-		},
-		{
-			path: 'request_password_recovery/', 
-			element: <PasswordRecoveryRequest /> 
-		},
-    	{
-				path: 'dashboard/*', 
-				element: <Outlet />,
+	{
+		path: '*',
+		element: <App />,
+		children: [
+			{
+				path: '',
+				element: <LoginPortal />
+			}, {
+				path: 'password_recovery/',
+				element: <PasswordRecovery />
+			},
+			{
+				path: 'request_password_recovery/',
+				element: <PasswordRecoveryRequest />
+			},
+			{
+				path: 'dashboard/*',
+				element:
+					<ProtectedRoute
+						allow={["company", "student"]}
+					>
+
+					</ProtectedRoute>,
 				children: [
-					{path: 'services', element: <ServiceDashboard />},
+					{ path: 'services', element: <ServiceDashboard /> },
 					{ path: 'v1', element: <DashboardV1 /> },
 					{ path: 'v2', element: <DashboardV2 /> },
 					{ path: 'v3', element: <DashboardV3 /> }
 				]
 			},
 			{
-				path: 'vacancies/*', 
+				path: 'user/*',
 				element: <Outlet />,
 				children: [
-					{ path: 'search', element:<VacanciesSearch /> },
+					{ path: 'univalle/login', element: <LoginStudent /> },
+					{ path: 'company/login', element: <LoginCompany /> },
+					{ path: 'company/register', element: <RegisterCompany /> },
 
 				]
-			}, 
+			},
+			{
+				path: 'user/*',
+				element: <ProtectedRoute
+					allow={["student"]}
+				>
+
+				</ProtectedRoute>,
+				children: [
+					{ path: 'student/profile', element: <ScrapingForm /> },
+					{ path: 'student/portfolio', element: <PortfolioForm /> },
+				]
+			},
+			{
+				path: 'user/*',
+				element: <ProtectedRoute
+					allow={["company"]}
+				>
+					
+				</ProtectedRoute>,
+				children: [
+					{ path: 'company/profile', element: <CompanyForm /> },
+					
+				]
+
+			},
+			{
+				path: 'vacancies/*',
+				element: <ProtectedRoute
+				allow={["student", "company"]}
+			>
+
+			</ProtectedRoute>,
+				children: [
+					{ path: 'search', element: <VacanciesSearch /> },
+
+				]
+			},
 
 			{
-				path: 'email/*', 
+				path: 'email/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'inbox', element: <EmailInbox /> },
@@ -123,11 +186,11 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'widgets', 
+				path: 'widgets',
 				element: <Widgets />
 			},
 			{
-				path: 'ui/*', 
+				path: 'ui/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'general', element: <UIGeneral /> },
@@ -145,11 +208,11 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'bootstrap-5', 
+				path: 'bootstrap-5',
 				element: <Bootstrap5 />
 			},
 			{
-				path: 'form/*', 
+				path: 'form/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'elements', element: <FormElements /> },
@@ -158,7 +221,7 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'table/*', 
+				path: 'table/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'elements', element: <TableElements /> },
@@ -166,7 +229,7 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'pos/*', 
+				path: 'pos/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'customer-order', element: <PosCustomerOrder /> },
@@ -177,7 +240,7 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'chart/*', 
+				path: 'chart/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'js', element: <ChartJS /> },
@@ -185,19 +248,19 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'calendar', 
+				path: 'calendar',
 				element: <Calendar />
 			},
 			{
-				path: 'map', 
+				path: 'map',
 				element: <Map />
 			},
 			{
-				path: 'gallery', 
+				path: 'gallery',
 				element: <Gallery />
 			},
 			{
-				path: 'page-option/*', 
+				path: 'page-option/*',
 				element: <Outlet />,
 				children: [
 					{ path: 'blank', element: <PageBlank /> },
@@ -221,42 +284,30 @@ const AppRoute = [
 				]
 			},
 			{
-				path: 'extra/*', 
+				path: 'extra/*',
 				element: <Outlet />,
 				children: [
-					{ path: 'timeline', element:<ExtraTimeline /> },
-					{ path: 'coming-soon', element:<ExtraComingSoon />},
-					
-					{ path: 'invoice', element:<ExtraInvoice /> },
-					{ path: 'error', element:<ExtraError /> },
-					{ path: 'profile', element:<ExtraProfile /> },
-					{ path: 'scrum-board', element:<ExtraScrumBoard /> },
-					{ path: 'cookie-acceptance-banner', element:<ExtraCookieAcceptanceBanner /> },
-					{ path: 'orders', element:<ExtraOrders /> },
-					{ path: 'order-details', element:<ExtraOrderDetails /> },
-					{ path: 'products', element:<ExtraProducts /> },
-					{ path: 'product-details', element:<ExtraProductDetails /> }
+					{ path: 'timeline', element: <ExtraTimeline /> },
+					{ path: 'coming-soon', element: <ExtraComingSoon /> },
+
+					{ path: 'invoice', element: <ExtraInvoice /> },
+					{ path: 'error', element: <ExtraError /> },
+					{ path: 'profile', element: <ExtraProfile /> },
+					{ path: 'scrum-board', element: <ExtraScrumBoard /> },
+					{ path: 'cookie-acceptance-banner', element: <ExtraCookieAcceptanceBanner /> },
+					{ path: 'orders', element: <ExtraOrders /> },
+					{ path: 'order-details', element: <ExtraOrderDetails /> },
+					{ path: 'products', element: <ExtraProducts /> },
+					{ path: 'product-details', element: <ExtraProductDetails /> }
 				]
-			}, 
+			},
+
 			{
-				path: 'user/*', 
-				element: <Outlet />,
-				children: [
-					{ path: 'univalle/login', element:<LoginStudent /> },
-					{ path: 'company/login', element:<LoginCompany /> },
-					{ path: 'company/register', element: <RegisterCompany /> },	
-					{ path: 'student/profile', element: <ScrapingForm /> },	
-					{ path: 'student/portfolio', element: <PortfolioForm /> },
-					{ path: 'student/portfolio', element: <PortfolioForm /> },
-					{ path: 'company/profile', element: <CompanyForm /> },		
-				]
-			},  
-			{
-				path: 'helper/css', 
+				path: 'helper/css',
 				element: <HelperCSS />
 			}
 		]
-  }
+	}
 ];
 
 
