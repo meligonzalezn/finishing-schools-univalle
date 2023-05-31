@@ -14,3 +14,4 @@ selenium
 beautifulsoup4
 webdriver-manager
 django-cloudinary-storage
+selenium_stealth

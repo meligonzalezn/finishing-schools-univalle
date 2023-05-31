@@ -10,6 +10,6 @@ router = routers.SimpleRouter()
 urlpatterns = [
     path('', include(router.urls)),
     path('company/', CompanyView.as_view(), name="company"),
-    path('company/<int:pk>' , CompanyView.as_view()) 
+    path('company/<str:pk>' , CompanyView.as_view()) 
 ]
 urlpatterns += router.urls

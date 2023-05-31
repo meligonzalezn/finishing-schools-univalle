@@ -54,7 +54,7 @@ const ServiceDashboard = () => {
 	return (
         <div>
             <div className="mb-10px mt-10px">
-                <h4>Services</h4>
+                <h4>Servicios</h4>
             </div>
             <div className="row">
                 {
@@ -82,7 +82,7 @@ const ServiceDashboard = () => {
                                 <small>Gestiona la información relacionada con la empresa</small>	
                             </div>
                             <div className="stats-link">
-                                <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                                <Link to="/user/company/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@ const ServiceDashboard = () => {
                             }
                         </div>
                         <div className="stats-link">
-                            <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                            <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
 					</div>
 				</div>

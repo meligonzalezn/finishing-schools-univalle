@@ -46,11 +46,9 @@ const Header = () => {
 				.catch(error => {
 				console.log(error);
 				});
-		  }, 5 * 60 * 1000);
-	  
-		  console.log(userName)
+		  }, 4 * 60 * 1000);
 		  return () => clearInterval(interval);
-	}, [userName])
+	}, [])
 
 	return (
 		<div id="header" className={'app-header ' + (appHeaderInverse ? 'app-header-inverse' : '')}>

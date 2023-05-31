@@ -15,29 +15,31 @@ class Student(models.Model):
         folder='media/profile_images/', overwrite=True, resource_type='', blank=True)
     description = models.CharField(blank=True, max_length=10000)
     isFilled = models.BooleanField(default=False)
+    scrapeInfoSaved = models.BooleanField(default=False)
 
 class WorkExperience(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     company_name = models.CharField(max_length=1000)
-    roles = ArrayField(models.CharField(max_length=50), blank=True, null=True)
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField(blank=True)
+    roles = ArrayField(models.CharField(max_length=100), blank=True, null=True)
+    experience_time = models.CharField(max_length=500, blank=True)
+    start_date = models.CharField(max_length=500, blank=True)
+    end_date = models.CharField(max_length=500, blank=True)
     description = models.CharField(blank=True, max_length=10000)
 
 class Studies(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
-    degree = models.CharField(max_length=1000, blank=False)
+    degree = models.CharField(max_length=1000, blank=True)
     school = models.CharField(blank=False, max_length=1000)
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField(blank=True)
+    start_date = models.CharField(max_length=500, blank=True)
+    end_date = models.CharField(max_length=500, blank=True)
     description = models.CharField(blank=True, max_length=10000)
 
 class CertificationLicenses(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=1000, blank=False)
     organization = models.CharField(blank=False, max_length=1000)
-    issue_date = models.DateField(blank=True)
-    expiration_date = models.DateField(blank=True)
+    issue_date = models.CharField(max_length=500, blank=True)
+    expiration_date = models.CharField(max_length=500, blank=True)
     credential_url = models.CharField(blank=True, max_length=10000)  
 
 class Languages(models.Model):
@@ -45,6 +47,6 @@ class Languages(models.Model):
     language = models.CharField(max_length=1000, blank=False)
     proficiency = models.CharField(max_length=1000, blank=True)
 
-class Technologies(models.Model):
+class Skills(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=1000, blank=False, null=False)

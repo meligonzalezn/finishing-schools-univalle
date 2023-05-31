@@ -3,7 +3,6 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker';
-import ProfileImage from '../../../assets/img/profile/user-image-default.png'
 import { ReactNotifications, Store } from 'react-notifications-component';
 import { get_user_basic_info } from '../../../utils/user-axios';
 import { getPortfolioStudent, registerPortfolioStudent, updatePortfolioStudent } from '../../../utils/scraping-axios';
@@ -12,16 +11,15 @@ const ScrapingForm = () => {
     const [name, setName ] = useState("")
     const [lastname, setLastname] = useState("")
     const [idCard, setIdCard] = useState("") 
-    const [image, setImage] = useState("") 
     const [linkedin, setLinkedin] = useState("")
     const [github, setGithub] = useState("")
     const [gitlab, setGitlab] = useState("")
     const [issueDate, setIssueDate] = useState("")
-    const [isFilled, setIsField] = useState(false)
+    const [isFilled, setIsFilled] = useState(false)
     const [infoLoaded, setInfoLoaded] = useState(false)
     const [infoSaved, setInfoSaved] = useState(false)
     const [infoUpdated, setInfoUpdated] = useState(false)
-    const [imageChanged, setImageChanged] = useState(false)
+    const [enableButton, setEnableButton] = useState(false)
     /**
      * Default options for warning, success and error messages
      */
@@ -39,10 +37,9 @@ const ScrapingForm = () => {
             lastName: lastname || '',
             idCard: idCard || '',
             issueDate: issueDate || '',
-            image: image || '',
-            github: github || '',
-            gitlab: gitlab || '',
-            linkedin: linkedin || '',
+            github_profile: github || '',
+            gitlab_profile: gitlab || '',
+            linkedin_profile: linkedin || '',
             isFilled: isFilled || false,
         },
         onSubmit: async (values) => {
@@ -57,6 +54,7 @@ const ScrapingForm = () => {
                         type: "success",
                         ...defaultOptions
                     });
+                    setEnableButton(true)
                 }
                 else {
                     setInfoSaved(false)
@@ -78,10 +76,9 @@ const ScrapingForm = () => {
             .required('Campo obligatorio'),
           issueDate: Yup.date()
            .required('Campo obligatorio'),
-          image: Yup.mixed().optional(),
-          github: Yup.string().optional(),
-          gitlab: Yup.string().optional(),
-          linkedin: Yup.string().optional(),
+          github_profile: Yup.string().optional(),
+          gitlab_profile: Yup.string().optional(),
+          linkedin_profile: Yup.string().optional(),
         }),
         enableReinitialize: true,
     })
@@ -98,13 +95,13 @@ const ScrapingForm = () => {
             if (portfolioStudent) {
                 setIdCard(portfolioStudent['idCard'])
                 setIssueDate(new Date(portfolioStudent['issueDate']))
-                setImage(portfolioStudent['image_profile'])
                 setGithub(portfolioStudent['github_profile'])
                 setGitlab(portfolioStudent['gitlab_profile'])
                 setLinkedin(portfolioStudent['linkedin_profile'])
-                setIsField(portfolioStudent['isFilled'])
+                setIsFilled(portfolioStudent['isFilled'])
+                setEnableButton(true)
             }
-            setInfoLoaded(true)  
+            setInfoLoaded(true) 
           } catch (error) {
             Store.addNotification({
                 title: "Error",
@@ -123,11 +120,11 @@ const ScrapingForm = () => {
         event.preventDefault();
         if(formik.isValid){
             setInfoUpdated(true)
-            const response = await updatePortfolioStudent(formik.values, imageChanged)
+            const response = await updatePortfolioStudent(formik.values, false)
             if (response?.status === 200) {
                 setInfoUpdated(false)
                 Store.addNotification({
-                    title: "Register Success",
+                    title: "Actualización exitosa",
                     message: "Información actualizada",
                     type: "success",
                     ...defaultOptions
@@ -154,29 +151,8 @@ const ScrapingForm = () => {
                         <h4 className="panel-title" style={{"fontSize": "14px"}}>Formulario de perfil</h4>
                     </div>
                     <div className="panel-body">
-                        <p>Si proporciona los enlaces a su perfil en GitHub, GitLab o LinkedIn, podremos llenar su portafolio automáticamente mediante el uso de scraping</p>
+                        <p>Si nos proporciona enlaces a su perfil en GitHub, GitLab o LinkedIn, podremos completar automáticamente su portafolio mediante el uso de Web scraping</p>
                         <form autoComplete="off">
-                            <div className='col' style={{"display": "flex", "gap": "2rem"}}>
-                                <img src={image ? "https://res.cloudinary.com/dlhcdji3v/"+image : ProfileImage} style={{"width": "10rem", "height": "10rem"}} alt="Perfil" className="rounded-circle img-fluid" />
-                                <div style={{"display": "flex", "gap": "0.5rem", "justifyContent": "center", "flexDirection": "column"}}>
-                                    <label className="form-label">Carga una imagen de perfil</label>
-                                    <input
-                                        id="formFile" 
-                                        name='image'
-                                        className="form-control" 
-                                        type="file" 
-                                        onChange={(event) => {
-                                            formik.setFieldValue('image', event.target.files[0]);
-                                            setImageChanged(true);
-                                        }}
-                                        onBlur={formik.handleBlur}
-                                        accept='.png, .jpg, jpeg'
-                                    />
-                                    <p>
-                                        El tamaño máximo de archivo permitido es de 200 KB
-                                    </p>
-                                </div>
-                            </div>
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Nombre <span className="text-danger">*</span></label>
@@ -242,11 +218,11 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Github</label>
                                     <input 
-                                        name='github'
+                                        name='github_profile'
                                         type="text" 
                                         className="form-control" 
                                         placeholder="https://github.com/User"
-                                        value={formik.values.github}
+                                        value={formik.values.github_profile}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -254,11 +230,11 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Gitlab</label>
                                     <input
-                                        name='gitlab'
+                                        name='gitlab_profile'
                                         type="text" 
                                         className="form-control" 
                                         placeholder="https://gitlab.com/User"
-                                        value={formik.values.gitlab}
+                                        value={formik.values.gitlab_profile}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -268,11 +244,11 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Linkedin</label>
                                     <input
-                                        name='linkedin' 
+                                        name='linkedin_profile' 
                                         type="text" 
                                         className="form-control" 
                                         placeholder="https://www.linkedin.com/User/"
-                                        value={formik.values.linkedin}
+                                        value={formik.values.linkedin_profile}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
@@ -313,26 +289,13 @@ const ScrapingForm = () => {
                                         </button>
                                         )
                                     }
-                                    {/* <button 
-                                        type='submit' 
-                                        onClick={formik.handleSubmit}
-                                        disabled={isFilled ? true : false}
-                                        className="btn btn-success w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
-                                            Guardar
-                                        {
-                                            infoSaved ? (
-                                            <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
-                                                <span className="sr-only">Loading...</span>
-                                            </div> 
-                                            ) : null
-                                        }
-                                    </button> */}
-
                                 </div>
                                 <Link to="/user/student/portfolio">                                
                                     <button 
                                         type='submit' 
-                                        className="btn btn-gray w-120px me-5px" >
+                                        className="btn btn-gray w-120px me-5px" 
+                                        disabled= {enableButton ? false: true}
+                                        >
                                             Continuar
                                     </button>
                                 </Link>
