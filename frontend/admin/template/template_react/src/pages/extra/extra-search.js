@@ -12,11 +12,11 @@ const VacanciesSearch = () => {
 	/* eslint-disable */
 	const [data, setData] = useState([
 		{
-			id:1,        name: "Desarrollador frontend1", company: "Perficient", description: "Pana trabajador", salary: "Adivine", modality: "Virtual", place: " United State, BY 10089 ",
+			id:1,        name: "Desarrollador frontend", company: "Perficient", description: "Familiaridad con los distintos frameworks, horarios flexibles, salario negociable", salary: "1700000", modality: "Virtual", place: " United State, BY 10089 ",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at:"2023-05-22 02:26:56.61116+00"
 		},
 		{
-			id:2, name: "Desarrollador frontend2", company: "Perficient", description: "Pana trabajador", salary: "1700000", modality: "Presencial",
+			id:2, name: "Full-stack developer", company: "Perficient", description: "Pana trabajador", salary: "1700000", modality: "Presencial",
 			contract: "Prestación de servicios", experience: "1 año de experiencia", keywords: "Ingraestructura cloud, TDD", created_at: "2023-05-22 02:26:56.61116+00"
 		},
 		{

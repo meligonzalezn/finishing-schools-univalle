@@ -36,7 +36,7 @@ const ScrapingForm = () => {
         initialValues: {
             firstName: name || '',
             lastName: lastname || '',
-            phone_number: phoneNumber || null,
+            phone_number: phoneNumber || '',
             idCard: idCard || '',
             issueDate: issueDate || '',
             github_profile: github || '',

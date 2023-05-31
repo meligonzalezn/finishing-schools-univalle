@@ -47,7 +47,7 @@ def get_linkedin_information(profile_url):
 
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.18.0.4:4444',
+        command_executor='http://172.18.0.2:4444',
         options=chrome_options
     )
 
@@ -66,14 +66,18 @@ def get_linkedin_information(profile_url):
         time.sleep(5)
         # Get current url
         current_url = driver.current_url
+        print("---------------------------------------",current_url)
         parsed_url = urllib.parse.urlparse(current_url)
+        print("-------------------------------parsed: ", parsed_url)
         session_redirect = ""
         if parsed_url.netloc == 'www.linkedin.com' and parsed_url.path.startswith('/in/'):
             session_redirect = current_url
         else:
             # Extracts the query string portion of the URL which contains one or more key-value pairs separated by & characters, and parses it into a dictionary object.
             query_dict = urllib.parse.parse_qs(parsed_url.query)
+            print("-----------------query_dict:", query_dict)
             session_redirect = query_dict['sessionRedirect'][0]
+            print("-------------------sessionredirect: ", session_redirect)
         # Avoiding redirect profile
         driver.execute_script("window.location.href = '{}'".format(session_redirect))
         time.sleep(5)

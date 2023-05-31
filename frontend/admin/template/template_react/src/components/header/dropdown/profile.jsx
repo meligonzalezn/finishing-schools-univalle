@@ -42,6 +42,9 @@ function DropdownProfile(props) {
 				
 			}
 		}
+    else{
+      setProfilePicture(localStorage.getItem("profile_picture"))
+    }
 
   }, [hideDropdown]);
 
