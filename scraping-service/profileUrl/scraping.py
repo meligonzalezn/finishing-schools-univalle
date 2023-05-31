@@ -141,7 +141,7 @@ def get_gitlab_information(profile_url):
     #Obtains the technologies used in the project repository from the link provided
     def scrape_page(link):
             driver = webdriver.Remote(
-                command_executor='http://172.18.0.4:4444',
+                command_executor='http://172.19.0.6:4444',
                 options=chrome_options
             )
             driver.get(link)

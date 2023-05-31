@@ -1,18 +1,22 @@
 import React from 'react';
 import { AppSettings } from './config/app-settings.js';
 import { slideToggle } from './composables/slideToggle.js';
+import store from './store.js';
+import { Provider } from 'react-redux';
 import Header from './components/header/header.jsx';
 import Sidebar from './components/sidebar/sidebar.jsx';
 import SidebarRight from './components/sidebar-right/sidebar-right.jsx';
 import TopMenu from './components/top-menu/top-menu.jsx';
 import Content from './components/content/content.jsx';
 import ThemePanel from './components/theme-panel/theme-panel.jsx';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
+const persistor = persistStore(store);
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		
 		this.toggleAppSidebarMinify = (e) => {
 			e.preventDefault();
 			this.setState(state => ({
@@ -463,8 +467,6 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
-
-	  
   }
   
   handleScroll = () => {
@@ -481,39 +483,40 @@ class App extends React.Component {
   	for (var i = 0; i < elm.length; i++) {
   		elm[i].classList.add('d-none');
   	}
-  }
-	
+  }	
 	render() {
 		return (
 			<AppSettings.Provider value={this.state}>
-				
-				<div className={
-					'app ' +
-					(this.state.appGradientEnabled ? 'app-gradient-enabled ' : '') + 
-					(this.state.appHeaderNone ? 'app-without-header ' : '') + 
-					(this.state.appHeaderFixed && !this.state.appHeaderNone ? 'app-header-fixed ' : '') + 
-					(this.state.appSidebarFixed ? 'app-sidebar-fixed ' : '') +
-					(this.state.appSidebarNone ? 'app-without-sidebar ' : '') + 
-					(this.state.appSidebarEnd ? 'app-with-end-sidebar ' : '') +
-					(this.state.appSidebarWide ? 'app-with-wide-sidebar ' : '') +
-					(this.state.appSidebarLight ? 'app-with-light-sidebar ' : '') +
-					(this.state.appSidebarMinify ? 'app-sidebar-minified ' : '') + 
-					(this.state.appSidebarMobileToggled ? 'app-sidebar-mobile-toggled ' : '') + 
-					(this.state.appTopMenu ? 'app-with-top-menu ' : '') + 
-					(this.state.appContentFullHeight ? 'app-content-full-height ' : '') + 
-					(this.state.appSidebarTwo ? 'app-with-two-sidebar ' : '') + 
-					(this.state.appSidebarEndToggled ? 'app-sidebar-end-toggled ' : '') + 
-					(this.state.appSidebarEndMobileToggled ? 'app-sidebar-end-mobile-toggled ' : '') + 
-					(this.state.hasScroll ? 'has-scroll ' : '')
-				}>
-					{!this.state.appHeaderNone && (<Header />)}
-					{!this.state.appSidebarNone && (<Sidebar />)}
-					{this.state.appSidebarTwo && (<SidebarRight />)}
-					{this.state.appTopMenu && (<TopMenu />)}
-					{!this.state.appContentNone && (<Content />)}
-					<ThemePanel />
-				</div>
-				
+				<PersistGate persistor={persistor}>	
+					<Provider store={store}>
+						<div className={
+							'app ' +
+							(this.state.appGradientEnabled ? 'app-gradient-enabled ' : '') + 
+							(this.state.appHeaderNone ? 'app-without-header ' : '') + 
+							(this.state.appHeaderFixed && !this.state.appHeaderNone ? 'app-header-fixed ' : '') + 
+							(this.state.appSidebarFixed ? 'app-sidebar-fixed ' : '') +
+							(this.state.appSidebarNone ? 'app-without-sidebar ' : '') + 
+							(this.state.appSidebarEnd ? 'app-with-end-sidebar ' : '') +
+							(this.state.appSidebarWide ? 'app-with-wide-sidebar ' : '') +
+							(this.state.appSidebarLight ? 'app-with-light-sidebar ' : '') +
+							(this.state.appSidebarMinify ? 'app-sidebar-minified ' : '') + 
+							(this.state.appSidebarMobileToggled ? 'app-sidebar-mobile-toggled ' : '') + 
+							(this.state.appTopMenu ? 'app-with-top-menu ' : '') + 
+							(this.state.appContentFullHeight ? 'app-content-full-height ' : '') + 
+							(this.state.appSidebarTwo ? 'app-with-two-sidebar ' : '') + 
+							(this.state.appSidebarEndToggled ? 'app-sidebar-end-toggled ' : '') + 
+							(this.state.appSidebarEndMobileToggled ? 'app-sidebar-end-mobile-toggled ' : '') + 
+							(this.state.hasScroll ? 'has-scroll ' : '')
+						}>
+							{!this.state.appHeaderNone && (<Header />)}
+							{!this.state.appSidebarNone && (<Sidebar />)}
+							{this.state.appSidebarTwo && (<SidebarRight />)}
+							{this.state.appTopMenu && (<TopMenu />)}
+							{!this.state.appContentNone && (<Content />)}
+							<ThemePanel />
+						</div>
+					</Provider>
+				</PersistGate>
 			</AppSettings.Provider>
 		)
 	}

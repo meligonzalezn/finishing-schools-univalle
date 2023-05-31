@@ -101,7 +101,7 @@ const ServiceDashboard = () => {
 	return (
         <div>
             <div className="mb-10px mt-10px">
-                <h4>Services</h4>
+                <h4>Servicios</h4>
             </div>
             <div className="row">
                 {

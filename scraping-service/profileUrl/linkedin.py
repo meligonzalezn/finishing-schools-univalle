@@ -233,12 +233,13 @@ def get_linkedin_information(profile_url):
             print('-------------- No languages information')
         # Concatenate the lists and append to the experience list
         experience = [item for sublist in experience for item in sublist]
+        print(experience[::-1])
         userPortfolio.append({
             "about": about,
-            "experience": experience,
-            "education": educationInfo,
-            "certifications": certifications,
-            "languages": languagesInfo
+            "experience": experience[::-1],
+            "education": educationInfo[::-1],
+            "certifications": certifications[::-1],
+            "languages": languagesInfo[::-1]
         })
         driver.quit()
         return userPortfolio

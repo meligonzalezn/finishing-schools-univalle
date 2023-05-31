@@ -1,27 +1,64 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import CardPortfolio from "../../../components/cards/card";
 import ProfileImage from "../../../assets/img/profile/user-image-default.png"
 import { getPortfolioStudent, getScrapingInfo, updatePortfolioStudent } from "../../../utils/scraping-axios";
 import { ReactNotifications, Store } from 'react-notifications-component';
-import { registerPortfolioStudentInformation, getPortfolioStudentInformation } from "../../../utils/portfolio-axios";
+import { registerPortfolioStudentInformation, getPortfolioStudentInformation,
+        registerExperience,
+        registerEducation,
+        registerCertificationsLicenses,
+        registerLanguages,
+        registerSkills,
+        deleteSkillsBack} from "../../../utils/portfolio-axios";
+import { selectAbout, setAbout, selectImage, setImage, selectExperience, 
+    setExperiences,setSingleExperience, selectEducation, setEducation, selectCertifications, 
+    setCertifications, selectLanguages, setLanguages, selectSkills, setSkills, 
+    selectShowModalExperience, setShowModalExperience, setShowModalEducation, selectShowModalEducation,
+    setSingleEducation, setShowModalCertification, setSingleCertification, selectShowModalCertification,
+    setSingleLanguage, selectShowModalLanguages, setShowModalLanguage, selectShowlModalAbout,
+    setShowModalAbout, setSingleAbout, setShowModalSkills, selectShowModalSkills,
+    setSingleSkills, setStudentId, selectImageChanged, setImageChanged, setPortfolioStudent, selectPortfolioStudent, setIsEditing,
+    setShowModalEditExperience, 
+    setShowModalEditEducation,
+    setShowModalEditCertifications,
+    setShowModalEditSkills,
+    setShowModalEditLanguages, setEditForm, selectShowModalAboutEdit, setShowModalAboutEdit, setEditObject, setUpdateAbout, deleteSkill, selectShowNotificationUpdatePortfolioError, selectShowNotificationUpdatePortfolioSuccess, selectShowNotificationCreateSuccess, selectShowNotificationCreateError} from "../../../reducers/portfolioSlice";
+import ModalAdd from "../../../components/modal/modalAdd";
+import {descriptionField, experienceFields, studiesFields, certificationsLicensesFields, skillsFields, languagesFields } from "./fields";
+import { useNavigate } from "react-router-dom";
 
 const PortfolioForm = () => {
-    const [portfolioStudent, setPortfolioStudent] = useState({}) 
-    const [image, setImage] = useState("")
-    const [imageChanged, setImageChanged] = useState(false)
-    const [about, setAbout] = useState("")
-    const [experience, setExperience] = useState([])
-    const [education, setEducation] = useState([])
-    const [certifications, setCertifications] = useState([])
-    const [languages, setLanguages] = useState([])
-    const [skills, setSkills] = useState([])
+    const dispatch = useDispatch();
+    const portfolioStudent = useSelector(selectPortfolioStudent);
+    const image = useSelector(selectImage);
+    const imageChanged = useSelector(selectImageChanged)
+    const about = useSelector(selectAbout);
+    const experience = useSelector(selectExperience);
+    const education = useSelector(selectEducation);
+    const certifications = useSelector(selectCertifications);
+    const languages = useSelector(selectLanguages);
+    const skills = useSelector(selectSkills);
     const [infoLoaded, setInfoLoaded] = useState(false)
     const [updateDescriptionImage, setUpdateDescriptionImage] = useState(false)
     const [infoSaved, setInfoSaved] = useState(false)
     const [isScrape, setIsScrape] = useState(false)
     const [scraping, setScraping] = useState(false);
+    const modalExperience = useSelector(selectShowModalExperience);
+    const modalEducation = useSelector(selectShowModalEducation);
+    const modalCertification = useSelector(selectShowModalCertification); 
+    const modalLanguage = useSelector(selectShowModalLanguages);
+    const modalAbout = useSelector(selectShowlModalAbout);
+    const modalAboutEdit = useSelector(selectShowModalAboutEdit)
+    const modalSkills = useSelector(selectShowModalSkills);
+    const modalNotificationPortfolioSuccess = useSelector(selectShowNotificationUpdatePortfolioSuccess)
+    const modalNotificationPortfolioError = useSelector(selectShowNotificationUpdatePortfolioError)
+    const modalNotificationCreateSuccess = useSelector(selectShowNotificationCreateSuccess)
+    const modalNotificationCreateError = useSelector(selectShowNotificationCreateError)
+    const navigate = useNavigate();
+
 
     /**
      * Default options for warning, success and error messages
@@ -34,51 +71,18 @@ const PortfolioForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            image: image || '',
-            about: about || '',
-            experience: experience || [],
-            education: education || [],
-            certifications: certifications || [],
-            skills: skills || [],
-            languages: languages || []
+          image: image || '',
+          about: about || '',
+          experience: experience || [],
+          education: education || [],
+          certifications: certifications || [],
+          skills: skills || [],
+          languages: languages || []
         },
-        onSubmit: async (values) => {
-            if(formik.isValid){
-                if(formik.values.image !== '' || formik.values.about !== '') {
-                    setPortfolioStudent(prevState => ({...prevState, image_profile: formik.values.image, description: formik.values.about, scrapeInfoSaved: true}));
-                    setUpdateDescriptionImage(true)
-                }
-                setInfoSaved(true)
-                const response = await registerPortfolioStudentInformation(values, portfolioStudent.sub_key)
-                if(response.status === 200 ){
-                    setInfoSaved(false)
-                    Store.addNotification({
-                        title: "Register Success",
-                        message: "Información registrada",
-                        type: "success",
-                        dismiss: {
-                            duration: 3000,
-                        },
-                        ...defaultOptions
-                    });
-                } else {
-                    setInfoSaved(false)
-                    Store.addNotification({
-                        title: "Error",
-                        message: "Error registrando la información",
-                        type: "danger",
-                        dismiss: {
-                            duration: 3000,
-                        },
-                        ...defaultOptions
-                    });
-                }
-            }
-        },
+        onSubmit: {},
         validationSchema: Yup.object({
           image: Yup.mixed().optional(),
-          about: Yup.string()
-            .required('Campo obligatorio'),
+          about: Yup.string().required('Campo obligatorio'),
           experience: Yup.array().of(Yup.object()).optional(),
           education: Yup.array().of(Yup.object()).optional(),
           certifications: Yup.array().of(Yup.object()).optional(),
@@ -86,24 +90,29 @@ const PortfolioForm = () => {
           languages: Yup.array().of(Yup.object()).optional(),
         }),
         enableReinitialize: true,
-    })
+      });
+      
 
     useEffect(() => {
         const fetchUserInfo = async () => {
           try {
             const student = await getPortfolioStudent();
-            setPortfolioStudent(student);
-            setImage(student.image_profile);
+            dispatch(setPortfolioStudent(student));
+            dispatch(setImage(student.image_profile));
+            dispatch(setStudentId(student.sub_key));
             if (student.scrapeInfoSaved) {
-              setAbout(student.description);
+              dispatch(setAbout(student.description));
               setIsScrape(student.scrapeInfoSaved);
               const portfolioInformation = await getPortfolioStudentInformation(student.sub_key);
               if (portfolioInformation) {
-                setExperience(portfolioInformation.experience.data);
-                setEducation(portfolioInformation.education.data);
-                setCertifications(portfolioInformation.certifications.data);
-                setLanguages(portfolioInformation.languages.data);                  
-                setSkills(portfolioInformation.skills);
+                dispatch(setExperiences(portfolioInformation.experience.data));
+                dispatch(setEducation(portfolioInformation.education.data));
+                dispatch(setCertifications(portfolioInformation.certifications.data));
+                dispatch(setLanguages(portfolioInformation.languages.data));
+                const uniqueList = portfolioInformation.skills.data.filter(
+                    (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
+                );
+                dispatch(setSkills(uniqueList))                  
               }
             } else {
               setScraping(true); 
@@ -111,54 +120,38 @@ const PortfolioForm = () => {
               if (student?.linkedin_profile !== '') {
                 const url = student.linkedin_profile
                 scrapingInfo.push({platform: 'linkedin', url: url})
-
-                // const linkedinInfo = await getScrapingInfo(student.linkedin_profile, 'linkedin');
-
-                // if (linkedinInfo) {
-                //   const data = linkedinInfo.data[0];
-                //   setAbout(data.about);
-                //   setExperience(data.experience);
-                //   setEducation(data.education);
-                //   setCertifications(data.certifications);
-                //   setLanguages(data.languages);
-                // }
               }
               if (student?.github_profile !== '') {
                 const url =  student.github_profile
                 scrapingInfo.push({platform:  'github', url: url})
-
-                // const githubInfo = await getScrapingInfo(student.github_profile, 'github');
-
-                // setSkills(prevSkills => [...new Set([...prevSkills, ...githubInfo.data])]);
               }
               if (student?.gitlab_profile !== '') {
                 const url =  student.gitlab_profile
                 scrapingInfo.push({platform:  'gitlab', url: url})
-
-                // const gitlabInfo = await getScrapingInfo(student.gitlab_profile, 'gitlab');
-
-                // setSkills(prevSkills => [...new Set([...prevSkills, ...gitlabInfo.data])]);
               }
 
-              const res_scrapedInfo = await getScrapingInfo({"scraping-data":scrapingInfo});
-              const scrapedInfo = res_scrapedInfo.data
-              console.log(scrapedInfo)
+              const resScrapedInfo = await getScrapingInfo({"scraping-data":scrapingInfo});
+              const scrapedInfo = resScrapedInfo.data
               if(scrapedInfo.linkedinInfo !== ""){
                     const data = scrapedInfo.linkedinInfo[0];
-                    setAbout(data.about);
-                    setExperience(data.experience);
-                    setEducation(data.education);
-                    setCertifications(data.certifications);
-                    setLanguages(data.languages);
+                    dispatch(setAbout(data.about));
+                    dispatch(setExperiences(data.experience.reverse()));
+                    dispatch(setEducation(data.education.reverse()));
+                    dispatch(setCertifications(data.certifications.reverse()));
+                    dispatch(setLanguages(data.languages.reverse()));
               }
-              if(scrapedInfo.githubInfo !== ""){
-                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.githubInfo])]);
+              if (scrapedInfo.githubInfo !== "") {
+                const newSkills = [...new Set([...scrapedInfo.githubInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills([...skills, ...formattedSkills]));
               }
-              if(scrapedInfo.gitlabInfo !== ""){
-                setSkills(prevSkills => [...new Set([...prevSkills, ...scrapedInfo.gitlabInfo])]);
+              
+              if (scrapedInfo.gitlabInfo !== "") {
+                const newSkills = [...new Set([...scrapedInfo.gitlabInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills([...skills, ...formattedSkills]));
               }
-             
-            }
+            } 
             setInfoLoaded(true);
           } catch (error) {
             Store.addNotification({
@@ -207,6 +200,76 @@ const PortfolioForm = () => {
         // eslint-disable-next-line
       }, [portfolioStudent, imageChanged, updateDescriptionImage]);
 
+    const handleSubmitPortfolio = async (event) => {
+        event.preventDefault();
+        if (formik.isValid) {
+            const newValuesPortfolioStudent = {
+              ...portfolioStudent,
+              image_profile: formik.values.image,
+              description: formik.values.about,
+              scrapeInfoSaved: true
+            };
+            if (formik.values.image !== '' || formik.values.about !== '') {
+              dispatch(setPortfolioStudent(newValuesPortfolioStudent));
+              setUpdateDescriptionImage(true);
+            }
+            setInfoSaved(true);
+            const response = await registerPortfolioStudentInformation(
+              formik.values,
+              portfolioStudent.sub_key
+            );
+            if (response.status === 200) {
+              setInfoSaved(false);
+              Store.addNotification({
+                title: "Register Success",
+                message: "Información registrada",
+                type: "success",
+                dismiss: {
+                  duration: 3000,
+                },
+                ...defaultOptions
+              });
+            } else {
+              setInfoSaved(false);
+              Store.addNotification({
+                title: "Error",
+                message: "Error registrando la información",
+                type: "danger",
+                dismiss: {
+                  duration: 3000,
+                },
+                ...defaultOptions
+              });
+            }
+        }
+    }
+
+    const handleUpdatePortfolio = async (event) => {
+        event.preventDefault();
+        const newValuesPortfolio = {...portfolioStudent, image_profile: event.target.files[0], description: formik.values.about}
+            if(formik.values.image !== '' || formik.values.about !== '') {
+                dispatch(setPortfolioStudent(newValuesPortfolio));
+                setUpdateDescriptionImage(true)
+            }
+            const response = await updatePortfolioStudent(newValuesPortfolio, imageChanged)
+            if (response?.status === 200) {
+                Store.addNotification({
+                    title: "Actualización exitosa",
+                    message: "Información actualizada",
+                    type: "success",
+                    ...defaultOptions
+                });
+            }
+            else {
+                Store.addNotification({
+                    title: "Error",
+                    message: "Error actualizando la información",
+                    type: "danger",
+                    ...defaultOptions
+            });
+        }
+    } 
+
     return (
         <div>
             {
@@ -227,9 +290,10 @@ const PortfolioForm = () => {
                                             name='image'
                                             className="form-control" 
                                             type="file" 
-                                            onChange={(event) => {
+                                            onChange={async (event) => {
                                                 formik.setFieldValue('image', event.target.files[0]);
-                                                setImageChanged(true);
+                                                dispatch(setImageChanged(true));
+                                                await handleUpdatePortfolio(event)
                                             }}
                                             onBlur={formik.handleBlur}
                                             accept='.png, .jpg, jpeg'
@@ -238,14 +302,34 @@ const PortfolioForm = () => {
                                             El tamaño máximo de archivo permitido es de 10MB
                                         </p>
                                     </div>
-                                </div> 
+                                </div>
                             <div className="row">
                                 <div className="col">
                                     <div className="d-flex justify-content-between align-items-center">
                                         <h5>Sobre mí</h5>
-                                        <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                        <div className="d-flex" style={{"gap": "0.5rem"}}>
+                                            {
+                                                about !== "" ? 
+                                                <button className="border-0 bg-white" onClick={(event) => {
+                                                    event.preventDefault();
+                                                    dispatch(setShowModalAboutEdit(true));
+                                                    dispatch(setEditForm(true));
+                                                    dispatch(setEditObject({description: formik.values.about}))
+                                                }}>
+                                                    <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                </button> : 
+                                                <button className="border-0 bg-white" 
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        dispatch(setShowModalAbout(true));
+                                                    }}>
+                                                    <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                                </button>
+                                            }
+                                            
+                                        </div>
                                     </div>
-                                    <div className="card" style={{"marginBottom": "2rem"}}>
+                                    <div className="card" style={ isScrape ? {"marginBottom": "1rem"} : {"marginBottom": "2rem", "border": 0}}>
                                         <div className="card-body">
                                             {formik.values.about}
                                         </div>
@@ -254,20 +338,41 @@ const PortfolioForm = () => {
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    <div className="d-flex justify-content-between align-items-center">                            
-                                        <h5>Experiencia Laboral</h5>
+                                    <div className="d-flex justify-content-between align-items-center"
+                                        style={isScrape ? { paddingBottom: "0rem" } : { paddingBottom: "1.5rem" }}
+                                    >                            
+                                        <h5 className="mb-4">Experiencia Laboral</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
-                                            <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                            <button className="border-0 bg-white" onClick={(event) => {
+                                                    event.preventDefault();
+                                                    dispatch(setShowModalExperience(true));
+                                                    dispatch(setShowModalEditExperience(false));
+                                                    dispatch(setEditForm(false))
+                                                }}>
+                                                <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                            </button>
+                                            {
+                                                experience?.length !== 0 ? 
+                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                    dispatch(setIsEditing("experience"))
+                                                    dispatch(setEditForm(true))
+                                                    navigate("/user/student/portfolio/edit")
+                                                }}>
+                                                    <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                </button> : null
+                                            }
                                         </div>
                                     </div>
                                 </div>
                                 <CardPortfolio
                                     list={formik.values.experience}
                                     titleKey="company_name"
-                                    firstTimeKey="experience_time"
+                                    timeKey="experience_time"
+                                    firstTimeKey="start_date"
+                                    secondTimeKey="end_date"
                                     descriptionKey="description"
                                     workExperience={true}
+                                    isEdit={false}
                                 />
                             </div>
                             <div className="row">
@@ -275,8 +380,24 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Educación</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
-                                            <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                            <button className="border-0 bg-white" onClick={(event) => {
+                                                        event.preventDefault();
+                                                        dispatch(setShowModalEducation(true));
+                                                        dispatch(setShowModalEditEducation(false));
+                                                        dispatch(setEditForm(false));
+                                                    }}>
+                                                    <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                            </button>
+                                            {
+                                                education?.length !== 0 ? 
+                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                    dispatch(setIsEditing("education"))
+                                                    dispatch(setEditForm(true))
+                                                    navigate("/user/student/portfolio/edit")
+                                                }}>
+                                                    <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                </button> : null
+                                            }
                                         </div>
                                     </div>
                                     <CardPortfolio
@@ -285,8 +406,10 @@ const PortfolioForm = () => {
                                         firstTimeKey="start_date"
                                         secondTimeKey="end_date"
                                         subtitleKey="school"
+                                        descriptionKey="description"
                                         iconClass="mortarboard"
                                         workExperience={false}
+                                        isEdit={false}
                                     />
                                 </div>
                             </div>
@@ -295,8 +418,24 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Licencias & Certicaciones</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
+                                            <button className="border-0 bg-white" onClick={(event) => {
+                                                    event.preventDefault();
+                                                    dispatch(setShowModalCertification(true));
+                                                    dispatch(setShowModalEditCertifications(false));
+                                                    dispatch(setEditForm(false));
+                                                }}>
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
-                                                <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                            </button>
+                                            {
+                                                certifications?.length !== 0 ? 
+                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                    dispatch(setIsEditing("certifications"))
+                                                    dispatch(setEditForm(true))
+                                                    navigate("/user/student/portfolio/edit")
+                                                }}>
+                                                    <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                </button> : null
+                                            }
                                         </div>
                                     </div>
                                     <CardPortfolio
@@ -307,6 +446,7 @@ const PortfolioForm = () => {
                                         subtitleKey="organization"
                                         iconClass="award"
                                         workExperience={false}
+                                        isEdit={false}
                                     />
                                 </div>
                             </div>
@@ -315,26 +455,50 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Competencias</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
+                                            <button className="border-0 bg-white"  onClick={(event) => {
+                                                        event.preventDefault();
+                                                        dispatch(setShowModalSkills(true));
+                                                        dispatch(setShowModalEditSkills(false));
+                                                        dispatch(setEditForm(false));
+                                                }}>
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
-                                                <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                            </button>                                                
                                         </div>
                                     </div>
                                 </div>
-                                <div className="ml-2" style={{"display": "grid", "gridTemplateColumns": "repeat(4, 1fr)", "gap": "0.5rem", "padding": "1rem 1.5rem"}}>
-                                    {
-                                        formik.values.skills?.map((skill, key) =>
-                                            <span key={key} className="badge bg-gray-500" style={{"fontSize": "12px"}}>{skill}</span>
-                                        )
-                                    }
-                                </div>
+                                {<CardPortfolio
+                                    list={formik.values.skills}
+                                    workExperience={false}
+                                    isEdit={true}
+                                    skills={true}
+                                    deleteAction={deleteSkill}
+                                    deleteFunction={deleteSkillsBack}
+                                />
+                                } 
                             </div>
                             <div className="row">
                                 <div className="col">
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Idiomas</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                                <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
-                                                <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                <button className="border-0 bg-white" onClick={(event) => {
+                                                            event.preventDefault();
+                                                            dispatch(setShowModalLanguage(true));
+                                                            dispatch(setShowModalEditLanguages(false));
+                                                            dispatch(setEditForm(false));
+                                                        }}>
+                                                        <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
+                                                </button>
+                                                {
+                                                languages?.length !== 0 ? 
+                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                    dispatch(setIsEditing("languages"))
+                                                    dispatch(setEditForm(true))
+                                                    navigate("/user/student/portfolio/edit")
+                                                }}>
+                                                    <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
+                                                </button> : null
+                                                }
                                         </div>
                                     </div>
                                     <CardPortfolio
@@ -343,31 +507,31 @@ const PortfolioForm = () => {
                                         subtitleKey="proficiency"
                                         iconClass="translate"
                                         workExperience={false}
+                                        isEdit={false}
                                     />
                                 </div>
                             </div>
                             <div style={{"marginTop": "2rem"}}>
                                 {
-                                    isScrape ? (
-                                        <button 
-                                            className="btn btn-primary w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
-                                                Actualizar
-                                        </button>
-                                        ) : 
+                                    isScrape ? 
+                                    null : 
                                         (
-                                        <button 
-                                            type='submit' 
-                                            onClick={formik.handleSubmit}
-                                            className="btn btn-success w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
-                                                Guardar
-                                            {
-                                                infoSaved ? (
-                                                <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
-                                                    <span className="sr-only">Loading...</span>
-                                                </div> 
-                                                ) : null
-                                            }
-                                        </button>
+                                        <div className="row m-4">
+                                            <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping o si estás registrando tu portafolio por primera vez.</p>
+                                            <button 
+                                                type='submit' 
+                                                onClick={(event) => {handleSubmitPortfolio(event)}}
+                                                className="btn btn-success w-100px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
+                                                    Guardar
+                                                {
+                                                    infoSaved ? (
+                                                    <div className="spinner-border" role="status" style={{"width": "1rem", "height": "1rem"}}>
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div> 
+                                                    ) : null
+                                                }
+                                            </button>
+                                        </div>
                                         )
                                     }
                             </div>
@@ -383,6 +547,114 @@ const PortfolioForm = () => {
             )
         }
         <ReactNotifications />
+        {
+            modalAbout ? (
+                <ModalAdd 
+                    title={"Añadir descripción"} 
+                    description={"Por favor, completa el siguiente campo para añadir una descripción sobre su perfil profesional:"} 
+                    fields={descriptionField} 
+                    action={setSingleAbout}
+                    showModalAction={setShowModalAbout}
+                    onUpdate={updatePortfolioStudent}
+                    isAbout={true}
+                />
+            ): null
+        }
+        {
+            modalAboutEdit ? (
+                <ModalAdd 
+                    title={"Editar descripción"} 
+                    description={"Puedes escribir sobre tus años de experiencia, tu sector o tus habilidades. La gente también habla de sus logros o experiencias laborales anteriores"} 
+                    fields={descriptionField} 
+                    action={setUpdateAbout}
+                    showModalAction={setShowModalAboutEdit}
+                    onUpdate={updatePortfolioStudent}
+                    isAbout={true}
+                />
+
+            ): null
+        }
+        {
+            modalExperience ? (
+                <ModalAdd 
+                    title={"Añadir experiencia"} 
+                    description={"Por favor, completa los siguientes campos para añadir una nueva experiencia:"} 
+                    fields={experienceFields} 
+                    action={setSingleExperience}
+                    showModalAction={setShowModalExperience}
+                    onSubmit={registerExperience}
+                    isAbout={false}
+                />
+            ): null
+        }
+        {
+            modalEducation ? (
+                <ModalAdd 
+                    title={"Añadir educación"} 
+                    description={"Por favor, completa los siguientes campos para registrar su información académica:"} 
+                    fields={studiesFields} 
+                    action={setSingleEducation}
+                    showModalAction={setShowModalEducation}
+                    onSubmit={registerEducation}
+                    isAbout={false}
+                />
+            ) : null
+        }
+        {
+            modalCertification ? (
+                <ModalAdd 
+                    title={"Añadir certificación o licencia"} 
+                    description={"Por favor, completa los siguientes campos para registrar sus certificaciones o licencias:"} 
+                    fields={certificationsLicensesFields} 
+                    action={setSingleCertification}
+                    showModalAction={setShowModalCertification}
+                    onSubmit={registerCertificationsLicenses}
+                    isAbout={false}
+                />
+            ) : null
+        }
+        {
+            modalLanguage ? (
+                <ModalAdd 
+                    title={"Añadir idioma"} 
+                    description={"Por favor, completa los siguientes campos para registrar su conocimiento en diferentes idiomas:"} 
+                    fields={languagesFields} 
+                    action={setSingleLanguage}
+                    showModalAction={setShowModalLanguage}
+                    onSubmit={registerLanguages}
+                    isAbout={false}
+                />
+            ) : null
+        }
+        {
+            modalSkills ? (
+                <ModalAdd 
+                    title={"Añadir competencias"} 
+                    description={"Por favor complete los siguientes campos para registrar sus competencias. Recuerde evitar agregar competencias duplicadas."} 
+                    fields={skillsFields} 
+                    action={setSingleSkills}
+                    showModalAction={setShowModalSkills}
+                    onSubmit={registerSkills}
+                    isAbout={false}
+                />
+            ): null
+        }
+        {
+            modalNotificationPortfolioSuccess ?
+            <ReactNotifications /> : null
+        }
+        {
+            modalNotificationPortfolioError ? 
+            <ReactNotifications /> : null
+        }
+                {
+            modalNotificationCreateSuccess ?
+            <ReactNotifications /> : null
+        }
+        {
+            modalNotificationCreateError ? 
+            <ReactNotifications /> : null
+        }
         </div>
     )
 }

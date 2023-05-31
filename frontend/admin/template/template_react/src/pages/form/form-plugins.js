@@ -289,7 +289,7 @@ class FormPlugins extends React.Component {
 						
 						<Panel>
 							<PanelHeader>
-								Datepicker
+								Datepicker hi
 							</PanelHeader>
 							<PanelBody className="p-0">
 								<form className="form-horizontal form-bordered">

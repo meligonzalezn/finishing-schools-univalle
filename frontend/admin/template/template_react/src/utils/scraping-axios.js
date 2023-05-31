@@ -126,7 +126,6 @@ async function updatePortfolioStudent(data, imageChanged) {
 
 async function getScrapingInfo(scrapingInfo) {
     try {
-        console.log("datos:" , scrapingInfo)
         const response  = await axios({
               url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/get-basic-info/scrape/`,
               method: "POST",
@@ -142,10 +141,5 @@ async function getScrapingInfo(scrapingInfo) {
         return error;
     }
 }
-
-
-
-
-
 
 export {registerPortfolioStudent, getPortfolioStudent, updatePortfolioStudent, getScrapingInfo}
