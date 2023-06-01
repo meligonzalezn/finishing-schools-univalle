@@ -4,7 +4,7 @@ from .models import Student, WorkExperience, Studies, CertificationLicenses, Lan
 class StudentSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Student
-        fields = ['sub_key', 'idCard', 'issueDate','github_profile','gitlab_profile', 'linkedin_profile', 'image_profile', 'description', 'isFilled', 'scrapeInfoSaved']
+        fields = ['sub_key', 'name' , 'phone_number','idCard', 'issueDate','github_profile','gitlab_profile', 'linkedin_profile', 'image_profile', 'description', 'isFilled', 'scrapeInfoSaved']
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta: 

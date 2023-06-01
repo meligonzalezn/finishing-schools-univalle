@@ -15,6 +15,7 @@ const ScrapingForm = () => {
     const [github, setGithub] = useState("")
     const [gitlab, setGitlab] = useState("")
     const [issueDate, setIssueDate] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState(null)
     const [isFilled, setIsFilled] = useState(false)
     const [infoLoaded, setInfoLoaded] = useState(false)
     const [infoSaved, setInfoSaved] = useState(false)
@@ -35,6 +36,7 @@ const ScrapingForm = () => {
         initialValues: {
             firstName: name || '',
             lastName: lastname || '',
+            phone_number: phoneNumber || '',
             idCard: idCard || '',
             issueDate: issueDate || '',
             github_profile: github || '',
@@ -76,6 +78,7 @@ const ScrapingForm = () => {
             .required('Campo obligatorio'),
           issueDate: Yup.date()
            .required('Campo obligatorio'),
+          phone_number: Yup.number(),
           github_profile: Yup.string().optional(),
           gitlab_profile: Yup.string().optional(),
           linkedin_profile: Yup.string().optional(),
@@ -86,15 +89,19 @@ const ScrapingForm = () => {
     useEffect(() => {
         const fetchUserBasicInfo = async () => {
           try {
-            const basicInfo = await get_user_basic_info();
-            const portfolioStudent = await getPortfolioStudent();
+            const request1 =  get_user_basic_info();
+            const request2 = getPortfolioStudent();
+
+            const [basicInfo, portfolioStudent] = await Promise.all([request1, request2]);
+
             if (basicInfo) {
               setName(basicInfo['user_name']);
               setLastname(basicInfo['user_last_name']);  
             }
-            if (portfolioStudent) {
+            if (portfolioStudent !== "unregistered") {
                 setIdCard(portfolioStudent['idCard'])
                 setIssueDate(new Date(portfolioStudent['issueDate']))
+                setPhoneNumber(portfolioStudent['phone_number'])
                 setGithub(portfolioStudent['github_profile'])
                 setGitlab(portfolioStudent['gitlab_profile'])
                 setLinkedin(portfolioStudent['linkedin_profile'])
@@ -253,7 +260,20 @@ const ScrapingForm = () => {
                                         onBlur={formik.handleBlur}
                                     />
                                 </div>
+                                <div className="col">
+                                    <label className="form-label col-form-label col-md-3">Teléfono</label>
+                                    <input
+                                        name='phone_number' 
+                                        type="number" 
+                                        className="form-control" 
+                                        
+                                        value={formik.values.phone_number}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                </div>
                             </div>
+                           
                             <div style={{"marginTop": "2rem", "display": "flex", "justifyContent": "space-between"}}>
                                 <div className='d-flex'>
                                     {

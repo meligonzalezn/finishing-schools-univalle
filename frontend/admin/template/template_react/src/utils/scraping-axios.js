@@ -8,6 +8,8 @@ async function registerPortfolioStudent(data) {
         if(decodeData[0] !== null) {
             // save info in database
             let student = new FormData()
+            student.append('name', data.firstName + " " + data.lastName)
+            student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
             student.append('github_profile', data.github_profile)
@@ -21,6 +23,7 @@ async function registerPortfolioStudent(data) {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                   'Accept': 'application/json',
+                  authorization: "Bearer " + localStorage.getItem("access_token"),
                 },
             };
             
@@ -49,9 +52,9 @@ async function getPortfolioStudent() {
                 url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData[0].sub_key}/get_user/`,
                 method: "GET",
                 headers: {
-                // Add any auth token here
-                   authorization: "Bearer "+ sessionStorage.getItem("access_token"),
-                },
+                    // Add any auth token here
+                    authorization: "Bearer " + localStorage.getItem("access_token"),
+                  },
               })    
                 // Catch errors if any
                 .catch((err) => { 
@@ -60,6 +63,9 @@ async function getPortfolioStudent() {
             if(response.status===200){
               return response.data
             }
+            if(response.status===404){
+                return "unregistered"
+              }
             else{
               return undefined
             }  
@@ -75,6 +81,8 @@ async function updatePortfolioStudent(data, imageChanged) {
         const decodeData = await decodeJwt()
         if(decodeData[0] !== null) {
             let student= new FormData()
+            student.append('name', data.firstName + " " + data.lastName)
+            student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
             student.append('github_profile', data.github_profile)
@@ -102,7 +110,9 @@ async function updatePortfolioStudent(data, imageChanged) {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Accept': 'application/json',
+                     authorization: "Bearer " + localStorage.getItem("access_token"),
                   },
+                 
                 }).then((res) => {
                   return res;
                 });
@@ -120,7 +130,12 @@ async function getScrapingInfo(scrapingInfo) {
               url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/get-basic-info/scrape/`,
               method: "POST",
               data: scrapingInfo,
+              headers: {
+                // Add any auth token here
+                authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
         })
+        console.log(response.data)
         return response;
     } catch (error) {
         return error;
