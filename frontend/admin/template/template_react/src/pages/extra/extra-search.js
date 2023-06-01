@@ -10,6 +10,7 @@ import { ReactNotifications, Store } from 'react-notifications-component';
 
 const VacanciesSearch = () => {
 	/* eslint-disable */
+	
 	const [data, setData] = useState([
 		{
 			id:1,        name: "Desarrollador frontend", company: "Perficient", description: "Familiaridad con los distintos frameworks, horarios flexibles, salario negociable", salary: "1700000", modality: "Virtual", place: " United State, BY 10089 ",
