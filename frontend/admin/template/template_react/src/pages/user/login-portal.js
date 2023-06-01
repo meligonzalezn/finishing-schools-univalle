@@ -50,12 +50,12 @@ const LoginPortal = () => {
 					</div>
 					<div className="login-content login-portal-buttons">
 						<Link to="/user/univalle/login">
-							<button className="btn btn-outline-primary">
+							<button data-testid="btn-univalle-login" className="btn btn-outline-primary">
 								Universidad del Valle
 							</button>
 						</Link>
 						<Link to="/user/company/login">
-							<button className="btn btn-outline-danger">
+							<button data-testid="btn-company-login" className="btn btn-outline-danger">
 								Empresa
 							</button>
 						</Link>
