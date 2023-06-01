@@ -96,7 +96,9 @@ const PortfolioForm = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
           try {
+
             const student = await getPortfolioStudent();
+            console.log("estudiante: ", student)
             dispatch(setPortfolioStudent(student));
             dispatch(setImage(student.image_profile));
             dispatch(setStudentId(student.sub_key));
@@ -104,12 +106,13 @@ const PortfolioForm = () => {
               dispatch(setAbout(student.description));
               setIsScrape(student.scrapeInfoSaved);
               const portfolioInformation = await getPortfolioStudentInformation(student.sub_key);
+              console.log(portfolioInformation)
               if (portfolioInformation) {
-                dispatch(setExperiences(portfolioInformation.experience.data));
-                dispatch(setEducation(portfolioInformation.education.data));
-                dispatch(setCertifications(portfolioInformation.certifications.data));
-                dispatch(setLanguages(portfolioInformation.languages.data));
-                const uniqueList = portfolioInformation.skills.data.filter(
+                dispatch(setExperiences(portfolioInformation.experience));
+                dispatch(setEducation(portfolioInformation.education));
+                dispatch(setCertifications(portfolioInformation.certifications));
+                dispatch(setLanguages(portfolioInformation.languages));
+                const uniqueList = portfolioInformation.skills.filter(
                     (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
                 );
                 dispatch(setSkills(uniqueList))                  

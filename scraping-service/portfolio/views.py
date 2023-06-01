@@ -78,12 +78,23 @@ class StudentViewSet(viewsets.ModelViewSet):
         except:
             return Response({"state": registerState},status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['post'])
+    def set_scraped_info_saved(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+       
+        student = get_object_or_404(Student.objects.all(), pk=sub_key)
+        student.scrapeInfoSaved = True
+        student.save()
+        return Response( status=status.HTTP_200_OK)
+    
     @action(detail=False, methods=['get'])
     def get_pfp(this, request: Request) -> Response:
         sub_key = handleAuthToken(request)
         if sub_key == 'invalid_token':
             return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
-        print("entre")
+  
         student = get_object_or_404(Student.objects.all(), pk=sub_key)
         serializer = StudentSerializer(student)
         return Response({"profile_picture": serializer.data["image_profile"]}, status=status.HTTP_200_OK)
@@ -104,17 +115,50 @@ class StudentViewSet(viewsets.ModelViewSet):
             portfolio = {}
             data = {"name": student.name, "phone_number": student.phone_number, "portfolio": portfolio}
             if(len(experience) != 0):
-                portfolio["experience"] = experience
+                portfolio["experience"] = WorkExperienceSerializer(experience, many=True).data
             if(len(studies) != 0):
-                portfolio["studies"] = studies
+                
+                portfolio["education"] =  StudiesSerializer(studies, many=True).data
             if(len(certifications) != 0):
-                portfolio["certifications"] = certifications
+                portfolio["certifications"] = CertificationLicensesSerializer(certifications, many=True).data
             if(len(languages) != 0):
-                portfolio["languages"] = languages
+                portfolio["languages"] = LanguagesSerializer(languages, many=True).data
             if(len(skills) != 0):
-                portfolio["skills"] = skills
+                portfolio["skills"] = SkillsSerializer(skills, many=True).data
             
             return Response(data, status=status.HTTP_200_OK)
+        except:
+           return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+    @action(detail=False, methods=['get'])
+    def get_portfolio(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            student = Student.objects.all().get(pk=sub_key)
+            experience = student.workexperience_set.all()
+            studies = student.studies_set.all()
+            certifications = student.certificationlicenses_set.all()
+            languages = student.languages_set.all()
+            skills = student.skills_set.all()
+            
+            portfolio = {}
+           
+            if(len(experience) != 0):
+                portfolio["experience"] = WorkExperienceSerializer(experience, many=True).data
+            if(len(studies) != 0):
+               
+                portfolio["education"] =  StudiesSerializer(studies, many=True).data
+            if(len(certifications) != 0):
+                portfolio["certifications"] = CertificationLicensesSerializer(certifications, many=True).data
+            if(len(languages) != 0):
+                portfolio["languages"] = LanguagesSerializer(languages, many=True).data
+            if(len(skills) != 0):
+                portfolio["skills"] = SkillsSerializer(skills, many=True).data
+            
+            return Response(portfolio, status=status.HTTP_200_OK)
         except:
            return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
        
