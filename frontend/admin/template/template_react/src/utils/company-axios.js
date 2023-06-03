@@ -81,7 +81,7 @@ async function updateCompanyData(data , imageChanged) {
     url: `${process.env.REACT_APP_COMPANY_BACKEND_URL}/api/company/` + decoded.sub_key,
     method: "PUT",
     headers: {
-      // Add any auth token here
+
       authorization: "Bearer " + localStorage.getItem("access_token"),
     },
     data: company

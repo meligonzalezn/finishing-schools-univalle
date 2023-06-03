@@ -21,41 +21,42 @@ def get_github_information(profile_url):
     chrome_options.add_argument('--disable-dev-shm-usage')
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.19.0.6:4444',
+        command_executor='http://172.18.0.2:4444',
         options=chrome_options
     )
 
     try: 
         # Opening github's user profile
         driver.get(profile_url)
-        time.sleep(5)
+        time.sleep(4)
 
 
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
         
-        # Waiting for the page to load
-        time.sleep(5)
-
-
+  
         # Searching for repositories
         repositoriesButton = driver.find_element(By.CSS_SELECTOR, '[data-tab-item="repositories"]').click()
 
-        time.sleep(5)
-
-
+        time.sleep(4)
+       
+     
         src = driver.page_source
         soup = BeautifulSoup(src, 'html.parser')
 
 
         #Getting proggramming languages 
         languagesList = soup.find("details", {"id":"language-options"})
+    
         languagesItems = languagesList.find_all("label", {"class":"SelectMenu-item"})
         programmingLanguages = []
+   
 
         for item in languagesItems:
             programmingLanguages.append(item.find("span", {"class":"text-normal"}).text)
-
+            
+       
+        
         programmingLanguages.pop(0)   
         #Close/Delete the session
         driver.quit() 
@@ -82,7 +83,7 @@ def get_gitlab_information(profile_url):
     def get_links(projects_type):
         #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
         driver = webdriver.Remote(
-                command_executor='http://172.19.0.6:4444',
+                command_executor='http://172.18.0.4:4444',
                 options=chrome_options
             )
         # Opening gitlab's user profile
@@ -209,11 +210,11 @@ def get_gitlab_information(profile_url):
 def scrape_info(platform, profile_url, results):
         if platform == "github":
             githubInformation = get_github_information(profile_url)
-            results["githubInfo"] = githubInformation
+            results["githubInfo"]=githubInformation
         
         elif platform == "gitlab":
             gitlabInformation = get_gitlab_information(profile_url)
-            results["gitlabInfo"] = gitlabInformation
+            results["gitlabInfo"]=gitlabInformation
         
         elif platform == "linkedin":
             linkedInData = get_linkedin_information(profile_url)

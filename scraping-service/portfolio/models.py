@@ -6,8 +6,10 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 class Student(models.Model):
     sub_key = models.CharField(primary_key=True, auto_created=False, max_length=10000)
+    name = models.CharField(max_length=100, blank=True)
     idCard = models.CharField(max_length=200, blank=False)
     issueDate = models.CharField(max_length=200, blank=False)
+    phone_number = models.CharField(max_length=100, blank=True)
     github_profile = models.CharField(max_length=1000, blank=True)
     gitlab_profile = models.CharField(max_length=1000, blank=True)
     linkedin_profile = models.CharField(max_length=1000, blank=True)
