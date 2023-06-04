@@ -79,7 +79,7 @@ import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
 import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
 import CompanyForm from '../pages/user/company_profile/company-form.js';
 import { Navigate } from 'react-router-dom';
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 
 const ProtectedRoute = ({
 	allow,

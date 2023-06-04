@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import DropdownNotification from './dropdown/notification.jsx';
 import DropdownLanguage from './dropdown/language.jsx';
 import DropdownProfile from './dropdown/profile.jsx';
 import DropdownMegaMenu from './dropdown/mega.jsx';
@@ -118,8 +117,7 @@ const Header = () => {
 		)}
 
 		<div className="navbar-nav">
-				<DropdownNotification />
-
+				
 				{appHeaderLanguageBar && (
 				<DropdownLanguage />
 				)}

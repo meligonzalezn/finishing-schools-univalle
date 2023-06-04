@@ -5,7 +5,7 @@ import { AppSettings } from './../../config/app-settings.js';
 import { slideUp } from './../../composables/slideUp.js';
 import { slideToggle } from './../../composables/slideToggle.js';
 import SidebarMinifyBtn from './sidebar-minify-btn.jsx';
-import SidebarProfile from './sidebar-profile.jsx';
+// import SidebarProfile from './sidebar-profile.jsx';
 import SidebarNav from './sidebar-nav.jsx';
 
 class Sidebar extends React.Component {
@@ -281,7 +281,7 @@ class Sidebar extends React.Component {
 					<React.Fragment>
 						<div id="sidebar" className={'app-sidebar ' + (appSidebarTransparent ? 'app-sidebar-transparent' : '') + (appSidebarGrid ? 'app-sidebar-grid' : '')}>
 							<PerfectScrollbar className="app-sidebar-content" options={{suppressScrollX: true}}>
-								{!this.context.appSidebarSearch && ( <SidebarProfile /> )}
+								{/* {!this.context.appSidebarSearch && ( <SidebarProfile /> )} */}
 								<SidebarNav />
 								<SidebarMinifyBtn />
 							</PerfectScrollbar>

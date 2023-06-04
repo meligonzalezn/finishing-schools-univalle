@@ -88,9 +88,7 @@ function DropdownProfile(props) {
         </span>
       </a>
       <div id="profile-dropdown" className="dropdown-menu dropdown-menu-end me-1">
-        <a href="#/" className="dropdown-item">Edit Profile</a>
-        <a href="#/" className="dropdown-item">Settings</a>
-        <div className="dropdown-divider"></div>
+        
         <Link to="/" onClick={handleLogout} className="dropdown-item">
           Log Out
           {loading ?

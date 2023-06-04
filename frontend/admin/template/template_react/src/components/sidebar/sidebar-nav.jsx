@@ -160,7 +160,7 @@ class SidebarNav extends React.Component {
 						<input type="text" className="form-control" placeholder="Sidebar menu filter..." onKeyUp={this.handleSidebarSearch} />
 					</div>
 				)}
-				<div className="menu-header">Navigation</div>
+				<div className="menu-header">Navegación</div>
 				{this.state.menus.map((menu, i) => (
 					<NavItem key={i} menu={menu} />
 				))}
