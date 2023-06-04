@@ -158,13 +158,15 @@ const RegisterCompany = () => {
                         <small className="d-block fs-15px lh-16">Este sistema te permitirá desarrollar todas las habilidades requeridas para ingresar al mercado laboral.</small>
                     </div>
                     <div className="register-content">
-                        <form       
+                        <form 
+                            id='register-form-company'      
                             className="fs-13px"
                             autoComplete="off"
                             onSubmit={formik.handleSubmit}>
                             <div className="mb-3">
                                 <label className="mb-2">Nombre empresa <span className="text-danger">*</span></label>
                                 <input 
+                                    id='companyName'
                                     name='companyName'
                                     type="text"
                                     className='form-control fs-13px'
@@ -180,6 +182,7 @@ const RegisterCompany = () => {
                             <div className="mb-3">
                                 <label className="mb-2">Correo electrónico <span className="text-danger">*</span></label>
                                 <input 
+                                    id='email'
                                     name='email'
                                     type="text"
                                     className='form-control fs-13px'
@@ -198,6 +201,7 @@ const RegisterCompany = () => {
                             <div className="mb-3">
                                 <label className="mb-2">Contraseña <span className="text-danger">*</span></label>
                                 <input 
+                                    id='password'
                                     name='password'
                                     type="password"
                                     className='form-control fs-13px'
@@ -212,6 +216,7 @@ const RegisterCompany = () => {
                             <div className="mb-4">
                                 <label className="mb-2">Confirmar contraseña <span className="text-danger">*</span></label>
                                 <input
+                                    id='passwordConfirmed'
                                     name='passwordConfirmed'
                                     type="password"
                                     value={formik.values.passwordConfirmed}
@@ -241,6 +246,7 @@ const RegisterCompany = () => {
                             </div>
                             <div className="mb-4">
                                 <button 
+                                    data-testid="register-button-company"
                                     type="submit" 
                                     className="btn btn-primary d-block w-100 btn-lg h-45px fs-13px"
                                 >

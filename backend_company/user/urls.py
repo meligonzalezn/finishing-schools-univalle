@@ -2,12 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import CompanyView, get_profile_state, get_pfp
 
-
-
-
 router = routers.SimpleRouter()
-
-
 urlpatterns = [
     path('', include(router.urls)),
     path('company/', CompanyView.as_view(), name="company"),

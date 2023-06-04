@@ -74,7 +74,6 @@ const ServiceDashboard = () => {
 
         if(localStorage.getItem("role") === "company"){
             getProfileState().then((res)=>{
-              console.log("state: " , res)
               if(res.state==="In progress"){
                   Store.addNotification({
                       title: 'Registro incompleto',

@@ -60,7 +60,7 @@ const LoginPortal = () => {
 							</button>
 						</Link>
 						<div className="text-inverse">
-							 ¿Quieres registrar tu empresa? Haz click <Link to="/user/company/register" className="text-primary"> aquí</Link> para comenzar el registro
+							 ¿Quieres registrar tu empresa? Haz click <Link data-testid="register-company" to="/user/company/register" className="text-primary"> aquí</Link> para comenzar el registro
 						</div>
 					</div>
 				</div>
