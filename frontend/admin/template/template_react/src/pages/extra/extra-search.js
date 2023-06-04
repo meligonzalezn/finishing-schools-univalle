@@ -215,7 +215,7 @@ const VacanciesSearch = () => {
 				<div className="col-md-6">
 					<div className="input-group input-group-lg mb-3">
 						<input type="text" className="form-control input-white" placeholder="Ingresa palabras clave" value={search} onChange={(e) => setSearch(e.target.value)} />
-						<button type="button" className="btn btn-primary" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
+						<button type="button" className="btn btn-success" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
 
 					</div>
 					<div className="d-block d-md-flex align-items-center mb-3">
@@ -437,7 +437,7 @@ const VacanciesSearch = () => {
 					</div>
 
 					<div className="card-footer bg-none d-flex p-3">
-						<button type="button" class="btn btn-primary ms-auto" onClick={()=>setIsApplying(true)}>Aplicar</button>
+						<button type="button" class="btn btn-success ms-auto" onClick={()=>setIsApplying(true)}>Aplicar</button>
 
 					</div>
 				</div>
