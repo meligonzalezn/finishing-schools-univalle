@@ -196,7 +196,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label">Cédula <span className="text-danger">*</span></label>
                                     <input 
-                                        id= "idCard"
+                                        id= "id_card"
                                         name="idCard"
                                         type="text" 
                                         className="form-control" 
@@ -211,7 +211,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label">Fecha de expedición <span className="text-danger">*</span></label>
                                     <DatePicker 
-                                        id="issueDate"
+                                        id="issue_date"
                                         selected={formik.values.issueDate}
                                         onChange={(date) => formik.setFieldValue('issueDate', date)}
                                         onBlur={formik.handleBlur}
@@ -268,7 +268,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Teléfono</label>
                                     <input
-                                        id="phoneNumber"
+                                        id="phone_number"
                                         name='phone_number' 
                                         type="number" 
                                         className="form-control" 

@@ -81,6 +81,8 @@ const VacanciesSearch = () => {
 			item.name.toLowerCase().includes(search.toLowerCase()) || item.company.toLowerCase().includes(search.toLowerCase())
 			|| item.description.toLowerCase().includes(search.toLowerCase()) || item.keywords.toLowerCase().includes(search.toLowerCase())
 		);
+
+		
 		let auxMinSalary = minSalary.replace("$ ", "");
 		auxMinSalary = auxMinSalary.replace("$", "");
 		auxMinSalary = auxMinSalary.replaceAll(",", "");
@@ -118,15 +120,15 @@ const VacanciesSearch = () => {
 
 			);
 		}
-		console.log(startDate, finishDate)
-		if (startDate !== "" || startDate !== null ) {
+		
+		if (startDate !== "" && startDate !== null ) {
 			filteredData = filteredData.filter((item) =>
 				
 				formatDate(item.created_at) >= formatDate(startDate)
 			);
 
 		}
-		if (finishDate !== "" || finishDate !== null ) {
+		if (finishDate !== "" && finishDate !== null ) {
 			filteredData = filteredData.filter((item) =>
 				
 				formatDate(item.created_at) <= formatDate(finishDate)
@@ -214,7 +216,7 @@ const VacanciesSearch = () => {
 			<div className="row">
 				<div className="col-md-6">
 					<div className="input-group input-group-lg mb-3">
-						<input type="text" className="form-control input-white" placeholder="Ingresa palabras clave" value={search} onChange={(e) => setSearch(e.target.value)} />
+						<input id="searchInput" type="text" className="form-control input-white" placeholder="Ingresa palabras clave" value={search} onChange={(e) => setSearch(e.target.value)} />
 						<button id="searchButton"  type="button" className="btn btn-primary" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
 
 					</div>

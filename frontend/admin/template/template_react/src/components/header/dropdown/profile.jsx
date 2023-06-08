@@ -80,7 +80,7 @@ function DropdownProfile(props) {
 
   return (
     <div className="navbar-item navbar-user dropdown">
-      <a href="#/" className="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+      <a id="display-dropdown" href="#/" className="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
         <img src={ profilePicture !== "" ? profilePicture : profileDefault} alt="profile" />
         <span>
           <span className="d-none d-md-inline">{props.userNameProp}</span>
@@ -91,7 +91,7 @@ function DropdownProfile(props) {
         <a href="#/" className="dropdown-item">Edit Profile</a>
         <a href="#/" className="dropdown-item">Settings</a>
         <div className="dropdown-divider"></div>
-        <Link to="/" onClick={handleLogout} className="dropdown-item">
+        <Link id="log-out" to="/" onClick={handleLogout} className="dropdown-item">
           Log Out
           {loading ?
             <div className="spinner-border spinner-border-sm" style={{"margin": "0rem 0.3rem 0rem 0rem"}} role="status">
