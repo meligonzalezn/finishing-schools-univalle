@@ -118,7 +118,6 @@ const Header = () => {
 		)}
 
 		<div className="navbar-nav">
-				<DropdownNotification />
 
 				{appHeaderLanguageBar && (
 				<DropdownLanguage />

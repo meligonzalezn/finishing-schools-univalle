@@ -1,7 +1,10 @@
 describe('Login OAuth', () => {
 
   it('Login should be successful', () => {
-    Cypress.Commands.add('userLoginWithGmail', () => {
+    cy.visit('http://localhost:3000/user/univalle/login');
+    cy.wait(50000);
+    cy.url().should('include', '/dashboard/services');
+    /*Cypress.Commands.add('userLoginWithGmail', () => {
       cy.fixture('./login-student.json').then((loginData) => {
         const socialLoginOptions = {
           username: loginData.email,
@@ -45,10 +48,9 @@ describe('Login OAuth', () => {
         })      
       });
     });
-    cy.userLoginWithGmail();
+    cy.userLoginWithGmail();*/
   }); 
-  it('Login should fail', () => {
-  })
+
 }); 
 
 

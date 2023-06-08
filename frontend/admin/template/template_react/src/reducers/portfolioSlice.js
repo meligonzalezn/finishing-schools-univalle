@@ -69,7 +69,12 @@ const portfolioSlice = createSlice({
             state.experience = action.payload;            
         },
         setSingleExperience(state, action) {
-            state.experience.unshift(action.payload);
+            if(state?.experience?.length > 0) {
+                state.experience.unshift(action.payload);
+            }
+            else {
+                state.experience = [action.payload];
+            }
         },
         setShowModalExperience(state, action){
             state.showModalExperience = action.payload
@@ -90,7 +95,12 @@ const portfolioSlice = createSlice({
             state.education = action.payload;
         },
         setSingleEducation(state, action) {
-            state.education.unshift(action.payload);
+            if(state?.education?.length > 0) {
+                state.education.unshift(action.payload);
+            }
+            else {
+                state.education = [action.payload];
+            }
         },
         deleteEducation(state, action){
             state.education = state.education.filter((education) => education.id !== action.payload);
@@ -111,7 +121,12 @@ const portfolioSlice = createSlice({
             state.certifications = action.payload;
         },
         setSingleCertification(state, action){
-            state.certifications.unshift(action.payload);
+            if(state?.certifications?.length > 0) {
+                state.certifications.unshift(action.payload);
+            }
+            else {
+                state.certifications = [action.payload];
+            }
         },
         setShowModalCertification(state, action) {
             state.showModalCertifications = action.payload;
@@ -132,7 +147,12 @@ const portfolioSlice = createSlice({
             state.languages = action.payload;
         },
         setSingleLanguage(state, action) {
-            state.languages.unshift(action.payload);
+            if(state?.languages?.length > 0) {
+                state.languages.unshift(action.payload);
+            }
+            else {
+                state.languages = [action.payload];
+            }
         },
         setShowModalLanguage(state, action) {
             state.showModalLanguages = action.payload;
