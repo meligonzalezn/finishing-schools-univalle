@@ -157,7 +157,6 @@ class StudentViewSet(viewsets.ModelViewSet):
                 portfolio["languages"] = LanguagesSerializer(languages, many=True).data
             if(len(skills) != 0):
                 portfolio["skills"] = SkillsSerializer(skills, many=True).data
-            
             return Response(portfolio, status=status.HTTP_200_OK)
         except:
            return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)

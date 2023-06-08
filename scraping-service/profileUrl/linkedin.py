@@ -66,22 +66,19 @@ def get_linkedin_information(profile_url):
         time.sleep(5)
         # Get current url
         current_url = driver.current_url
-        print("---------------------------------------",current_url)
         parsed_url = urllib.parse.urlparse(current_url)
-        print("-------------------------------parsed: ", parsed_url)
         session_redirect = ""
         if parsed_url.netloc == 'www.linkedin.com' and parsed_url.path.startswith('/in/'):
             session_redirect = current_url
         else:
             # Extracts the query string portion of the URL which contains one or more key-value pairs separated by & characters, and parses it into a dictionary object.
             query_dict = urllib.parse.parse_qs(parsed_url.query)
-            print("-----------------query_dict:", query_dict)
             session_redirect = query_dict['sessionRedirect'][0]
-            print("-------------------sessionredirect: ", session_redirect)
         # Avoiding redirect profile
         driver.execute_script("window.location.href = '{}'".format(session_redirect))
         time.sleep(5)
         # Get sign in modal to close it
+        print(".......................................................................................", driver.current_url)
         dialog = driver.find_element(By.CSS_SELECTOR, '[aria-labelledby="public_profile_contextual-sign-in-modal-header"]')
         dialog.find_element(By.CSS_SELECTOR, '[aria-label="Dismiss"]').click()
         
@@ -233,7 +230,7 @@ def get_linkedin_information(profile_url):
             print('-------------- No languages information')
         # Concatenate the lists and append to the experience list
         experience = [item for sublist in experience for item in sublist]
-        print(experience[::-1])
+
         userPortfolio.append({
             "about": about,
             "experience": experience[::-1],
@@ -241,6 +238,7 @@ def get_linkedin_information(profile_url):
             "certifications": certifications[::-1],
             "languages": languagesInfo[::-1]
         })
+        print('--------------------------------------------------------------------------------------------------', userPortfolio)
         driver.quit()
         return userPortfolio
     except:
