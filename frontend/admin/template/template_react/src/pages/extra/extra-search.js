@@ -118,15 +118,15 @@ const VacanciesSearch = () => {
 
 			);
 		}
-
-		if (startDate !== "") {
+		console.log(startDate, finishDate)
+		if (startDate !== "" || startDate !== null ) {
 			filteredData = filteredData.filter((item) =>
 				
 				formatDate(item.created_at) >= formatDate(startDate)
 			);
 
 		}
-		if (finishDate !== "") {
+		if (finishDate !== "" || finishDate !== null ) {
 			filteredData = filteredData.filter((item) =>
 				
 				formatDate(item.created_at) <= formatDate(finishDate)
@@ -215,7 +215,7 @@ const VacanciesSearch = () => {
 				<div className="col-md-6">
 					<div className="input-group input-group-lg mb-3">
 						<input type="text" className="form-control input-white" placeholder="Ingresa palabras clave" value={search} onChange={(e) => setSearch(e.target.value)} />
-						<button type="button" className="btn btn-primary" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
+						<button id="searchButton"  type="button" className="btn btn-primary" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
 
 					</div>
 					<div className="d-block d-md-flex align-items-center mb-3">
@@ -223,6 +223,7 @@ const VacanciesSearch = () => {
 							<div class="card-header d-flex justify-content-between" >
 								<b style={{ "fontSize": "0.8rem" }}>  Filtrar por </b>
 								<a
+									id="expandDropdown"
 									className='btn btn-outline-dark'
 									onClick={() => setFilter(!filter)}
 									aria-expanded={filter}
@@ -240,11 +241,11 @@ const VacanciesSearch = () => {
 										<div className="d-flex">
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label"> Modalidad </label>
-												<div className="dropdown me-2" >
-													<button className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
+												<div id="modalityDropdown" className="dropdown me-2" >
+													<button id="modalityButton"  className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
 														{modality} <b className="caret"></b>
 													</button>
-													<div className="dropdown-menu dropdown-menu-start" role="menu">
+													<div id="modalityOptions" className="dropdown-menu dropdown-menu-start" role="menu">
 														<p className="dropdown-item" onClick={(e) => setModalty(e.target.textContent)}>Presencial</p>
 														<p className="dropdown-item" onClick={(e) => setModalty(e.target.textContent)}>Virtual</p>
 														<p className="dropdown-item" onClick={(e) => setModalty(e.target.textContent)}>Híbrido</p>
@@ -256,6 +257,7 @@ const VacanciesSearch = () => {
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label"> Salario </label>
 												<input
+													id="salaryMinimum"
 													type="text"
 													className="form-control"
 													style={{ "maxWidth": "10.4rem" }}
@@ -276,6 +278,7 @@ const VacanciesSearch = () => {
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label" style={{ "visibility": "hidden" }}> Salario </label>
 												<input
+													id="salaryMaximum"
 													type="text"
 													className="form-control"
 													style={{ "maxWidth": "10.4rem" }}
@@ -297,11 +300,11 @@ const VacanciesSearch = () => {
 										<div className="d-flex" style={{ "paddingRight": "0.6rem" }}>
 											<div >
 												<label className="form-label col-form-label"> Experiencia </label>
-												<div className="dropdown me-2" style={{ "paddingRight": "0.6rem" }}>
-													<button  className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
+												<div id="experienceDropdown" className="dropdown me-2" style={{ "paddingRight": "0.6rem" }}>
+													<button id="experienceButton" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown">
 														{experience} <b className="caret"></b>
 													</button>
-													<div className="dropdown-menu dropdown-menu-start" role="menu">
+													<div  id="experienceOptions"  className="dropdown-menu dropdown-menu-start" role="menu">
 														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>1 año</p>
 														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>2 año</p>
 														<p className="dropdown-item" onClick={(e) => setExperience(e.target.textContent)}>5 años</p>
@@ -313,6 +316,7 @@ const VacanciesSearch = () => {
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label">Fecha de publicación</label>
 												<DatePicker
+													id="dateMinimum"
 													selected={startDate}
 													onChange={(date) => setStartDate(date)}
 													dateFormat={"MM/dd/yyyy"}
@@ -327,6 +331,7 @@ const VacanciesSearch = () => {
 											<div style={{ "paddingRight": "0.6rem" }}>
 												<label className="form-label col-form-label">Fecha de publicación</label>
 												<DatePicker
+													id="dateMaximum"
 													selected={finishDate}
 													onChange={(date) => setFinishDate(date)}
 													dateFormat={"MM/dd/yyyy"}
@@ -344,7 +349,7 @@ const VacanciesSearch = () => {
 					</div>
 
 
-					<div className="card border-0">
+					<div  id="currentVacancy" className="card border-0">
 						<div className="card-header bg-none p-3 h6 m-0 d-flex align-items-center">
 							<div className="row">
 								<div className="col-12">
@@ -352,7 +357,7 @@ const VacanciesSearch = () => {
 
 								</div>
 								<div className="col-12">
-									<p className="location" style={{ "color": "#565656" }}> <b>{currentVacancy.company}</b>{currentVacancy.place ? <> <i class="bi bi-dot"></i> {currentVacancy.place} </> : <></>} <i class="bi bi-dot"></i> {formatDate(currentVacancy.created_at)} </p>
+									<p id="currentPublishDate" className="location" style={{ "color": "#565656" }}> <b>{currentVacancy.company}</b>{currentVacancy.place ? <> <i class="bi bi-dot"></i> {currentVacancy.place} </> : <></>} <i class="bi bi-dot"></i> {formatDate(currentVacancy.created_at)} </p>
 
 								</div>
 
@@ -363,7 +368,7 @@ const VacanciesSearch = () => {
 								<div className="row">
 									{currentVacancy.salary ?
 										<>
-											<div className="col-12 d-flex align-items-center" >
+											<div id="currentSalary" className="col-12 d-flex align-items-center" >
 												<i class="bi bi-cash-coin" style={{ "fontSize": "1.4rem", "paddingRight": "0.5rem", "color": "#565656" }}></i>
 												Salario: {formatCurrency(currentVacancy.salary)}
 
@@ -459,7 +464,7 @@ const VacanciesSearch = () => {
 				}
 				<div className="col-md-6 " >
 					<div className=" overflow-auto" style={{ "height": "34rem" }}>
-						<div className="result-list">
+						<div id="resultsList" className="result-list">
 							{currentPosts.map((vacancy, index) => (
 								<div className="result-item" key={index} onClick={() => { setCurrentVacany(currentPosts[index]) }}>
 									<div className="result-info">

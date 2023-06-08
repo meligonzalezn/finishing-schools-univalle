@@ -159,7 +159,7 @@ const ScrapingForm = () => {
                     </div>
                     <div className="panel-body">
                         <p>Si nos proporciona enlaces a su perfil en GitHub, GitLab o LinkedIn, podremos completar automáticamente su portafolio mediante el uso de Web scraping</p>
-                        <form autoComplete="off">
+                        <form id="profile-form-student" autoComplete="off">
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Nombre <span className="text-danger">*</span></label>
@@ -196,6 +196,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label">Cédula <span className="text-danger">*</span></label>
                                     <input 
+                                        id= "idCard"
                                         name="idCard"
                                         type="text" 
                                         className="form-control" 
@@ -210,6 +211,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label">Fecha de expedición <span className="text-danger">*</span></label>
                                     <DatePicker 
+                                        id="issueDate"
                                         selected={formik.values.issueDate}
                                         onChange={(date) => formik.setFieldValue('issueDate', date)}
                                         onBlur={formik.handleBlur}
@@ -224,7 +226,8 @@ const ScrapingForm = () => {
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Github</label>
-                                    <input 
+                                    <input
+                                        id="githubProfile" 
                                         name='github_profile'
                                         type="text" 
                                         className="form-control" 
@@ -237,6 +240,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Gitlab</label>
                                     <input
+                                        id="gitlabProfile"
                                         name='gitlab_profile'
                                         type="text" 
                                         className="form-control" 
@@ -251,6 +255,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Linkedin</label>
                                     <input
+                                        id="linkedinProfile"
                                         name='linkedin_profile' 
                                         type="text" 
                                         className="form-control" 
@@ -263,6 +268,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Teléfono</label>
                                     <input
+                                        id="phoneNumber"
                                         name='phone_number' 
                                         type="number" 
                                         className="form-control" 
@@ -279,6 +285,7 @@ const ScrapingForm = () => {
                                     {
                                         isFilled ? (
                                         <button 
+                                            id="updateButton"
                                             onClick={(event) => handleUpdateUser(event)}
                                             className="btn btn-primary w-120px me-5px d-flex justify-content-center align-items-center" style={{"gap": "0.5rem"}}>
                                                 Actualizar
@@ -294,6 +301,7 @@ const ScrapingForm = () => {
                                         ) : 
                                         (
                                         <button 
+                                            id="saveButton"
                                             type='submit' 
                                             onClick={formik.handleSubmit}
                                             disabled={isFilled ? true : false}
@@ -312,6 +320,7 @@ const ScrapingForm = () => {
                                 </div>
                                 <Link to="/user/student/portfolio">                                
                                     <button 
+                                        id="continueButton"
                                         type='submit' 
                                         className="btn btn-gray w-120px me-5px" 
                                         disabled= {enableButton ? false: true}

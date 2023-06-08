@@ -107,6 +107,7 @@ const CompanyForm = () => {
                         type: "success",
                         ...defaultOptions
                     });
+                    setIsFilled(true)
                 }
                 else {
                     setInfoSaved(false)
@@ -242,7 +243,7 @@ const CompanyForm = () => {
                             <h4 className="panel-title" style={{ "fontSize": "14px" }}>Formulario de perfil</h4>
                         </div>
                         <div className="panel-body">
-                            <form autoComplete="off">
+                            <form  id="profile-form-company"  autoComplete="off">
                                 <div className='col' style={{ "display": "flex", "gap": "2rem" }}>
                                     <img src={image ? "https://res.cloudinary.com/dlhcdji3v/" + image : ProfileImage} style={{ "width": "10rem", "height": "10rem" }} alt="Perfil" className="rounded-circle img-fluid" />
                                     <div style={{ "display": "flex", "gap": "0.5rem", "justifyContent": "center", "flexDirection": "column" }}>
@@ -268,6 +269,7 @@ const CompanyForm = () => {
                                     <div className="col-7">
                                         <label className="form-label col-form-label col-md-3">Nombre <span className="text-danger">*</span></label>
                                         <input
+                                            id ="companyName"
                                             name="companyName"
                                             type="text"
                                             className="form-control"
@@ -283,6 +285,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label"> NIT <span className="text-danger">*</span></label>
                                         <input
+                                            id="idCard"
                                             name="idCard"
                                             type="text"
                                             className="form-control"
@@ -299,6 +302,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3">Sobre nosotros </label>
                                         <textarea
+                                            id= "aboutUs"
                                             name="aboutUs"
                                             type="text"
                                             className="form-control"
@@ -313,6 +317,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3"> Sede </label>
                                         <input
+                                            id="office"
                                             name='office'
                                             type="text"
                                             className="form-control"
@@ -324,6 +329,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-4"> Tamaño de la empresa </label>
                                         <input
+                                            id="size"
                                             name='size'
                                             type="text"
                                             className="form-control"
@@ -337,6 +343,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3"> Sectores </label>
                                         <input
+                                            id="fields"
                                             name='fields'
                                             type="text"
                                             className="form-control"
@@ -348,6 +355,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3"> Sitio web</label>
                                         <input
+                                            id="website"
                                             name='website'
                                             type="text"
                                             className="form-control"
@@ -361,6 +369,7 @@ const CompanyForm = () => {
                                     <div className="col-6">
                                         <label className="form-label col-form-label col-md-3"> Ubicación </label>
                                         <input
+                                            id="address"
                                             name='address'
                                             type="text"
                                             className="form-control"
@@ -373,6 +382,7 @@ const CompanyForm = () => {
                                     <div className="col-5">
                                         <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> Ciudad </label>
                                         <input
+                                            id="city"
                                             name='city'
                                             type="text"
                                             className="form-control"
@@ -385,6 +395,7 @@ const CompanyForm = () => {
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3" style={{ "visibility": "hidden" }}> + </label>
                                         <button
+                                            data-testid="add-location"
                                             type='button'
                                             className="btn btn-light w-120px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem"  , "color": "#444", "padding": "1px 6px" }}
                                             onClick={(e) => {
@@ -432,7 +443,7 @@ const CompanyForm = () => {
                                 <div className="row">
                                     <div className="col">
                                         <label className="form-label col-form-label col-md-3" > Especialidades </label>
-                                        <ReactTags tags={specialties} onDelete={handleDelete} onAddition={handleAddition} allowNew={true}
+                                        <ReactTags id="skills" tags={specialties} onDelete={handleDelete} onAddition={handleAddition} allowNew={true}
                                         className="react-tags__selected-tag"  />
                                     </div>
                                 </div>
@@ -441,6 +452,7 @@ const CompanyForm = () => {
                                         {
                                             isFilled ? (
                                                 <button
+                                                    data-testid="update-company-profile-button"
                                                     onClick={(event) => handleUpdateCompany(event)}
                                                     className="btn btn-primary w-120px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem" }}>
                                                     Actualizar
@@ -456,6 +468,7 @@ const CompanyForm = () => {
                                             ) :
                                                 (
                                                     <button
+                                                        data-testid="register-company-profile-button"
                                                         type='submit'
                                                         onClick={formik.handleSubmit}
                                                         disabled={isFilled ? true : false}
