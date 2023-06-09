@@ -1,0 +1,17 @@
+{
+    "success" : {
+        "email": "univalle-FSU@gmail.com",
+        "password": "Dre@m2023gotitdev123"
+    },
+    "error" : {
+        "email": "univalle-test@gmail.com",
+        "password": "1212312432"
+    },
+    "companyRegister": {
+        "success": {
+            "name": "Univalle",
+            "email": "test4@gmail.com",
+            "password": "T@123456g"
+        }
+    }
+ }

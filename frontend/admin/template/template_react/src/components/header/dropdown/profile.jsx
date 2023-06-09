@@ -88,9 +88,10 @@ function DropdownProfile(props) {
         </span>
       </a>
       <div id="profile-dropdown" className="dropdown-menu dropdown-menu-end me-1">
-        
-        <Link to="/" onClick={handleLogout} className="dropdown-item">
-          Log Out
+        <Link to="/" onClick={handleLogout} className="dropdown-item" style={{"display": "flex", "justifyContent": "space-between", "alignItems": "center"}}>
+          <div>
+            Log Out
+          </div>
           {loading ?
             <div className="spinner-border spinner-border-sm" style={{"margin": "0rem 0.3rem 0rem 0rem"}} role="status">
               <span className="sr-only">Loading...</span>

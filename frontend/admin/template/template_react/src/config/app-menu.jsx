@@ -1,26 +1,36 @@
-import {  decodeToken } from "react-jwt";
-
+import { decodeToken } from "react-jwt";
 
 const Menu = [
-  { path: 'dashboard/services', icon: 'bi bi-stack', title: 'Servicios',
-  
+  {
+    path: 'dashboard/services',
+    icon: 'bi bi-stack',
+    title: 'Servicios',
   },
-  { path: 'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile", icon: 'bi bi-person-circle', title: 'Perfil',
-  
+  {
+    path: localStorage.getItem("access_token") && decodeToken(localStorage.getItem("access_token")).role ? 'user/' + decodeToken(localStorage.getItem("access_token")).role + '/profile' : '',
+    icon: 'bi bi-person-circle',
+    title: 'Perfil',
   },
-
-  { path: 'vacancies/search', icon: 'bi bi-briefcase-fill', title: 'Vacantes',
-  
+  {
+    path: 'vacancies/search',
+    icon: 'bi bi-briefcase-fill',
+    title: 'Vacantes',
   },
-  { path: 'vacancies/search', icon:'bi bi-mortarboard-fill', title: 'Prácticas',
-  
-},
-  { path: 'vacancies/search', icon: 'bi bi-pen-fill', title: 'Capacitaciones',
-    
+  {
+    path: 'vacancies/search',
+    icon: 'bi bi-mortarboard-fill',
+    title: 'Prácticas',
   },
-  { path: 'vacancies/search', icon: 'bi bi-terminal-fill', title: 'Bootcamps',
-  
-},
-]
+  {
+    path: 'vacancies/search',
+    icon: 'bi bi-pen-fill',
+    title: 'Capacitaciones',
+  },
+  {
+    path: 'vacancies/search',
+    icon: 'bi bi-terminal-fill',
+    title: 'Bootcamps',
+  },
+];
 
 export default Menu;

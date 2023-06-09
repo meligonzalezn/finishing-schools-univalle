@@ -1,0 +1,121 @@
+{
+
+    "description": "A highly motivated and skilled [your profession/job title] with [number] years of experience in [relevant field(s)]. Possesses a strong academic background and a proven track record of delivering exceptional results. A proactive and adaptable professional with excellent problem-solving abilities and a strong attention to detail. Committed to continuous learning and staying up-to-date with industry trends and advancements",
+    "descriptionUpdated": "Description updated",
+    "experienceCompanyUpdated": "Experience company updated",
+    "educationSchoolUpdated": "Education school updated",
+    "certificationDegreeUpdated": "Certification degree updated",
+    "languageNameUpdated": "Language name updated",
+    "experiences" : [{
+        "roles": "Product Engineer",
+        "company": "Quinu",
+        "time": "9 months"
+      }, {
+        "roles": "Mechanical Systems Engineer",
+        "company": "Quatz",
+        "time": "1 year 2 months"
+      }, {
+        "roles": "Accounting Assistant III",
+        "company": "Oloo",
+        "time": "1 year 4 months"
+      }, {
+        "roles": "Research Associate",
+        "company": "Blogspan",
+        "time": "2 years 3 months"
+      }, {
+        "roles": "Payment Adjustment Coordinator",
+        "company": "Rhyloo",
+        "time": "5 years 6 months"
+      }, {
+        "roles": "Assistant Professor",
+        "company": "Browsetype",
+        "time": "4 years 3 months"
+      }, {
+        "roles": "Database Administrator IV",
+        "company": "Skiba",
+        "time": "7 years 2 months"
+      }
+    ],
+    "education": [{
+      "degree": "Nuclear Power Engineer",
+      "school": "Kanazawa College of Art"
+    }, {
+      "degree": "Librarian",
+      "school": "Université d'Etat d'Haiti"
+    }, {
+      "degree": "Assistant Professor",
+      "school": "Universidad Interamericana"
+    }, {
+      "degree": "Pharmacist",
+      "school": "Keck Graduate Institute of Applied Life Sciences"
+    }, {
+      "degree": "Junior Executive",
+      "school": "Stamford International University"
+    }, {
+      "degree": "Marketing Assistant",
+      "school": "Capital University of Medical Sciences"
+    }, {
+      "degree": "Nurse Practicioner",
+      "school": "Dar Al-Uloom Colleges"
+    }, {
+      "degree": "Internal Auditor",
+      "school": "Kyungil University"
+    }],
+    "certifications": [{
+      "degree": "Nuclear Power Engineer",
+      "school": "Kanazawa College of Art"
+    }, {
+      "degree": "Librarian",
+      "school": "Université d'Etat d'Haiti"
+    }, {
+      "degree": "Assistant Professor",
+      "school": "Universidad Interamericana"
+    }, {
+      "degree": "Pharmacist",
+      "school": "Keck Graduate Institute of Applied Life Sciences"
+    }, {
+      "degree": "Junior Executive",
+      "school": "Stamford International University"
+    }, {
+      "degree": "Marketing Assistant",
+      "school": "Capital University of Medical Sciences"
+    }, {
+      "degree": "Nurse Practicioner",
+      "school": "Dar Al-Uloom Colleges"
+    }, {
+      "degree": "Internal Auditor",
+      "school": "Kyungil University"
+    }],
+    "skills": [{
+      "name": "CSS"
+    }, {
+      "name": "Java"
+    }, {
+      "name": "Shell"
+    }, {
+      "name": "Java"
+    }, {
+      "name": "C++"
+    }, {
+      "name": "React"
+    }, {
+      "name": "Shell"
+    }],
+    "languages": [{
+      "name": "Azeri"
+    }, {
+      "name": "Greek"
+    }, {
+      "name": "Spanish"
+    }, {
+      "name": "Croatian"
+    }, {
+      "name": "New Zealand Sign Language"
+    }, {
+      "name": "Hungarian"
+    }, {
+      "name": "Swahili"
+    }, {
+      "name": "Malay"
+    }]
+}

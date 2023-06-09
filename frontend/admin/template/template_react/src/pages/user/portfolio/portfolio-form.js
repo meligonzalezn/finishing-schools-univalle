@@ -98,7 +98,6 @@ const PortfolioForm = () => {
           try {
 
             const student = await getPortfolioStudent();
-            console.log("estudiante: ", student)
             dispatch(setPortfolioStudent(student));
             dispatch(setImage(student.image_profile));
             dispatch(setStudentId(student.sub_key));
@@ -106,7 +105,6 @@ const PortfolioForm = () => {
               dispatch(setAbout(student.description));
               setIsScrape(student.scrapeInfoSaved);
               const portfolioInformation = await getPortfolioStudentInformation(student.sub_key);
-              console.log(portfolioInformation)
               if (portfolioInformation) {
                 dispatch(setExperiences(portfolioInformation.experience));
                 dispatch(setEducation(portfolioInformation.education));

@@ -1,5 +1,4 @@
-import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
-import { Navigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { AppSettings } from '../../config/app-settings.js';
 import { getPortfolioState, getProfileState } from "../../utils/user-axios.js";
@@ -19,7 +18,6 @@ const ServiceDashboard = () => {
         
         if(localStorage.getItem("role") === "student"){
           getPortfolioState().then((res)=>{
-            console.log("state: " , res)
             if(res.state==="In progress"){
                 Store.addNotification({
                     title: 'Registro incompleto',
@@ -38,7 +36,6 @@ const ServiceDashboard = () => {
 
         if(localStorage.getItem("role") === "company"){
             getProfileState().then((res)=>{
-              console.log("state: " , res)
               if(res.state==="In progress"){
                   Store.addNotification({
                       title: 'Registro incompleto',
