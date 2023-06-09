@@ -63,14 +63,14 @@ const ServiceDashboard = () => {
             <div className="row">
                 {
                     role === 'student' &&                 
-                    <div className="col-xl-3 col-md-6">
-                        <div className="widget widget-stats bg-success">
+                    <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats bg-success d-flex flex-column h-100">
                             <div className="stats-icon"><i className="fa fa-user"></i></div>
                             <div className="stats-info" >
                                 <h5>Portafolio Estudiantes</h5>
                                 <small>Gestiona la información relacionada con tu perfil profesional</small>	
                             </div>
-                            <div className="stats-link">
+                            <div className="stats-link mt-auto">
                                 <Link data-testid="portfolio-student" to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
@@ -78,21 +78,21 @@ const ServiceDashboard = () => {
                 }
                 {
                     role === 'company' && 
-                    <div className="col-xl-3 col-md-6">
-                        <div className="widget widget-stats bg-teal">
+                    <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats bg-teal d-flex flex-column h-100">
                             <div className="stats-icon"><i className="fa fa-building"></i></div>
                             <div className="stats-info">
                                 <h5>Empresa</h5>
-                                <small>Gestiona la información relacionada con la empresa</small>	
+                                <small>Gestiona la información relacionada con la empresa</small>
                             </div>
-                            <div className="stats-link">
+                            <div className="stats-link mt-auto">
                                 <Link to="/user/company/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>
                 }
-				<div className="col-xl-3 col-md-6">
-					<div className="widget widget-stats bg-orange">
+				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+					<div className="widget widget-stats bg-orange d-flex flex-column h-100">
                         <div className="stats-icon"><i className="fa fa-desktop"></i></div>
                         <div className="stats-info">
                             <h5>Capacitación en Tecnología</h5>
@@ -101,28 +101,28 @@ const ServiceDashboard = () => {
                                 <small>Cree sus propios cursos de formación en línea</small>
                             }
                         </div>
-                        <div className="stats-link">
+                        <div className="stats-link mt-auto">
                             <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
 					</div>
 				</div>
                 {
                     role === 'student' && 
-                    <div className="col-xl-3 col-md-6">
-                        <div className="widget widget-stats bg-red">
+                    <div className="col-xl-3 col-md-6"  style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats bg-red d-flex flex-column h-100">
                             <div className="stats-icon"><i className="fa fa-language"></i></div>
                             <div className="stats-info">
                                 <h5>Formación en Ingles</h5>
                                 <small>Accede a cursos y recursos para mejorar su nivel de inglés</small>	
                             </div>
-                            <div className="stats-link">
+                            <div className="stats-link mt-auto">
                                 <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>
                 }
-				<div className="col-xl-3 col-md-6">
-					<div className="widget widget-stats bg-indigo">
+				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+					<div className="widget widget-stats bg-indigo d-flex flex-column h-100">
 						<div className="stats-icon"><i className="fa fa-graduation-cap"></i></div>
 						<div className="stats-info">
 							<h5>Bootcamps</h5>
@@ -131,34 +131,34 @@ const ServiceDashboard = () => {
                                 <small>Cree sus propios programas de formación en habilidades específicas</small>
                             }
 						</div>
-						<div className="stats-link">
+						<div className="stats-link mt-auto">
 							<Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
 						</div>
 					</div>
 				</div>
                 {
                     role === 'student' && 
-                    <div className="col-xl-3 col-md-6">
-                        <div className="widget widget-stats bg-info">
+                    <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats bg-info d-flex flex-column h-100">
                             <div className="stats-icon"><i className="fa fa-building"></i></div>
                             <div className="stats-info">
                                 <h5>Prácticas y pasantías</h5>
                                 <small>Adquiere experiencia en un entorno profesional</small>	
                             </div>
-                            <div className="stats-link">
+                            <div className="stats-link mt-auto">
                                 <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>
                 }
-                <div className="col-xl-3 col-md-6">
-                    <div className="widget widget-stats bg-purple">
+                <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                    <div className="widget widget-stats bg-purple d-flex flex-column h-100">
                         <div className="stats-icon"><i className="fa fa-building"></i></div>
                         <div className="stats-info">
                             <h5>Vacantes laborales</h5>
                             <small>Información actualizada sobre las oportunidades de trabajo</small>	
                         </div>
-                        <div className="stats-link">
+                        <div className="stats-link mt-auto">
                             <Link to="/vacancies/search">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
                     </div>
