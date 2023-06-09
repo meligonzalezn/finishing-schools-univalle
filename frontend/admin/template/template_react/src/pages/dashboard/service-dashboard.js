@@ -18,7 +18,7 @@ const ServiceDashboard = () => {
         
         if(localStorage.getItem("role") === "student"){
           getPortfolioState().then((res)=>{
-            if(res.state==="In progress"){
+            if(res?.state==="In progress"){
                 Store.addNotification({
                     title: 'Registro incompleto',
                     message: 'Debes completar tu portafolio para un mejor posicionamiento en el sistema de vacantes',

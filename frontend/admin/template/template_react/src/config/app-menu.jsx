@@ -6,8 +6,8 @@ const Menu = [
     icon: 'bi bi-stack',
     title: 'Servicios',
   },
-  {
-    path: localStorage.getItem("access_token") && decodeToken(localStorage.getItem("access_token")).role ? 'user/' + decodeToken(localStorage.getItem("access_token")).role + '/profile' : '',
+  { 
+    path: localStorage.getItem("access_token") && decodeToken(localStorage.getItem("access_token")).role ? 'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile" : '',
     icon: 'bi bi-person-circle',
     title: 'Perfil',
   },
