@@ -427,34 +427,68 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                 }
             }
             else {
-              dispatch(action(formValues))
-              setLoadingCreate(true)
-              const result = await onSubmit([formValues], studentId)
-              if(result !== undefined){
-                setLoadingCreate(false)
-                dispatch(setShowNotificationCreateError(true))
-                Store.addNotification({
-                  title: "Error",
-                  message: "Error registrando la información",
-                  type: "danger",
-                  dismiss: {
-                      duration: 3000,
-                  },
-                  ...defaultOptions
-                })
+              if(isEditing && !isAbout){
+                const formValuesWithId = {id: editId, updatedObject: formValues}
+                dispatch(action(formValuesWithId))
+                setLoadingUpdate(true)
+                const result = await onUpdate(studentId, editId, [formValues])
+                if(result.status === 200){
+                  setLoadingCreate(false)
+                  dispatch(setShowNotificationUpdateSuccess(true))
+                  Store.addNotification({
+                    title: "Actualizada",
+                    message: "Información actualizada",
+                    type: "success",
+                    dismiss: {
+                        duration: 3000,
+                    },
+                    ...defaultOptions
+                  })
+                }
+                else {
+                  setLoadingCreate(false)
+                  dispatch(setShowNotificationUpdateError(true))
+                  Store.addNotification({
+                    title: "Error",
+                    message: "Error actualizando la información",
+                    type: "danger",
+                    dismiss: {
+                        duration: 3000,
+                    },
+                    ...defaultOptions
+                  })
+                }
               }
               else {
-                setLoadingCreate(false)
-                dispatch(setShowNotificationCreateSuccess(true))
-                Store.addNotification({
-                  title: "Registro",
-                  message: "Información registrada",
-                  type: "success",
-                  dismiss: {
-                      duration: 3000,
-                  },
-                  ...defaultOptions
-                });
+                dispatch(action(formValues))
+                setLoadingCreate(true)
+                const result = await onSubmit([formValues], studentId)
+                if(result !== undefined){
+                  setLoadingCreate(false)
+                  dispatch(setShowNotificationCreateError(true))
+                  Store.addNotification({
+                    title: "Error",
+                    message: "Error registrando la información",
+                    type: "danger",
+                    dismiss: {
+                        duration: 3000,
+                    },
+                    ...defaultOptions
+                  })
+                }
+                else {
+                  setLoadingCreate(false)
+                  dispatch(setShowNotificationCreateSuccess(true))
+                  Store.addNotification({
+                    title: "Registro",
+                    message: "Información registrada",
+                    type: "success",
+                    dismiss: {
+                        duration: 3000,
+                    },
+                    ...defaultOptions
+                  });
+                }
               }
             }
         }

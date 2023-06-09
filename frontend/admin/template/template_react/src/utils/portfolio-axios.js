@@ -4,7 +4,7 @@ import axios from "axios";
 /** Config header for delete request */
 const config = {
   headers: {
-    authorization: "Bearer " + localStorage.getItem("access_token"),
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
   }
 };
 
@@ -59,14 +59,20 @@ async function updateExperience(studentId, experienceId, experience) {
 
 
 /**
- * Delete information related with student
- * @param {*} studentId Student ID for delete information
- * @param {*} workExperienceId experience ID to be deleted
- * @returns 
+ * Delete information related to a student's work experience
+ * @param {string} studentId - Student ID for deleting information
+ * @param {string} workExperienceId - Experience ID to be deleted
+ * @returns {Promise} - Promise representing the deletion operation
  */
 async function deleteExperienceBack(studentId, workExperienceId) {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/delete_work_experience/${studentId}/${workExperienceId}/`, config);
+    const response = await axios({
+      url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/delete_work_experience/${studentId}/${workExperienceId}/`,
+      method: "DELETE",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    });
     return response;
   } catch (error) {
     throw error;
@@ -131,7 +137,13 @@ async function deleteExperienceBack(studentId, workExperienceId) {
    */
   async function deleteEducationBack(studentId, studiesId) {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/delete_studies/${studentId}/${studiesId}/`, config);
+      const response = await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/delete_studies/${studentId}/${studiesId}/`,
+        method: "DELETE",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
       return response;
     } catch (error) {
       throw error;
@@ -193,7 +205,13 @@ async function deleteExperienceBack(studentId, workExperienceId) {
    */
   async function deleteCertificationsLicensesBack(studentId, certificationLicensesId) {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/delete_certifications_licenses/${studentId}/${certificationLicensesId}/`, config);
+      const response = await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/delete_certifications_licenses/${studentId}/${certificationLicensesId}/`,
+        method: "DELETE",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
       return response;
     } catch (error) {
       throw error;
@@ -255,7 +273,13 @@ async function deleteExperienceBack(studentId, workExperienceId) {
    */
     async function deleteLanguagesBack(studentId, languageId) {
       try {
-        const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/delete_languages/${studentId}/${languageId}/`, config);
+        const response = await axios({
+          url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/delete_languages/${studentId}/${languageId}/`,
+          method: "DELETE",
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        });
         return response;
       } catch (error) {
         throw error;
@@ -315,7 +339,13 @@ async function deleteExperienceBack(studentId, workExperienceId) {
    */
   async function deleteSkillsBack(studentId, skillId) {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/delete_skills/${studentId}/${skillId}/`, config);
+      const response = await axios({
+        url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/delete_skills/${studentId}/${skillId}/`,
+        method: "DELETE",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
       return response;
     } catch (error) {
       throw error;
@@ -372,52 +402,6 @@ async function registerPortfolioStudentInformation(data, studentId) {
  */
 async function getPortfolioStudentInformation(studentId) {
   try {
-    // const requests = [
-    //   await axios({
-    //     url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/workExperience/${studentId}/get_work_experience/`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: "Bearer " + localStorage.getItem("access_token"),
-    //     },
-    //   }),
-    //   await axios({
-    //     url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/studies/${studentId}/get_studies/`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: "Bearer " + localStorage.getItem("access_token"),
-    //     },
-    //   }),
-    //   await axios({
-    //     url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/certificationsLicenses/${studentId}/get_certifications_licenses/`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: "Bearer " + localStorage.getItem("access_token"),
-    //     },
-    //   }),
-    //   await axios({
-    //     url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/languages/${studentId}/get_languages/`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: "Bearer " + localStorage.getItem("access_token"),
-    //     },
-    //   }),
-    //   await axios({
-    //     url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/skills/${studentId}/get_skills/`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: "Bearer " + localStorage.getItem("access_token"),
-    //     },
-    //   }),
-    // ];
-
-    // const [
-    //   experienceResponse,
-    //   educationResponse,
-    //   certificationResponse,
-    //   languagesResponse,
-    //   skillsResponse,
-    // ] = await Promise.all(requests);
-
     const response = await axios({
     
       url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/get_portfolio/`,

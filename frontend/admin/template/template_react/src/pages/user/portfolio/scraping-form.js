@@ -159,7 +159,7 @@ const ScrapingForm = () => {
                     </div>
                     <div className="panel-body">
                         <p>Si nos proporciona enlaces a su perfil en GitHub, GitLab o LinkedIn, podremos completar automáticamente su portafolio mediante el uso de Web scraping</p>
-                        <form autoComplete="off">
+                        <form id="scraping-form" autoComplete="off">
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Nombre <span className="text-danger">*</span></label>
@@ -225,6 +225,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Github</label>
                                     <input 
+                                        id='github_profile'
                                         name='github_profile'
                                         type="text" 
                                         className="form-control" 
@@ -237,6 +238,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Gitlab</label>
                                     <input
+                                        id='gitlab_profile'
                                         name='gitlab_profile'
                                         type="text" 
                                         className="form-control" 
@@ -251,6 +253,7 @@ const ScrapingForm = () => {
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Linkedin</label>
                                     <input
+                                        id='linkedin_profile'
                                         name='linkedin_profile' 
                                         type="text" 
                                         className="form-control" 
@@ -313,6 +316,7 @@ const ScrapingForm = () => {
                                 <Link to="/user/student/portfolio">                                
                                     <button 
                                         type='submit' 
+                                        data-testid='continue-button'
                                         className="btn btn-gray w-120px me-5px" 
                                         disabled= {enableButton ? false: true}
                                         >

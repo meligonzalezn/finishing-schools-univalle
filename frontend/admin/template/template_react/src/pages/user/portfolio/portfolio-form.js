@@ -92,7 +92,6 @@ const PortfolioForm = () => {
         enableReinitialize: true,
       });
       
-
     useEffect(() => {
         const fetchUserInfo = async () => {
           try {
@@ -224,7 +223,7 @@ const PortfolioForm = () => {
               Store.addNotification({
                 title: "Register Success",
                 message: "Información registrada",
-                type: "success",
+                type: "success",    
                 dismiss: {
                   duration: 3000,
                 },
@@ -311,7 +310,7 @@ const PortfolioForm = () => {
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
                                             {
                                                 about !== "" ? 
-                                                <button className="border-0 bg-white" onClick={(event) => {
+                                                <button data-testid="description-edit" className="border-0 bg-white" onClick={(event) => {
                                                     event.preventDefault();
                                                     dispatch(setShowModalAboutEdit(true));
                                                     dispatch(setEditForm(true));
@@ -319,7 +318,7 @@ const PortfolioForm = () => {
                                                 }}>
                                                     <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i>
                                                 </button> : 
-                                                <button className="border-0 bg-white" 
+                                                <button data-testid="description-add" className="border-0 bg-white" 
                                                     onClick={(event) => {
                                                         event.preventDefault();
                                                         dispatch(setShowModalAbout(true));
@@ -344,7 +343,7 @@ const PortfolioForm = () => {
                                     >                            
                                         <h5 className="mb-4">Experiencia Laboral</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <button className="border-0 bg-white" onClick={(event) => {
+                                            <button data-testid="work-experience-add" className="border-0 bg-white" onClick={(event) => {
                                                     event.preventDefault();
                                                     dispatch(setShowModalExperience(true));
                                                     dispatch(setShowModalEditExperience(false));
@@ -353,8 +352,8 @@ const PortfolioForm = () => {
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                experience?.length !== 0 ? 
-                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                experience !== undefined  && experience?.length !== 0 ? 
+                                                <button data-testid="work-experience-edit"  type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("experience"))
                                                     dispatch(setEditForm(true))
                                                     navigate("/user/student/portfolio/edit")
@@ -381,7 +380,7 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Educación</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <button className="border-0 bg-white" onClick={(event) => {
+                                            <button data-testid="education-add" className="border-0 bg-white" onClick={(event) => {
                                                         event.preventDefault();
                                                         dispatch(setShowModalEducation(true));
                                                         dispatch(setShowModalEditEducation(false));
@@ -390,8 +389,8 @@ const PortfolioForm = () => {
                                                     <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                education?.length !== 0 ? 
-                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                education !== undefined && education?.length !== 0 ? 
+                                                <button data-testid="education-edit" type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("education"))
                                                     dispatch(setEditForm(true))
                                                     navigate("/user/student/portfolio/edit")
@@ -419,7 +418,7 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Licencias & Certicaciones</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <button className="border-0 bg-white" onClick={(event) => {
+                                            <button data-testid="certifications-add" className="border-0 bg-white" onClick={(event) => {
                                                     event.preventDefault();
                                                     dispatch(setShowModalCertification(true));
                                                     dispatch(setShowModalEditCertifications(false));
@@ -428,8 +427,8 @@ const PortfolioForm = () => {
                                                 <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                             </button>
                                             {
-                                                certifications?.length !== 0 ? 
-                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                certifications !== undefined && certifications?.length !== 0 ? 
+                                                <button data-testid="certifications-edit" type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("certifications"))
                                                     dispatch(setEditForm(true))
                                                     navigate("/user/student/portfolio/edit")
@@ -456,7 +455,7 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Competencias</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                            <button className="border-0 bg-white"  onClick={(event) => {
+                                            <button data-testid="skills-add" className="border-0 bg-white"  onClick={(event) => {
                                                         event.preventDefault();
                                                         dispatch(setShowModalSkills(true));
                                                         dispatch(setShowModalEditSkills(false));
@@ -482,7 +481,7 @@ const PortfolioForm = () => {
                                     <div className="d-flex justify-content-between align-items-center"> 
                                         <h5>Idiomas</h5>
                                         <div className="d-flex" style={{"gap": "0.5rem"}}>
-                                                <button className="border-0 bg-white" onClick={(event) => {
+                                                <button data-testid="languages-add" className="border-0 bg-white" onClick={(event) => {
                                                             event.preventDefault();
                                                             dispatch(setShowModalLanguage(true));
                                                             dispatch(setShowModalEditLanguages(false));
@@ -491,8 +490,8 @@ const PortfolioForm = () => {
                                                         <i className="bi bi-plus-lg" style={{"fontSize": "1.2rem"}}></i>
                                                 </button>
                                                 {
-                                                languages?.length !== 0 ? 
-                                                <button type="button" className="border-0 bg-white" onClick={(event) => {
+                                                languages !== undefined && languages?.length !== 0 ? 
+                                                <button data-testid="languages-edit" type="button" className="border-0 bg-white" onClick={(event) => {
                                                     dispatch(setIsEditing("languages"))
                                                     dispatch(setEditForm(true))
                                                     navigate("/user/student/portfolio/edit")
@@ -629,7 +628,7 @@ const PortfolioForm = () => {
         }
         {
             modalSkills ? (
-                <ModalAdd 
+                <ModalAdd
                     title={"Añadir competencias"} 
                     description={"Por favor complete los siguientes campos para registrar sus competencias. Recuerde evitar agregar competencias duplicadas."} 
                     fields={skillsFields} 

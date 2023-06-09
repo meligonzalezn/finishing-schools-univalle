@@ -87,14 +87,14 @@ function LoginCompany(){
 							<small className="d-block fs-15px lh-16">Este sistema te permitirá desarrollar todas las habilidades requeridas para ingresar al mercado laboral.</small>
 					</div>
 					<div className="login-content">
-						<form onSubmit={handleLogin} className="fs-13px">
+						<form id="form-login-company" onSubmit={handleLogin} className="fs-13px">
 							<div className="form-floating mb-15px">
-								<input type="text" className="form-control h-45px fs-13px" 
+								<input data-testid="email-company" type="text" className="form-control h-45px fs-13px" 
 								placeholder="Email Address" id="emailAddress" value={email} onChange={(e)=> setEmail(e.target.value) }/>
 								<label htmlFor="emailAddress" className="d-flex align-items-center fs-13px text-gray-600">Email Address</label>
 							</div>
 							<div className="form-floating">
-								<input type="password" className="form-control h-45px fs-13px" 
+								<input data-testid="password-company" type="password" className="form-control h-45px fs-13px" 
 								placeholder="Password" id="password" value={password} onChange={(e)=> setPassword(e.target.value) }/>
 								<label htmlFor="password" className="d-flex align-items-center fs-13px text-gray-600">Password</label>
 							</div>
@@ -104,6 +104,7 @@ function LoginCompany(){
 								</div>: ''}				
                             <div className="mb-4 mt-4">
                                 <button 
+									data-testid="submit-company"
                                     type="submit" 
                                     className="btn btn-primary d-block w-100 btn-lg h-45px fs-13px"
                                 >
@@ -114,7 +115,7 @@ function LoginCompany(){
 								<Link to="/request_password_recovery/" className="text-primary"> ¿Olvidaste tu contraseña?</Link>
 							</div>
 							<div className="text-inverse">
-							 ¿Aún no tienes una cuenta?  Haz click <Link to="/user/company/register" className="text-primary"> aquí</Link> para registrarte
+							 ¿Aún no tienes una cuenta?  Haz click <Link data-testid="register-company" to="/user/company/register" className="text-primary"> aquí</Link> para registrarte
 							</div>
 						</form>
 					</div>

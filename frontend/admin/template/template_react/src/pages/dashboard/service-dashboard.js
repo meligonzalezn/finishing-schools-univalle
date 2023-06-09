@@ -36,7 +36,7 @@ const ServiceDashboard = () => {
 
         if(localStorage.getItem("role") === "company"){
             getProfileState().then((res)=>{
-              if(res.state==="In progress"){
+              if(res?.state==="In progress"){
                   Store.addNotification({
                       title: 'Registro incompleto',
                       message: 'Debes completar tu perfil para poder publicar vacantes',
@@ -71,7 +71,7 @@ const ServiceDashboard = () => {
                                 <small>Gestiona la información relacionada con tu perfil profesional</small>	
                             </div>
                             <div className="stats-link">
-                                <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                                <Link data-testid="portfolio-student" to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                             </div>
                         </div>
                     </div>

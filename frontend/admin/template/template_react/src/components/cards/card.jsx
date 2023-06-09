@@ -25,32 +25,49 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
     }
 
     const handleClickDelete = async (id) => {
-        dispatch(deleteAction(id))
-        const response = await deleteFunction(studentId, id)
-        if(response.status === 200) {
-            dispatch(setNotificationDeleteSuccess(true))
+        console.log("Deleting information with id:", id)
+        dispatch(deleteAction(id));
+        try {
+          const response = await deleteFunction(studentId, id);
+          console.log("Response deleting information:", response)
+          if (response && response.status === 200) {
+            dispatch(setNotificationDeleteSuccess(true));
             Store.addNotification({
-                title: "Eliminado",
-                message: "La información ha sido eliminada exitosamente",
-                type: "success",
-                dismiss: {
-                  duration: 3000,
-                },
-                ...defaultOptions
-              });
-        } else {
-            dispatch(setNotificationDeleteError(true))
-            Store.addNotification({
-                title: "Error",
-                message: "Error eliminando la información",
-                type: "danger",
-                dismiss: {
-                    duration: 3000,
-                },
-                ...defaultOptions
+              title: "Eliminado",
+              message: "La información ha sido eliminada exitosamente",
+              type: "success",
+              dismiss: {
+                duration: 3000,
+              },
+              ...defaultOptions,
             });
+          } else {
+            dispatch(setNotificationDeleteError(true));
+            Store.addNotification({
+              title: "Error",
+              message: "Error eliminando la información",
+              type: "danger",
+              dismiss: {
+                duration: 3000,
+              },
+              ...defaultOptions,
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting information:", error);
+          dispatch(setNotificationDeleteError(true));
+          Store.addNotification({
+            title: "Error",
+            message: "Error eliminando la información",
+            type: "danger",
+            dismiss: {
+              duration: 3000,
+            },
+            ...defaultOptions,
+          });
         }
-    }
+      };
+      
 
     return (
         <div className="card border-0" >
@@ -65,7 +82,7 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                     <div className="line h-100"></div>
                                 </div>
                                 <div className="mb-4 d-flex flex-column gap-1">
-                                    <h6 className="mb-0">{info[titleKey]}</h6>
+                                    <h6 data-testid="title-key" className="mb-0">{info[titleKey]}</h6>
                                     <small>{info[timeKey]}</small>
                                     <small className="card-text">
                                     {info[firstTimeKey] && info[secondTimeKey] ? 
@@ -90,10 +107,10 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                         {
                             isEdit ?
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <button onClick={() => handleClickDelete(list[key]?.id)} className="border-0 bg-white"> 
+                                    <button data-testid="delete-button" onClick={() => handleClickDelete(list[key]?.id)} className="border-0 bg-white"> 
                                        <i className="bi bi-trash3" style={{"fontSize": "1.2rem"}}></i>
                                     </button>
-                                    <button onClick={() => handleClickEdit(list[key]?.id, info)} className="border-0 bg-white"> 
+                                    <button data-testid="edit-button" onClick={() => handleClickEdit(list[key]?.id, info)} className="border-0 bg-white"> 
                                         <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i> 
                                     </button>
                                 </div>  : null
@@ -110,8 +127,8 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                         {list?.map((skill, key) => (
                                             <div key={key} className="col">
                                             <span className="badge bg-gray-500 me-2 mb-2 d-flex flex-wrap align-items-center justify-content-between" style={{ fontSize: '12px' }}>
-                                                <span className="flex-grow-1">{skill.name}</span>
-                                                <button type="button" className="border-0 bg-gray-500 text-white btn-sm" onClick={() => handleClickDelete(skill?.id)}>
+                                                <span data-testid="skill-name" className="flex-grow-1">{skill.name}</span>
+                                                <button data-testid="delete-skill" type="button" className="border-0 bg-gray-500 text-white btn-sm" onClick={() => handleClickDelete(skill?.id)}>
                                                 X
                                                 </button>
                                             </span>
@@ -125,7 +142,7 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                 <i className={`bi bi-${iconClass} bg-gray-100 py-2 px-3`} style={{"fontSize": "1.5rem", "color": "gray", "borderRadius": "5px"}}></i>
                                 <div>
                                     <div>
-                                        <h6 className="card-title mb-5px">{info[titleKey]}</h6>
+                                        <h6 data-testid="title-key" className="card-title mb-5px">{info[titleKey]}</h6>
                                         <small className="card-text">
                                         {info[firstTimeKey] && info[secondTimeKey] ? 
                                             `${info[firstTimeKey]} - ${info[secondTimeKey]}` : 
@@ -133,7 +150,7 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                             info[secondTimeKey] ? info[secondTimeKey] : null
                                         }
                                         </small>
-                                        <p className="p-0 mb-2">{info[subtitleKey]}</p>
+                                        <p data-testid="subtitle-key" className="p-0 mb-2">{info[subtitleKey]}</p>
                                         {
                                             descriptionKey ? 
                                             <div>
@@ -157,10 +174,10 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                     {
                                         isEdit ? 
                                             <div>
-                                                <button onClick={() => handleClickDelete(list[key]?.id)} className="border-0 bg-white"> 
+                                                <button data-testid="delete-button" onClick={() => handleClickDelete(list[key]?.id)} className="border-0 bg-white"> 
                                                     <i className="bi bi-trash3" style={{"fontSize": "1.2rem"}}></i>
                                                 </button>
-                                                <button onClick={() => handleClickEdit(list[key]?.id, info)} className="border-0 bg-white"> 
+                                                <button data-testid="edit-button" onClick={() => handleClickEdit(list[key]?.id, info)} className="border-0 bg-white"> 
                                                     <i className="bi bi-pen" style={{"fontSize": "1.2rem"}}></i> 
                                                 </button>
                                             </div> : null

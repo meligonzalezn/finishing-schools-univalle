@@ -50,17 +50,17 @@ const LoginPortal = () => {
 					</div>
 					<div className="login-content login-portal-buttons">
 						<Link to="/user/univalle/login">
-							<button className="btn btn-outline-primary">
+							<button data-testid="btn-univalle-login" className="btn btn-outline-primary">
 								Universidad del Valle
 							</button>
 						</Link>
 						<Link to="/user/company/login">
-							<button className="btn btn-outline-danger">
+							<button data-testid="btn-company-login" className="btn btn-outline-danger">
 								Empresa
 							</button>
 						</Link>
 						<div className="text-inverse">
-							 ¿Quieres registrar tu empresa? Haz click <Link to="/user/company/register" className="text-primary"> aquí</Link> para comenzar el registro
+							 ¿Quieres registrar tu empresa? Haz click <Link data-testid="register-company" to="/user/company/register" className="text-primary"> aquí</Link> para comenzar el registro
 						</div>
 					</div>
 				</div>
