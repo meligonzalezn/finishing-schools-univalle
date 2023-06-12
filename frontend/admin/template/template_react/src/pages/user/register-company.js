@@ -239,7 +239,7 @@ const RegisterCompany = () => {
                                     onBlur={formik.handleBlur}
                                 />
                                 <label className="form-check-label" htmlFor="agreementCheckbox">
-                                    Al crear una cuenta aceptas los <Link to="/user/register-v3">Teminos y condiciones</Link>
+                                    Al crear una cuenta aceptas los <Link to="/terms_conditions">Teminos y condiciones</Link>
                                 </label>
                                 {formik.errors.agreement && formik.touched.agreement ? 
                                     <div className="invalid-feedback" style={{"display": "flex"}}>{ formik.errors.agreement }</div> : null}

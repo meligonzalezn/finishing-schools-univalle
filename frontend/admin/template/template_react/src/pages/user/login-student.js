@@ -76,7 +76,7 @@ function LoginStudent() {
 							<img src={RegisterBg} alt="register-bg" className='bg-style'/>
 						</div>
 						<div className="news-caption">
-							<h4 className="caption-title"><b>Finishing Schools</b> App</h4>
+							<h4 className="caption-title"><b>Finishing Schools</b> Univalle</h4>
 							<p>
 								Sistema que permitirá que los estudiantes/egresados puedan desarrollar todas las habilidades requeridas para ingresar al mercado laboral
 							</p>

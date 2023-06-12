@@ -26,6 +26,7 @@ import ScrapingForm from '../pages/user/portfolio/scraping-form.js';
 import PortfolioForm from '../pages/user/portfolio/portfolio-form.js';
 import PortfolioEdit from '../pages/user/portfolio/portfolio-edit.js';
 import CompanyForm from '../pages/user/company_profile/company-form.js';
+import TermsConditions from '../pages/terms_conditions/terms-conditions.js';
 import { Navigate } from 'react-router-dom';
 import { decodeToken } from "react-jwt";
 
@@ -60,6 +61,10 @@ const AppRoute = [
 			{
 				path: 'request_password_recovery/',
 				element: <PasswordRecoveryRequest />
+			},
+			{
+				path: 'terms_conditions/',
+				element: <TermsConditions />
 			},
 			{
 				path: 'dashboard/*',
