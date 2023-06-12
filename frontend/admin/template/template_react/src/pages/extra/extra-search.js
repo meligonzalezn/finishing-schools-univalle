@@ -210,7 +210,7 @@ const VacanciesSearch = () => {
 
 	return (
 		<div>
-			<h1 className="page-header">Consultar vacantes <small> {vacancies.length} resultados</small></h1>
+			<h1 className="page-header">Consultar vacantes <small style={{color: "#44444B"}}> {vacancies.length} resultados</small></h1>
 			<div className="row">
 				<div className="col-md-6">
 					<div className="input-group input-group-lg mb-3">
@@ -472,7 +472,7 @@ const VacanciesSearch = () => {
 												: <></>
 											}
 											<i class="bi bi-dot"></i>
-											<span style={{ color: "#048f04d1" }}>  <b>{formatDate(vacancy.created_at)}</b> </span> </p>
+											<span style={{ color: "#1C631C" }}>  <b>{formatDate(vacancy.created_at)}</b> </span> </p>
 										{vacancy.modality ?
 											<>
 												<div className="d-flex align-items-center">

@@ -9,7 +9,7 @@ class SidebarMinifyBtn extends React.Component {
 				{({toggleAppSidebarMinify, toggleAppSidebarMobile, appSidebarTransparent, appSidebarGrid}) => (
 					<div className="menu">
 						<div className="menu-item d-flex">
-							<Link to="/" className="app-sidebar-minify-btn ms-auto" onClick={toggleAppSidebarMinify}>
+							<Link to="/" aria-label='app-sidebar' className="app-sidebar-minify-btn ms-auto" onClick={toggleAppSidebarMinify}>
 								<i className="fa fa-angle-double-left"></i>
 							</Link>
 						</div>

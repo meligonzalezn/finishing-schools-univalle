@@ -1,14 +1,6 @@
 import axios from "axios";
 
 
-/** Config header for delete request */
-const config = {
-  headers: {
-    Authorization: "Bearer " + localStorage.getItem("access_token"),
-  }
-};
-
-
 /**
  * Register an array that store objects with experience of user
  * @param {*} experience Array of objects representing work experiences

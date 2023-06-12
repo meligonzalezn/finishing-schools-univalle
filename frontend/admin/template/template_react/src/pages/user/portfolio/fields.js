@@ -121,7 +121,7 @@ const certificationsLicensesFields = [
 const skillsFields = [
     {
         name: "skills",
-        label: "Competencias",
+        label: "Habilidades",
         type: "text",
         required: true,
         specialField: false,

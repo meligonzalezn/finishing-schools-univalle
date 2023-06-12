@@ -64,7 +64,7 @@ const ServiceDashboard = () => {
                 {
                     role === 'student' &&                 
                     <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-                        <div className="widget widget-stats bg-success d-flex flex-column h-100">
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#005C5C"}}>
                             <div className="stats-icon"><i className="fa fa-user"></i></div>
                             <div className="stats-info" >
                                 <h5>Portafolio Estudiantes</h5>
@@ -79,7 +79,7 @@ const ServiceDashboard = () => {
                 {
                     role === 'company' && 
                     <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-                        <div className="widget widget-stats bg-teal d-flex flex-column h-100">
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#005C5C"}}>
                             <div className="stats-icon"><i className="fa fa-building"></i></div>
                             <div className="stats-info">
                                 <h5>Empresa</h5>
@@ -92,7 +92,7 @@ const ServiceDashboard = () => {
                     </div>
                 }
 				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-					<div className="widget widget-stats bg-orange d-flex flex-column h-100">
+					<div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor:"#81465D"}}>
                         <div className="stats-icon"><i className="fa fa-desktop"></i></div>
                         <div className="stats-info">
                             <h5>Capacitación en Tecnología</h5>
@@ -109,7 +109,7 @@ const ServiceDashboard = () => {
                 {
                     role === 'student' && 
                     <div className="col-xl-3 col-md-6"  style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-                        <div className="widget widget-stats bg-red d-flex flex-column h-100">
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#0B579D"}}>
                             <div className="stats-icon"><i className="fa fa-language"></i></div>
                             <div className="stats-info">
                                 <h5>Formación en Ingles</h5>
@@ -122,7 +122,7 @@ const ServiceDashboard = () => {
                     </div>
                 }
 				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-					<div className="widget widget-stats bg-indigo d-flex flex-column h-100">
+					<div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#3e2044"}}>
 						<div className="stats-icon"><i className="fa fa-graduation-cap"></i></div>
 						<div className="stats-info">
 							<h5>Bootcamps</h5>
@@ -139,7 +139,7 @@ const ServiceDashboard = () => {
                 {
                     role === 'student' && 
                     <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-                        <div className="widget widget-stats bg-info d-flex flex-column h-100">
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#1E5128"}}>
                             <div className="stats-icon"><i className="fa fa-building"></i></div>
                             <div className="stats-info">
                                 <h5>Prácticas y pasantías</h5>
@@ -152,7 +152,7 @@ const ServiceDashboard = () => {
                     </div>
                 }
                 <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-                    <div className="widget widget-stats bg-purple d-flex flex-column h-100">
+                    <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#4C5094"}}>
                         <div className="stats-icon"><i className="fa fa-building"></i></div>
                         <div className="stats-info">
                             <h5>Vacantes laborales</h5>

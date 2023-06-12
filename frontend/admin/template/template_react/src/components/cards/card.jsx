@@ -95,7 +95,7 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                     <div className="d-flex flex-wrap gap-3">
                                         {info["roles"]?.map((role, key) => (
                                             <div key={key}>
-                                            <span className="badge bg-gray-500 me-2 mb-2 d-inline-block" style={{ fontSize: '12px' }}>
+                                            <span className="badge bg-gray-500 me-2 mb-2 d-inline-block" style={{ fontSize: '12px', color:"#292929" }}>
                                                 {role}
                                             </span>
                                             </div>
@@ -126,9 +126,9 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                     <div className="row row-cols-1 row-cols-md-4 g-3">
                                         {list?.map((skill, key) => (
                                             <div key={key} className="col">
-                                            <span className="badge bg-gray-500 me-2 mb-2 d-flex flex-wrap align-items-center justify-content-between" style={{ fontSize: '12px' }}>
+                                            <span className="badge bg-gray-500 me-2 mb-2 d-flex flex-wrap align-items-center justify-content-between" style={{ fontSize: '12px', color:"#292929" }}>
                                                 <span data-testid="skill-name" className="flex-grow-1">{skill.name}</span>
-                                                <button data-testid="delete-skill" type="button" className="border-0 bg-gray-500 text-white btn-sm" onClick={() => handleClickDelete(skill?.id)}>
+                                                <button data-testid="delete-skill" type="button" className="border-0 bg-gray-500 btn-sm" style={{color:"#292929"}} onClick={() => handleClickDelete(skill?.id)}>
                                                 X
                                                 </button>
                                             </span>
