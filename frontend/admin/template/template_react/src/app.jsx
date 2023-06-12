@@ -8,7 +8,6 @@ import Sidebar from './components/sidebar/sidebar.jsx';
 import SidebarRight from './components/sidebar-right/sidebar-right.jsx';
 import TopMenu from './components/top-menu/top-menu.jsx';
 import Content from './components/content/content.jsx';
-import ThemePanel from './components/theme-panel/theme-panel.jsx';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
@@ -513,7 +512,6 @@ class App extends React.Component {
 							{this.state.appSidebarTwo && (<SidebarRight />)}
 							{this.state.appTopMenu && (<TopMenu />)}
 							{!this.state.appContentNone && (<Content />)}
-							<ThemePanel />
 						</div>
 					</Provider>
 				</PersistGate>
