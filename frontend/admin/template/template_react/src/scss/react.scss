@@ -494,10 +494,11 @@
 		border: none;
 		width: 30px;
 		height: 30px;
+		position: relative;
 		top: 0;
 		text-indent: 0;
 		border-radius: $border-radius-lg;
-		
+		border: 1px solid;
 		&:hover,
 		&:focus {
 			background: var(--app-component-hover-bg);
@@ -527,11 +528,13 @@
 		&.react-datepicker__navigation--previous {
 			&:after {
 				content: '\f104';
+				position: absolute;
 			}
 		}
 		&.react-datepicker__navigation--next {
 			&:after {
 				content: '\f105';
+				position: absolute;
 			}
 		}
 	}
