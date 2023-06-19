@@ -10,4 +10,4 @@ EXPOSE 8000
 RUN addgroup --gid 1000 user
 RUN adduser --disabled-password --gecos '' --uid 1000 --gid 1000 user
 USER user
-CMD python manage.py runserver 172.17.6.107:8000
+CMD python manage.py runserver 0.0.0.0:8000

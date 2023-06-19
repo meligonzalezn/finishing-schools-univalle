@@ -2,52 +2,96 @@ import time
 import requests
 import random
 import urllib.parse
+import zipfile
+import os
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 
 def get_linkedin_information(profile_url):
+    #proxy settings
+    proxy_ip = os.getenv("PROXY_IP")
+    proxy_port = os.getenv("PROXY_PORT")
+    username=os.getenv("PROXY_USERNAME")
+    password=os.getenv("PROXY_PASSWORD")
 
-    def get_free_proxies():
-        url = "https://free-proxy-list.net/"
-        #request and grab content
-        soup = BeautifulSoup(requests.get(url).content, 'html.parser')
-        # to store proxies
-        proxies = []
-        for row in soup.find("table", attrs={"class": "table table-striped table-bordered"}).find_all("tr")[1:]:
-                tds = row.find_all("td")
-                try:
-                    ip = tds[0].text.strip()
-                    port = tds[1].text.strip()
-                    proxies.append(str(ip) + ":" + str(port))
-                except IndexError:
-                    continue
-        return proxies
+    manifest_json = """
+    {
+        "version": "1.0.0",
+        "manifest_version": 2,
+        "name": "Chrome Proxy",
+        "permissions": [
+            "proxy",
+            "tabs",
+            "unlimitedStorage",
+            "storage",
+            "<all_urls>",
+            "webRequest",
+            "webRequestBlocking"
+        ],
+        "background": {
+            "scripts": ["background.js"]
+        },
+        "minimum_chrome_version":"22.0.0"
+    }
+    """
+
+    background_js = """
+    var config = {
+            mode: "fixed_servers",
+            rules: {
+            singleProxy: {
+                scheme: "http",
+                host: "%s",
+                port: parseInt(%s)
+            },
+            bypassList: ["localhost"]
+            }
+        };
+
+    chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
+
+    function callbackFn(details) {
+        return {
+            authCredentials: {
+                username: "%s",
+                password: "%s"
+            }
+        };
+    }
+
+    chrome.webRequest.onAuthRequired.addListener(
+                callbackFn,
+                {urls: ["<all_urls>"]},
+                ['blocking']
+    );
+    """ % (proxy_ip, proxy_port, username, password)
     
-    proxies = get_free_proxies()
-
-    def rand_proxy():
-        proxy = random.choice(proxies)
-        return proxy
 
     #Setting chrome options 
     chrome_options = webdriver.ChromeOptions()
     #Configuration from the selenium/standalone-chrome container 
     chrome_options.set_capability("browserVersion", "111.0")
     chrome_options.set_capability("platformName", "Linux")
+
+    #setting proxy
+    pluginfile = 'proxy_auth_plugin.zip'
+
+    with zipfile.ZipFile(pluginfile, 'w') as zp:
+        zp.writestr("manifest.json", manifest_json)
+        zp.writestr("background.js", background_js)
+    chrome_options.add_extension(pluginfile)
+    
     #Solves issue with container size and chrome rendering large pages correctly(?)
     chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
+    chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
     chrome_options.add_experimental_option("useAutomationExtension", False)
  
-    # Proxy configuration 
-    proxy = rand_proxy()
-    #chrome_options.add_argument(f'--proxy-server={proxy}')
 
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.19.0.6:4444',
+        command_executor='http://172.18.0.2:4444',
         options=chrome_options
     )
 
@@ -72,6 +116,7 @@ def get_linkedin_information(profile_url):
             session_redirect = current_url
         else:
             # Extracts the query string portion of the URL which contains one or more key-value pairs separated by & characters, and parses it into a dictionary object.
+            print("current_url:", current_url)  
             query_dict = urllib.parse.parse_qs(parsed_url.query)
             session_redirect = query_dict['sessionRedirect'][0]
         # Avoiding redirect profile

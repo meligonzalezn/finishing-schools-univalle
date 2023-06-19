@@ -7,7 +7,7 @@ const Menu = [
     title: 'Servicios',
   },
   { 
-    path: localStorage.getItem("access_token") && decodeToken(localStorage.getItem("access_token")).role ? 'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile" : '/services',
+    path: localStorage.getItem("access_token")  ? 'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile" : '/services',
     icon: 'bi bi-person-circle',
     title: 'Perfil',
   },

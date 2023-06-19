@@ -50,7 +50,7 @@
     "react-google-button": "^0.7.2",
     "react-highlight": "^0.14.0",
     "react-input-mask": "^2.0.4",
-    "react-jwt": "^1.1.8",
+    "react-jwt": "^1.2.0",
     "react-loading-overlay": "^1.0.1",
     "react-notifications-component": "^4.0.1",
     "react-paginate": "^8.2.0",

@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from .models import Student, WorkExperience, Studies, CertificationLicenses, Languages, Skills
 from rest_framework.response import Response
 from urllib.request import Request
-from .serializers import StudentSerializer, WorkExperienceSerializer, StudiesSerializer, CertificationLicensesSerializer, LanguagesSerializer, SkillsSerializer
+from .serializers import StudentSerializer,  GetStudentSerializer,WorkExperienceSerializer, StudiesSerializer, CertificationLicensesSerializer, LanguagesSerializer, SkillsSerializer
 from rest_framework import status
 from rest_framework.decorators import action
 from .tokens_handler import handleAuthToken
@@ -158,6 +158,36 @@ class StudentViewSet(viewsets.ModelViewSet):
             if(len(skills) != 0):
                 portfolio["skills"] = SkillsSerializer(skills, many=True).data
             return Response(portfolio, status=status.HTTP_200_OK)
+        except:
+           return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+    @action(detail=False, methods=['post'])
+    def get_students_company(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            students = Student.objects.all()
+            serializer = GetStudentSerializer(students, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+           return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+    @action(detail=False, methods=['post'])
+    def get_background_check_info(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        student_to_check = request.data['student_id']
+        try:
+            student = Student.objects.all().get(pk=student_to_check)
+            chech_info = {
+                "id_card" : student.idCard,
+                "issue_date" : student.issueDate
+            }
+            return Response(chech_info, status=status.HTTP_200_OK)
         except:
            return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
        

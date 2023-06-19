@@ -14,11 +14,18 @@ def handleAuthToken(request):
             if method == 'POST':
                 if decodedToken['role'] == 'student':  
                     return decodedToken['sub_key']
+                if decodedToken['role'] == 'company':
+                    if request.data['action'] == "check_background_info":
+                        return decodedToken['sub_key']
+                    if request.data['action'] == "get_students":
+                        return decodedToken['sub_key']
                 else:
                     return "invalid token"
-            if method == 'GET':
-                
-                return decodedToken['sub_key']
+            if method == 'GET':   
+                if decodedToken['role'] == 'student':  
+                    return decodedToken['sub_key']
+                else:
+                    return "invalid token"
             if method == 'PUT':
                 if decodedToken['role'] == 'student':  
                     return decodedToken['sub_key']

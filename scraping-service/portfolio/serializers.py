@@ -30,3 +30,8 @@ class SkillsSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Skills
         fields = ['id', 'student_id', 'name']
+
+class GetStudentSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Student
+        fields = ['sub_key',  'name' , 'image_profile']

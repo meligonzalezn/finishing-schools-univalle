@@ -14,7 +14,7 @@ class HasRole(permissions.BasePermission):
             
             decodedToken = jwt.decode(authToken, os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
             if method == 'POST':
-                if decodedToken['role'] == 'student':  
+                if decodedToken['role'] == 'student' or decodedToken['role'] == 'company':  
                     return True
                 else:
                     return False

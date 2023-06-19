@@ -215,7 +215,7 @@ const VacanciesSearch = () => {
 				<div className="col-md-6">
 					<div className="input-group input-group-lg mb-3">
 						<input type="text" className="form-control input-white" placeholder="Ingresa palabras clave" value={search} onChange={(e) => setSearch(e.target.value)} />
-						<button type="button" className="btn btn-success" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
+						<button type="button" style={{"borderWidth":"0px"}} className="btn btn-success" onClick={(e) => searchVacancies()}><i className="fa fa-search fa-fw"></i> Buscar </button>
 
 					</div>
 					<div className="d-block d-md-flex align-items-center mb-3">
@@ -344,7 +344,7 @@ const VacanciesSearch = () => {
 					</div>
 
 
-					<div className="card border-0">
+					<div className="card border-0" style={{"zIndex": "-9000"}}>
 						<div className="card-header bg-none p-3 h6 m-0 d-flex align-items-center">
 							<div className="row">
 								<div className="col-12">
@@ -461,7 +461,7 @@ const VacanciesSearch = () => {
 					<div className=" overflow-auto" style={{ "height": "34rem" }}>
 						<div className="result-list">
 							{currentPosts.map((vacancy, index) => (
-								<div className="result-item" key={index} onClick={() => { setCurrentVacany(currentPosts[index]) }}>
+								<div className="result-item" style={{"paddingTop": "1px"}} key={index} onClick={() => { setCurrentVacany(currentPosts[index]) }}>
 									<div className="result-info">
 										<h4 className="title"> {vacancy.name}</h4>
 										<p className="location" style={{ "color": "#565656" }}>   <b>{vacancy.company} </b>
