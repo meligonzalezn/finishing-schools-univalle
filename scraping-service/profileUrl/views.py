@@ -15,7 +15,7 @@ class BasicInfo(APIView):
         
         #Array with json {platform, url} --: [{platform, url} ... {platform, url}]
         scrapingData = request.data["scraping-data"]
-        
+        print(scrapingData)
         threads = []
         results = { "linkedinInfo": "", "githubInfo": "", "gitlabInfo": ""}
 

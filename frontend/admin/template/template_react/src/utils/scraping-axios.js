@@ -135,7 +135,6 @@ async function getScrapingInfo(scrapingInfo) {
                 authorization: "Bearer " + localStorage.getItem("access_token"),
               },
         })
-        console.log(response.data)
         return response;
     } catch (error) {
         return error;
