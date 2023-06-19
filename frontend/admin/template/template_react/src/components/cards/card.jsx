@@ -162,7 +162,7 @@ const CardPortfolio = ({ list, titleKey, timeKey, firstTimeKey, secondTimeKey, s
                                                 href={info.credential_url} 
                                                 target="_blank" 
                                                 rel="noreferrer"
-                                                style={{"padding": "0.2rem 0.5rem", "textDecoration": "none", "color": "black", "display": "flex", "alignItems": "center", "gap": "0.5rem"}}
+                                                style={{"padding": "0.2rem 0.5rem", "textDecoration": "none", "color": "black", "display": "flex", "alignItems": "center", "gap": "0.5rem", "maxWidth": "70%"}}
                                                 className="border border-gray-400 rounded-4 px-3 mb-3">
                                                 <span>Mostrar Certificado</span>
                                                 <i className="bi bi-arrow-up-right-square"></i>
