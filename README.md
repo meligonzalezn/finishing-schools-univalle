@@ -29,19 +29,18 @@
 
 Professionals in technology field often lack important skills such as emotional intelligence, proficiency in new technologies, and a good command of English. These deficiencies hinder their productivity in the job market, and both job seekers and companies struggle to find suitable matches. To tackle this problem, a group of System Engineering students from the Universidad del Valle developed an intelligent web application called "Finishing Schools Univalle - FSU.". This application helps students acquire the necessary skills for the job market. These microservices contain features like web scraping student and company registration, portfolio creation, and job search and application.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ### Built With
 
-* [![React][React.js]][React-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-* ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-* ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+ [![React][React.js]][React-url]
+ [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+ ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+ ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -77,7 +76,6 @@ Once you have these prerequisites in place, follow the steps below to install th
 
 With these steps, the "Finishing Schools Univalle" application should be successfully installed and running on your system.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- LICENSE -->
@@ -85,7 +83,6 @@ With these steps, the "Finishing Schools Univalle" application should be success
 
 Distributed under the MIT License. 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
