@@ -71,19 +71,20 @@ def get_linkedin_information(profile_url):
     """ % (proxy_ip, proxy_port, username, password)
     
 
-    def rand_proxy():
-        proxy = random.choice(proxies)
-        return proxy
-
     def get_linkedin_info_from_API(profile_url):
         try: 
             api_endpoint = 'https://nubela.co/proxycurl/api/v2/linkedin'
             api_key = os.getenv('PROXYCURL_API_KEY')
+            
             header_dic = {'Authorization': 'Bearer ' + api_key}
+            
             response = requests.get(api_endpoint,
                                         params={'url': profile_url},
                                         headers=header_dic)
+            time.sleep(4)
+            
             profile_data = response.json()
+            
             about = profile_data['summary']
             def get_experience(dataSet):
                 for data in dataSet:
@@ -217,10 +218,11 @@ def get_linkedin_information(profile_url):
                 "certifications": certifications[::-1],
                 "languages": languagesInfo[::-1]
             })
-            driver.quit()
+            
             return userPortfolio
         except:
-            driver.quit()
+            
+           
             return userPortfolio
 
     #Setting chrome options 
@@ -437,11 +439,15 @@ def get_linkedin_information(profile_url):
             "certifications": certifications[::-1],
             "languages": languagesInfo[::-1]
         })
+        
         if len(userPortfolio) == 0:
-            print(get_linkedin_info_from_API(profile_url))
+            get_linkedin_info_from_API(profile_url)
+            driver.quit()
             return userPortfolio
         else:
+            driver.quit()
             return userPortfolio
     except:
         get_linkedin_info_from_API(profile_url)
+        driver.quit()
         return userPortfolio

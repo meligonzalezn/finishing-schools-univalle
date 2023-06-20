@@ -163,7 +163,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     
 
     @action(detail=False, methods=['post'])
-    def get_students_company(this, request: Request) -> Response:
+    def get_students_background_check(this, request: Request) -> Response:
         sub_key = handleAuthToken(request)
         if sub_key == 'invalid_token':
             return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
