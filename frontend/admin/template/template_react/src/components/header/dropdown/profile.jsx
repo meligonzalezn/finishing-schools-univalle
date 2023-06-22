@@ -5,12 +5,14 @@ import { ReactNotifications, Store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import profileDefault from '../../../assets/img/profile/user-image-default.png'
 import { get_user_pfp } from '../../../utils/user-axios';
-
+import { useDispatch } from 'react-redux';
+import { setSkills } from '../../../reducers/portfolioSlice';
 
 
 
 function DropdownProfile(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [profilePicture, setProfilePicture] = useState("")
   const [hideDropdown, setHideDropdown] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -73,7 +75,7 @@ function DropdownProfile(props) {
         }
         else {
           navigate("/");
-
+          dispatch(setSkills([]))
         }
       })
   };

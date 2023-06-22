@@ -5,7 +5,7 @@ ADD ./backend/requirements.txt /
 RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /app/
 COPY ./backend /app/
-WORKDIR /app/
+WORKDIR /app/   
 EXPOSE 8000
 RUN addgroup --gid 1000 user
 RUN adduser --disabled-password --gecos '' --uid 1000 --gid 1000 user
