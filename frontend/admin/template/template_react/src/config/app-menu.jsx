@@ -6,11 +6,11 @@ const Menu = [
     icon: 'bi bi-stack',
     title: 'Servicios',
   },
-  { 
-    path: localStorage.getItem("access_token")  ? 'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile" : '/services',
-    icon: 'bi bi-person-circle',
-    title: 'Perfil',
-  },
+  // { 
+  //   path: !(localStorage.getItem("access_token") == null) ?  'user/'+decodeToken(localStorage.getItem("access_token")).role +"/profile" : 'dashboard/services',
+  //   icon: 'bi bi-person-circle',
+  //   title: 'Perfil',
+  // },
   {
     path: 'vacancies/search',
     icon: 'bi bi-briefcase-fill',

@@ -1,14 +1,15 @@
 import axios from 'axios'
-import { decodeJwt } from './user-axios'
+import { decodeToken } from "react-jwt";
 
 async function registerPortfolioStudent(data) {
     try {        
         // use decode_jwt to obtain sub_key
-        const decodeData = await decodeJwt()
-        if(decodeData[0] !== null) {
+        const decodeData = decodeToken(localStorage.getItem("access_token")).sub_key
+        if(decodeData !== null) {
             // save info in database
             let student = new FormData()
-            student.append('name', data.firstName + " " + data.lastName)
+            student.append('first_name', data.firstName )
+            student.append('last_name',  data.lastName)
             student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
@@ -16,9 +17,9 @@ async function registerPortfolioStudent(data) {
             student.append('gitlab_profile', data.gitlab_profile)
             student.append('linkedin_profile', data.linkedin_profile)
             student.append('isFilled', true)
-            if (decodeData[0].sub_key) {
-                student.append('sub_key', decodeData[0].sub_key)
-            }
+           
+            student.append('sub_key', decodeData)
+            
             const config = {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -45,11 +46,11 @@ async function registerPortfolioStudent(data) {
 async function getPortfolioStudent() {
     try {
         // use decode_jwt to obtain sub_key
-        const decodeData = await decodeJwt()
-        if(decodeData[0] !== null) {
+        const decodeData = decodeToken(localStorage.getItem("access_token")).sub_key
+        if(decodeData !== null) {
             const response  = await axios({
                 // Endpoint to send files
-                url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData[0].sub_key}/get_user/`,
+                url: `${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData}/get_user/`,
                 method: "GET",
                 headers: {
                     // Add any auth token here
@@ -78,10 +79,11 @@ async function getPortfolioStudent() {
 async function updatePortfolioStudent(data, imageChanged) {
     try {
         // use decode_jwt to obtain sub_key
-        const decodeData = await decodeJwt()
-        if(decodeData[0] !== null) {
+        const decodeData = decodeToken(localStorage.getItem("access_token")).sub_key
+        if(decodeData !== null) {
             let student= new FormData()
-            student.append('name', data.firstName + " " + data.lastName)
+            student.append('first_name', data.firstName )
+            student.append('last_name',  data.lastName)
             student.append('phone_number', data.phone_number)
             student.append('idCard', data.idCard)
             student.append('issueDate', data.issueDate)
@@ -89,9 +91,9 @@ async function updatePortfolioStudent(data, imageChanged) {
             student.append('gitlab_profile', data.gitlab_profile)
             student.append('linkedin_profile', data.linkedin_profile)
             student.append('isFilled', true)
-            if (decodeData[0].sub_key) {
-                student.append('sub_key', decodeData[0].sub_key)
-            }
+         
+            student.append('sub_key', decodeData)
+            
             if (data.description) {
                 student.append('description', data.description)
             }
@@ -106,7 +108,7 @@ async function updatePortfolioStudent(data, imageChanged) {
             if(data.scrapeInfoSaved){
                 student.append('scrapeInfoSaved', data.scrapeInfoSaved)
             }
-            const response = await axios.put(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData[0].sub_key}/`, student, {
+            const response = await axios.put(`${process.env.REACT_APP_PORTFOLIO_BACKEND_URL}/portfolio/student/${decodeData}/`, student, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Accept': 'application/json',

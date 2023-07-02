@@ -486,6 +486,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<AppSettings.Provider value={this.state}>
+				
 				<PersistGate persistor={persistor}>	
 					<Provider store={store}>
 						<div className={
@@ -515,6 +516,7 @@ class App extends React.Component {
 						</div>
 					</Provider>
 				</PersistGate>
+				
 			</AppSettings.Provider>
 		)
 	}

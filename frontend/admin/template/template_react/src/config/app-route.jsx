@@ -70,7 +70,7 @@ const AppRoute = [
 				path: 'dashboard/*',
 				element:
 					<ProtectedRoute
-						allow={["company", "student"]}
+						allow={["company", "student", "program_direction"]}
 					>
 
 					</ProtectedRoute>,

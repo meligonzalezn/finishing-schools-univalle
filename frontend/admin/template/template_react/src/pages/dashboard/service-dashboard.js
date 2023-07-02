@@ -91,21 +91,25 @@ const ServiceDashboard = () => {
                         </div>
                     </div>
                 }
-				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-					<div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor:"#81465D"}}>
-                        <div className="stats-icon"><i className="fa fa-desktop"></i></div>
-                        <div className="stats-info">
-                            <h5>Capacitación en Tecnología</h5>
-                            {role === 'student' ?  
-                                <small>Accede a cursos y recursos para mejorar sus habilidades técnicas</small>	:
-                                <small>Cree sus propios cursos de formación en línea</small>
-                            }
-                        </div>
-                        <div className="stats-link mt-auto">
-                            <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
-                        </div>
-					</div>
-				</div>
+                {   (role === 'student' || role === 'company' ) && 
+                <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor:"#81465D"}}>
+                    <div className="stats-icon"><i className="fa fa-desktop"></i></div>
+                    <div className="stats-info">
+                        <h5>Capacitación en Tecnología</h5>
+                        {role === 'student' ?  
+                            <small>Accede a cursos y recursos para mejorar sus habilidades técnicas</small>	:
+                            <small>Cree sus propios cursos de formación en línea</small>
+                        }
+                    </div>
+                    <div className="stats-link mt-auto">
+                        <Link to="/user/student/profile">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                    </div>
+                </div>
+            </div>
+
+                }
+				
                 {
                     role === 'student' && 
                     <div className="col-xl-3 col-md-6"  style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
@@ -121,21 +125,24 @@ const ServiceDashboard = () => {
                         </div>
                     </div>
                 }
-				<div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
-					<div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#3e2044"}}>
-						<div className="stats-icon"><i className="fa fa-graduation-cap"></i></div>
-						<div className="stats-info">
-							<h5>Bootcamps</h5>
-                            {role === 'student' ?
-                                <small>Accede a programas de formación en habilidades específicas</small> :
-                                <small>Cree sus propios programas de formación en habilidades específicas</small>
-                            }
-						</div>
-						<div className="stats-link mt-auto">
-							<Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
-						</div>
-					</div>
-				</div>
+                {    (role === 'student' || role === 'company' ) && 
+                        <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#3e2044"}}>
+                            <div className="stats-icon"><i className="fa fa-graduation-cap"></i></div>
+                            <div className="stats-info">
+                                <h5>Bootcamps</h5>
+                                {role === 'student' ?
+                                    <small>Accede a programas de formación en habilidades específicas</small> :
+                                    <small>Cree sus propios programas de formación en habilidades específicas</small>
+                                }
+                            </div>
+                            <div className="stats-link mt-auto">
+                                <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                            </div>
+                        </div>
+                    </div>
+                }
+				
                 {
                     role === 'student' && 
                     <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
@@ -151,7 +158,8 @@ const ServiceDashboard = () => {
                         </div>
                     </div>
                 }
-                <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                {   (role === 'student' || role === 'company' ) && 
+                    <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
                     <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#4C5094"}}>
                         <div className="stats-icon"><i className="fa fa-building"></i></div>
                         <div className="stats-info">
@@ -162,7 +170,24 @@ const ServiceDashboard = () => {
                             <Link to="/vacancies/search">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
                         </div>
                     </div>
-				</div>   
+				</div> 
+                }
+                {
+                    (role === 'student' || role === 'program_direction')&& 
+                    <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
+                        <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#6E3D3D"}}>
+                            <div className="stats-icon"><i className="fa fa-building"></i></div>
+                            <div className="stats-info">
+                                <h5>Verificación de antecedentes</h5>
+                                <small>Realiza background checks y validación de documentos</small>	
+                            </div>
+                            <div className="stats-link mt-auto">
+                                <Link to="/dashboard/v1">Ingresar <i className="fa fa-arrow-alt-circle-right"></i></Link>
+                            </div>
+                        </div>
+                    </div>
+                }
+                  
                 <ReactNotifications />           
 			</div>
         </div>

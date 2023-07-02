@@ -89,16 +89,16 @@ const ScrapingForm = () => {
     useEffect(() => {
         const fetchUserBasicInfo = async () => {
           try {
-            const request1 =  get_user_basic_info();
-            const request2 = getPortfolioStudent();
+            // const request1 = get_user_basic_info();
+            // const request2 = getPortfolioStudent();
 
-            const [basicInfo, portfolioStudent] = await Promise.all([request1, request2]);
+            // const [basicInfo, portfolioStudent] = await Promise.all([request1, request2]);
 
-            if (basicInfo) {
-              setName(basicInfo['user_name']);
-              setLastname(basicInfo['user_last_name']);  
-            }
+            const portfolioStudent = await getPortfolioStudent();
+
             if (portfolioStudent !== "unregistered") {
+                setName(portfolioStudent['first_name']);
+                setLastname(portfolioStudent['last_name']);  
                 setIdCard(portfolioStudent['idCard'])
                 setIssueDate(new Date(portfolioStudent['issueDate']))
                 setPhoneNumber(portfolioStudent['phone_number'])
@@ -108,6 +108,13 @@ const ScrapingForm = () => {
                 setIsFilled(portfolioStudent['isFilled'])
                 setEnableButton(true)
             }
+            else{
+                const basicInfo = await get_user_basic_info();
+
+                setName(basicInfo['user_name']);
+                setLastname(basicInfo['user_last_name']);  
+            }
+
             setInfoLoaded(true) 
           } catch (error) {
             Store.addNotification({
@@ -121,7 +128,7 @@ const ScrapingForm = () => {
         };      
         fetchUserBasicInfo();
         // eslint-disable-next-line
-      }, [name, lastname, isFilled]);
+      }, [ ]);
     
     const handleUpdateUser = async (event) => {
         event.preventDefault();

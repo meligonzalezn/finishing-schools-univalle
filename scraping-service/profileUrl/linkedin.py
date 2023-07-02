@@ -247,7 +247,7 @@ def get_linkedin_information(profile_url):
 
     #Set remote web driver. Recives the url of the remote web server (selenium container) and options. 
     driver = webdriver.Remote(
-        command_executor='http://172.18.0.2:4444',
+        command_executor='https://stingray-app-ky5n8.ondigitalocean.app/wd/hub',
         options=chrome_options
     )
 

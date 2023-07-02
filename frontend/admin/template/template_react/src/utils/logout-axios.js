@@ -14,7 +14,9 @@ async function logout(){
         return err.response
     });
     if(response.status===205){
+        localStorage.removeItem('persist:root')
         localStorage.clear()
+        sessionStorage.clear()
         return response.data
     }
     else{

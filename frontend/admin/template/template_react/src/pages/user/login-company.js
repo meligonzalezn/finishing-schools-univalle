@@ -6,6 +6,7 @@ import RegisterBg from '../../assets/img/register/register-bg.jpg'
 import logoUnivalle from '../../assets/img/register/logo-univalle.png'
 import LoadingOverlay from 'react-loading-overlay';
 import './styles/login.css'
+import { decodeToken } from "react-jwt";
 
 
 function LoginCompany(){
@@ -43,7 +44,8 @@ function LoginCompany(){
 			localStorage.setItem("access_token", res.tokens.access)
 			localStorage.setItem("refresh_token", res.tokens.refresh)
 			localStorage.setItem("user",  res.email)
-			localStorage.setItem("role", "company")
+			const role = decodeToken(res.tokens.access).role
+			localStorage.setItem("role",role)
 			sessionStorage.setItem("token", "active")
 			setRedirect(true)
 			setLoader(false)

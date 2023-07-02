@@ -236,7 +236,19 @@ const portfolioSlice = createSlice({
         },
         setShowNotificationCreateError(state, action){
             state.showNotificationCreateError = action.payload;
-        }
+        },
+        clearPersistedData(state, action) {
+                state.studentId= ""
+                state.about= ""
+                state.image= ""
+                state.imageChanged= false
+                state.experience= []
+                state.education= []
+                state.certifications= []
+                state.languages= []
+                state.skills= []
+                state.portfolioStudent= {}
+          },
     }
 })
 
@@ -288,7 +300,8 @@ export const {setAbout, setImage, setExperiences, setSingleExperience,
             deleteSkill, deleteExperience, deleteCertification, deleteEducation, deleteLanguages,
             setShowModalAboutEdit, setUpdateAbout, setNotificationDeleteSuccess, setNotificationDeleteError,
             setShowNotificationUpdateSuccess, setShowNotificationUpdateError, setShowNotificationUpdatePortfolioError,
-            setShowNotificationUpdatePortfolioSuccess, setShowNotificationCreateSuccess, setShowNotificationCreateError
+            setShowNotificationUpdatePortfolioSuccess, setShowNotificationCreateSuccess, setShowNotificationCreateError, 
+            clearPersistedData
         } = portfolioSlice.actions;
 
 export default portfolioSlice.reducer;

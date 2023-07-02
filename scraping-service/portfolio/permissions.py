@@ -8,7 +8,6 @@ class HasRole(permissions.BasePermission):
         authToken = request.headers.get('Authorization') 
         if authToken == None:
              return False
-        print(authToken)
         try:
             authToken = authToken[7:]
             

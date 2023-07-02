@@ -6,7 +6,8 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 class Student(models.Model):
     sub_key = models.CharField(primary_key=True, auto_created=False, max_length=10000)
-    name = models.CharField(max_length=100, blank=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     idCard = models.CharField(max_length=200, blank=False)
     issueDate = models.CharField(max_length=200, blank=False)
     phone_number = models.CharField(max_length=100, blank=True)
