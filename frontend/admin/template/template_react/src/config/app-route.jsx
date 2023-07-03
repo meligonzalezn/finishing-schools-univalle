@@ -38,7 +38,7 @@ const ProtectedRoute = ({
 
 
 	if (!(allow.includes(decodeToken(localStorage.getItem("access_token")).role))) {
-
+		
 		return <Navigate to={redirectPath} replace />;
 	}
 

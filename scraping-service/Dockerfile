@@ -4,7 +4,7 @@ WORKDIR .
 ADD ./scraping-service/requirements.txt /
 RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /app/
-COPY ./backend /app/
+COPY ./scraping-service /app/
 WORKDIR /app/
 EXPOSE 8000
 RUN addgroup --gid 1000 user
