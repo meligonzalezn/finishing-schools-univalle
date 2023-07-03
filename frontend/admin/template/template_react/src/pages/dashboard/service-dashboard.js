@@ -176,7 +176,7 @@ const ServiceDashboard = () => {
                     (role === 'student' || role === 'program_direction')&& 
                     <div className="col-xl-3 col-md-6" style={{"maxHeight": "150px", "marginBottom": "1rem"}}>
                         <div className="widget widget-stats d-flex flex-column h-100" style={{backgroundColor: "#6E3D3D"}}>
-                            <div className="stats-icon"><i className="fa fa-building"></i></div>
+                            <div className="stats-icon"><i className="bi bi-patch-check-fill"></i></div>
                             <div className="stats-info">
                                 <h5>Verificación de antecedentes</h5>
                                 <small>Realiza background checks y validación de documentos</small>	
