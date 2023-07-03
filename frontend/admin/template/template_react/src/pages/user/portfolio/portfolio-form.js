@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import CardPortfolio from "../../../components/cards/card";
 import ProfileImage from "../../../assets/img/profile/user-image-default.png"
-import { getPortfolioStudent, getScrapingInfo, updatePortfolioStudent } from "../../../utils/scraping-axios";
+import {  getScrapingInfo, updatePortfolioStudent } from "../../../utils/scraping-axios";
 import { ReactNotifications, Store } from 'react-notifications-component';
 import {
     registerPortfolioStudentInformation, getPortfolioStudentInformation,

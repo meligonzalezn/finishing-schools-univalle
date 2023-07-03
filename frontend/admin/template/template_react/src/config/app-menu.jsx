@@ -1,4 +1,3 @@
-import { decodeToken } from "react-jwt";
 
 const Menu = [
   {
