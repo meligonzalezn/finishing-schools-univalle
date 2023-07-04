@@ -173,6 +173,8 @@ class StudentViewSet(viewsets.ModelViewSet):
             student = Student.objects.all().get(idCard=student_to_check)
             check_info = {
                 "sub_key" : student.sub_key,
+                "first_name": student.first_name,
+                "last_name" : student.last_name,
                 "issue_date" : student.issueDate
             }
             return Response(check_info, status=status.HTTP_200_OK)
