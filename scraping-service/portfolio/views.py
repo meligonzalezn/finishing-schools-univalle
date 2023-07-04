@@ -171,10 +171,11 @@ class StudentViewSet(viewsets.ModelViewSet):
         student_to_check = request.data['student_id']
         try:
             student = Student.objects.all().get(idCard=student_to_check)
-            chech_info = {
+            check_info = {
+                "sub_key" : student.sub_key,
                 "issue_date" : student.issueDate
             }
-            return Response(chech_info, status=status.HTTP_200_OK)
+            return Response(check_info, status=status.HTTP_200_OK)
         except:
            return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
        
