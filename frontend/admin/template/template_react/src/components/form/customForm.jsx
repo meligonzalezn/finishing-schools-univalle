@@ -6,6 +6,7 @@ import { Store } from 'react-notifications-component';
 import { monthsOptions } from "../../pages/user/portfolio/fields";
 import "./customForm.css"
 import { useEffect } from "react";
+import {registerScrapeSaved} from '../../utils/portfolio-axios';
 
 function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, onUpdate, isAbout}) {
     const dispatch = useDispatch()
@@ -178,7 +179,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
             dispatch(action(skills))
             setLoadingCreate(true)
             const response = await onSubmit(valuesWithSkills.skills, studentId)
-            if(response !== undefined){
+            const saveInfo = await registerScrapeSaved();
+            if(response !== undefined && saveInfo.status == 200){
               setLoadingCreate(false)
               dispatch(setShowNotificationCreateError(true))
               Store.addNotification({
@@ -231,7 +233,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       dispatch(action(values))
                       setLoadingUpdate(true)
                       const response = await onUpdate(studentId, editId, [valuesWithRoles]);
-                      if(response.status === 200) {
+                      const saveInfo = await registerScrapeSaved();
+                      if(response.status === 200 && saveInfo.status == 200) {
                         setLoadingUpdate(false)
                         dispatch(setShowNotificationUpdateSuccess(true))
                         Store.addNotification({
@@ -261,7 +264,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       dispatch(action(valuesWithRoles))
                       setLoadingCreate(true)
                       const response = await onSubmit([valuesWithRoles], studentId)
-                      if(response !== undefined){
+                      const saveInfo = await registerScrapeSaved();
+                      if(response !== undefined && saveInfo.status == 200){
                         setLoadingCreate(false)
                         dispatch(setShowNotificationCreateError(true))
                         Store.addNotification({
@@ -296,7 +300,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       dispatch(action(values))
                       setLoadingUpdate(true)
                       const response = await onUpdate(studentId, editId, [valuesWithDates])
-                      if(response.status === 200) {
+                      const saveInfo = await registerScrapeSaved();
+                      if(response.status === 200 && saveInfo.status == 200) {
                         setLoadingUpdate(false)
                         dispatch(setShowNotificationUpdateSuccess(true))
                         Store.addNotification({
@@ -326,7 +331,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       dispatch(action(valuesWithDates))
                       setLoadingCreate(true)
                       const response = await onSubmit([valuesWithDates], studentId)
-                      if(response !== undefined){
+                      const saveInfo = await registerScrapeSaved();
+                      if(response !== undefined && saveInfo.status == 200){
                         setLoadingCreate(false)
                         dispatch(setShowNotificationCreateError(true))
                         Store.addNotification({
@@ -363,8 +369,9 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                       dispatch(action(formValues))
                       setLoadingUpdate(true)
                       dispatch(setImageChanged(false))
-                      const response = await onUpdate(newPortfolioStudent, imageChanged)
-                      if(response.status === 200){
+                      const response = await onUpdate(newPortfolioStudent, imageChanged);
+                      const saveInfo = await registerScrapeSaved();
+                      if(response.status === 200 && saveInfo.status == 200){
                         setLoadingUpdate(false)
                         dispatch(setShowNotificationUpdatePortfolioSuccess(true));
                         Store.addNotification({
@@ -397,8 +404,9 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                   formValues.id = editId;
                   dispatch(action(values))
                   setLoadingUpdate(true)
-                  const response = await onUpdate(studentId, editId, [formValues])
-                  if(response.status === 200) {
+                  const response = await onUpdate(studentId, editId, [formValues]);
+                  const saveInfo = await registerScrapeSaved();
+                  if(response.status === 200 && saveInfo.status == 200) {
                     setLoadingUpdate(false)
                     dispatch(setShowNotificationUpdateSuccess(true))
                     Store.addNotification({
@@ -432,7 +440,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                 dispatch(action(formValuesWithId))
                 setLoadingUpdate(true)
                 const result = await onUpdate(studentId, editId, [formValues])
-                if(result.status === 200){
+                const saveInfo = await registerScrapeSaved();
+                if(result.status === 200 && saveInfo.status == 200){
                   setLoadingCreate(false)
                   dispatch(setShowNotificationUpdateSuccess(true))
                   Store.addNotification({
@@ -463,7 +472,8 @@ function CustomForm ({fields, onSubmit, action, showModalAction, initialValue, o
                 dispatch(action(formValues))
                 setLoadingCreate(true)
                 const result = await onSubmit([formValues], studentId)
-                if(result !== undefined){
+                const saveInfo = await registerScrapeSaved();
+                if(result !== undefined && saveInfo.status == 200){
                   setLoadingCreate(false)
                   dispatch(setShowNotificationCreateError(true))
                   Store.addNotification({
