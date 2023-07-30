@@ -228,6 +228,12 @@ const ScrapingForm = () => {
                                         <div className="invalid-feedback" style={{"display": "flex"}}>{ formik.errors.issueDate }</div> : null}
                                 </div>
                             </div>
+                            <div className="row" style={{"marginTop": "8px", "marginBottom": "1px"}}>
+                              <div className="col">
+                                <p>Tu cédula y fecha de expedición se solicitan con el propósito de permitir a las empresas realizar un background check básico</p>
+                                </div>
+                            </div>
+                            
                             <div className="row">
                                 <div className="col">
                                     <label className="form-label col-form-label col-md-3">Github</label>
