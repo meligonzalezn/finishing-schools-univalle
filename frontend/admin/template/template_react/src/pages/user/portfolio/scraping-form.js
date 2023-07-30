@@ -89,11 +89,6 @@ const ScrapingForm = () => {
     useEffect(() => {
         const fetchUserBasicInfo = async () => {
           try {
-            // const request1 = get_user_basic_info();
-            // const request2 = getPortfolioStudent();
-
-            // const [basicInfo, portfolioStudent] = await Promise.all([request1, request2]);
-
             const portfolioStudent = await getPortfolioStudent();
 
             if (portfolioStudent !== "unregistered") {
