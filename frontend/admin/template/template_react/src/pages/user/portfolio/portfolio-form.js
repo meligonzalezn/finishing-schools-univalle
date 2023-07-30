@@ -130,13 +130,14 @@ const PortfolioForm = () => {
             if (student.scrapeInfoSaved) {
               dispatch(setAbout(student.description));
               setIsScraped(student.scrapeInfoSaved);
-              setScraping(true);
               if (portfolioInformation) {
                 updateStudentPortfolio(portfolioInformation);
               }
             } else {
               const scrapingInfo = [];
-
+              if((student?.linkedin_profile !== '' || student?.github_profile !== '' || student?.gitlab_profile !== '') && student.scrapeInfoSaved !== true) {
+                setScraping(true);
+              }
               if (student?.linkedin_profile !== '') {
                 scrapingInfo.push({ platform: 'linkedin', url: student.linkedin_profile });
               }

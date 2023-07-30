@@ -465,7 +465,7 @@ async function registerScrapeSaved() {
       return err.response
     });
   if (response.status === 200) {
-    return response.data
+    return response;
   }
   else {
     return undefined
@@ -478,5 +478,5 @@ export {
   registerExperience, registerCertificationsLicenses, registerEducation, registerLanguages,
   registerSkills, updateExperience, updateEducation, updateCertificationsLicenses, updateLanguages,
   updateSkills, deleteExperienceBack, deleteEducationBack, deleteCertificationsLicensesBack, deleteLanguagesBack,
-  deleteSkillsBack
+  deleteSkillsBack, registerScrapeSaved
 }
