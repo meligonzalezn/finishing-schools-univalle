@@ -48,7 +48,7 @@ const PortfolioForm = () => {
     const [infoLoaded, setInfoLoaded] = useState(false)
     const [updateDescriptionImage, setUpdateDescriptionImage] = useState(false)
     const [infoSaved, setInfoSaved] = useState(false)
-    const [isScraped, setIsScraped] = useState(null)
+    const [isScraped, setIsScraped] = useState(false)
     const [scrapingProfiles, setScrapingProfiles] = useState([])
     const [scraping, setScraping] = useState(false);
     const modalExperience = useSelector(selectShowModalExperience);
@@ -97,94 +97,92 @@ const PortfolioForm = () => {
         enableReinitialize: true,
     });
 
+    const updateStudentPortfolio = (portfolioInformation) => {
+        if (!portfolioInformation) return;
+
+        dispatch(setExperiences(portfolioInformation?.experience));
+        dispatch(setEducation(portfolioInformation?.education));
+        dispatch(setCertifications(portfolioInformation?.certifications));
+        dispatch(setLanguages(portfolioInformation?.languages));
+
+        const uniqueSkills = portfolioInformation?.skills?.filter(
+          (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
+        );
+        dispatch(setSkills(uniqueSkills));
+    };
+
     useEffect(() => {
         const fetchUserInfo = async () => {
-            try {
-
-                const studentInfo = await getPortfolioStudentInformation();
-                
-                const student = studentInfo.student
-                
-                dispatch(setPortfolioStudent(student));
-                dispatch(setImage(student.image_profile));
-                dispatch(setStudentId(student.sub_key));
-                
-                if (student.scrapeInfoSaved) {
-                    dispatch(setAbout(student.description))
-                    setIsScraped(student.scrapeInfoSaved)
-               
-                    const portfolioInformation = studentInfo.portfolio
-                    if (portfolioInformation) {
-                        dispatch(setExperiences(portfolioInformation.experience));
-                        dispatch(setEducation(portfolioInformation.education));
-                        dispatch(setCertifications(portfolioInformation.certifications));
-                        dispatch(setLanguages(portfolioInformation.languages));
-                        const uniqueList = portfolioInformation.skills.filter(
-                            (skill, index, self) => index === self.findIndex((s) => s.name === skill.name)
-                        );
-                        dispatch(setSkills(uniqueList))
-                    }
-                    
-                } else {
-                    setScraping(true);
-                    let scrapingInfo = []
-                    if (student?.linkedin_profile !== '') {
-                        const url = student.linkedin_profile
-                        scrapingInfo.push({ platform: 'linkedin', url: url })
-                    }
-                    if (student?.github_profile !== '') {
-                        const url = student.github_profile
-                        scrapingInfo.push({ platform: 'github', url: url })
-                    }
-                    if (student?.gitlab_profile !== '') {
-                        const url = student.gitlab_profile
-                        scrapingInfo.push({ platform: 'gitlab', url: url })
-                    }
-                    setScrapingProfiles(scrapingInfo)
-                   
-                    
-
-                    const resScrapedInfo = await getScrapingInfo({ "scraping-data": scrapingInfo });
-                    const scrapedInfo = resScrapedInfo.data
-                    if (scrapedInfo.linkedinInfo !== "") {
-                        const data = scrapedInfo.linkedinInfo[0];
-                        dispatch(setAbout(data.about));
-                        dispatch(setExperiences(data.experience.reverse()));
-                        dispatch(setEducation(data.education.reverse()));
-                        dispatch(setCertifications(data.certifications.reverse()));
-                        dispatch(setLanguages(data.languages.reverse()));
-                    }
-                    if (scrapedInfo.githubInfo !== "") {
-                        const newSkills = [...new Set([...scrapedInfo.githubInfo])];
-                        const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
-                        dispatch(setSkills([...skills, ...formattedSkills]));
-                    }
-
-                    if (scrapedInfo.gitlabInfo !== "") {
-                        const newSkills = [...new Set([...scrapedInfo.gitlabInfo])];
-                        const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
-                        dispatch(setSkills([...skills, ...formattedSkills]));
-                    }
-                }
-                
-                setInfoLoaded(true);
-                
-            } catch (error) {
-                Store.addNotification({
-                    title: 'Error',
-                    message: 'Error obteniendo la información',
-                    type: 'danger',
-                    dismiss: {
-                        duration: 3000,
-                    },
-                    ...defaultOptions,
-                });
-                setInfoLoaded(true);
+          try {
+            const studentInfo = await getPortfolioStudentInformation();
+            const student = studentInfo.student;
+            const portfolioInformation = studentInfo.portfolio;
+      
+            dispatch(setPortfolioStudent(student));
+            dispatch(setImage(student.image_profile));
+            dispatch(setStudentId(student.sub_key));
+      
+            if (portfolioInformation) {
+              dispatch(setAbout(student.description));
+              updateStudentPortfolio(portfolioInformation);
             }
-        };
+      
+            if (student.scrapeInfoSaved) {
+              dispatch(setAbout(student.description));
+              setIsScraped(student.scrapeInfoSaved);
+              setScraping(true);
+              if (portfolioInformation) {
+                updateStudentPortfolio(portfolioInformation);
+              }
+            } else {
+              const scrapingInfo = [];
 
+              if (student?.linkedin_profile !== '') {
+                scrapingInfo.push({ platform: 'linkedin', url: student.linkedin_profile });
+              }
+              if (student?.github_profile !== '') {
+                scrapingInfo.push({ platform: 'github', url: student.github_profile });
+              }
+              if (student?.gitlab_profile !== '') {
+                scrapingInfo.push({ platform: 'gitlab', url: student.gitlab_profile });
+              }
+              setScrapingProfiles(scrapingInfo);
+      
+              const resScrapedInfo = await getScrapingInfo({ "scraping-data": scrapingInfo });
+              const scrapedInfo = resScrapedInfo.data;
+      
+              if (scrapedInfo.linkedinInfo !== "") {
+                const data = scrapedInfo.linkedinInfo[0];
+                dispatch(setAbout(data.about));
+                dispatch(setExperiences(data.experience.reverse()));
+                dispatch(setEducation(data.education.reverse()));
+                dispatch(setCertifications(data.certifications.reverse()));
+                dispatch(setLanguages(data.languages.reverse()));
+              }
+      
+              if (scrapedInfo.githubInfo !== "") {
+                const newSkills = [...new Set([...scrapedInfo.githubInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills(formattedSkills));
+              }
+      
+              if (scrapedInfo.gitlabInfo !== "") {
+                const newSkills = [...new Set([...scrapedInfo.gitlabInfo])];
+                const formattedSkills = newSkills.map((skill, index) => ({ id: index, name: skill }));
+                dispatch(setSkills(formattedSkills));
+              }
+            }
+            
+            setInfoLoaded(true);
+          } catch (error) {
+            // Handle the error appropriately (e.g., display a message to the user, log it, etc.).
+            setInfoLoaded(true);
+            console.error("Error fetching user information:", error);
+          }
+        };
+      
         if (!infoLoaded) {
-            fetchUserInfo();
+          fetchUserInfo();
         }
         // eslint-disable-next-line
     }, []);
@@ -237,7 +235,6 @@ const PortfolioForm = () => {
             );
             if (response.status === 200) {
                 setInfoSaved(false);
-                setIsScraped(true)
                 Store.addNotification({
                     title: "Register Success",
                     message: "Información registrada",
@@ -332,8 +329,8 @@ const PortfolioForm = () => {
                                                     !(isScraped || !(scrapingProfiles.length > 0)) ? //Verifies if a scraping process will be done
                                                         //checking the scrapeinfoState state and profile links provided
                                                         null :
-                                                        <>
-                                                            {
+                                                        <> 
+                                                {        
                                                     about !== "" ?
                                                         <button aria-label="description-edit" data-testid="description-edit" className="border-0 bg-white" onClick={(event) => {
                                                             event.preventDefault();
@@ -351,7 +348,7 @@ const PortfolioForm = () => {
                                                             <i className="bi bi-plus-lg" style={{ "fontSize": "1.2rem" }}></i>
                                                         </button>
                                                 }
-                                                        </>
+                                                </>    
 
                                            }
                                                 
@@ -588,28 +585,22 @@ const PortfolioForm = () => {
                                     </div>
                                 </div>
                                 <div style={{ "marginTop": "2rem" }}>
-                                    {
-                                         isScraped ?
-                                            null :
-                                            (
-                                                <div className="row m-4">
-                                                    <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping o si estás registrando tu portafolio por primera vez.</p>
-                                                    <button
-                                                        type='submit'
-                                                        onClick={(event) => { handleSubmitPortfolio(event) }}
-                                                        className="btn btn-success w-100px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem" }}>
-                                                        Guardar
-                                                        {
-                                                            infoSaved ? (
-                                                                <div className="spinner-border" role="status" style={{ "width": "1rem", "height": "1rem" }}>
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div>
-                                                            ) : null
-                                                        }
-                                                    </button>
-                                                </div>
-                                            )
-                                    }
+                                    {!infoLoaded && !isScraped ? (
+                                        <div className="row m-4">
+                                        <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping.</p>
+                                        <button
+                                            type='submit'
+                                            onClick={(event) => { handleSubmitPortfolio(event) }}
+                                            className="btn btn-success w-100px me-5px d-flex justify-content-center align-items-center" style={{ "gap": "0.5rem" }}>
+                                            Guardar
+                                            {infoSaved ? (
+                                            <div className="spinner-border" role="status" style={{ "width": "1rem", "height": "1rem" }}>
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                            ) : null}
+                                        </button>
+                                        </div>
+                                    ) : null}
                                 </div>
                             </form>
                         </div>
