@@ -188,7 +188,7 @@ const PortfolioForm = () => {
     }, []);
 
     useEffect(() => {
-        if (!infoLoaded && scraping) {
+        if (!infoLoaded && !isScraped) {
             Store.addNotification({
                 title: 'Info',
                 message:
