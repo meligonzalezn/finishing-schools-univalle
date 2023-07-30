@@ -45,10 +45,10 @@ const Header = () => {
 			// again, now with the access_token already exdpired)
 			refreshToken()
 				.then(response => {
-					localStorage.setItem("access_token",response.access);
+					localStorage.setItem("access_token",response?.access);
 				})
 				.catch(error => {
-				console.log(error);
+					return error;
 				});
 			sessionStorage.setItem("token", "active")
 			setRefreshSession(true)
@@ -56,10 +56,10 @@ const Header = () => {
 		const interval = setInterval(() => {
 			refreshToken()
 				.then(response => {
-					localStorage.setItem("access_token",response.access);
+					localStorage.setItem("access_token",response?.access);
 				})
 				.catch(error => {
-				console.log(error);
+					return error;
 				});
 		  }, 4 * 60 * 1000);
 	  
