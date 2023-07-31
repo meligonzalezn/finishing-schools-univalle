@@ -164,6 +164,18 @@ class StudentViewSet(viewsets.ModelViewSet):
            return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     @action(detail=False, methods=['post'])
+    def get_students_company(this, request: Request) -> Response:
+        sub_key = handleAuthToken(request)
+        if sub_key == 'invalid_token':
+            return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            students = Student.objects.all()
+            serializer = GetStudentSerializer(students, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+           return Response("Error", status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
     def get_background_check_info(this, request: Request) -> Response:
         sub_key = handleAuthToken(request)
         if sub_key == 'invalid_token':
