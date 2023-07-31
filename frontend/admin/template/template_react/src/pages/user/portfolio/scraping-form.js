@@ -21,6 +21,7 @@ const ScrapingForm = () => {
     const [infoSaved, setInfoSaved] = useState(false)
     const [infoUpdated, setInfoUpdated] = useState(false)
     const [enableButton, setEnableButton] = useState(false)
+    const [isScrapeInfoSaved, setIsScrapeInfoSaved] = useState(null)
     /**
      * Default options for warning, success and error messages
      */
@@ -43,6 +44,7 @@ const ScrapingForm = () => {
             gitlab_profile: gitlab || '',
             linkedin_profile: linkedin || '',
             isFilled: isFilled || false,
+            scrapeInfoSaved: isScrapeInfoSaved || false,
         },
         onSubmit: async (values) => {
             if(formik.isValid) {
@@ -90,7 +92,6 @@ const ScrapingForm = () => {
         const fetchUserBasicInfo = async () => {
           try {
             const portfolioStudent = await getPortfolioStudent();
-
             if (portfolioStudent !== "unregistered") {
                 setName(portfolioStudent['first_name']);
                 setLastname(portfolioStudent['last_name']);  
@@ -101,6 +102,7 @@ const ScrapingForm = () => {
                 setGitlab(portfolioStudent['gitlab_profile'])
                 setLinkedin(portfolioStudent['linkedin_profile'])
                 setIsFilled(portfolioStudent['isFilled'])
+                setIsScrapeInfoSaved(portfolioStudent['scrapeInfoSaved'])
                 setEnableButton(true)
             }
             else{
