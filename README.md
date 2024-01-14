@@ -94,9 +94,6 @@ Melissa González Nebrijo - melissa.gonzalez@correounivalle.edu.co
 
 Michelle González Hernandez - michelle.hernandez@correounivalle.edu.co
 
-## Contributors
-
-![GitHub Contributors Image](https://contrib.rocks/image?repo=meligonzalezn/finishing-schools-univalle)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
