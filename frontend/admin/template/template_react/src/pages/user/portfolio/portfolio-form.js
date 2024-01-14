@@ -586,7 +586,7 @@ const PortfolioForm = () => {
                                     </div>
                                 </div>
                                 <div style={{ "marginTop": "2rem" }}>
-                                    {!infoLoaded && !isScraped ? (
+                                    {infoLoaded && scraping ? (
                                         <div className="row m-4">
                                         <p className="p-0">Recuerde guardar la información si la has obtenido mediante Web Scraping.</p>
                                         <button
