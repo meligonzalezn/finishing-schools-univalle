@@ -59,7 +59,7 @@ Once you have these prerequisites in place, follow the steps below to install th
 
 1. Clone the repository by running the following command in your terminal:
    ```sh
-   git clone https://github.com/Meliwi/finishing-schools-univalle.git
+   git clone https://github.com/Meligonzalezn/finishing-schools-univalle.git
    ```
 
 2. Configure the `.env` file with the necessary credentials.
@@ -96,7 +96,7 @@ Michelle González Hernandez - michelle.hernandez@correounivalle.edu.co
 
 ## Contributors
 
-![GitHub Contributors Image](https://contrib.rocks/image?repo=meliwi/finishing-schools-univalle)
+![GitHub Contributors Image](https://contrib.rocks/image?repo=meligonzalezn/finishing-schools-univalle)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -104,7 +104,7 @@ Michelle González Hernandez - michelle.hernandez@correounivalle.edu.co
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url-profile]: https://github.com/Meliwi/finishing-schools-univalle/graphs/contributors 
+[contributors-url-profile]: https://github.com/meligonzalezn/finishing-schools-univalle/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
